@@ -29,4 +29,6 @@ public class Test {
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(file);
     }
+    //bb
+
 }
