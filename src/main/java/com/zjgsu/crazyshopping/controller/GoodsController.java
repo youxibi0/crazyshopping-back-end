@@ -25,19 +25,19 @@ public class GoodsController {
     private GoodsServiceImpl goodsService;
     @Autowired
     private ImageService imageService;
-    @GetMapping("/images/{img}")
-    public String getGoodsImage(@PathVariable String img){
-        Resource imageResource = imageService.loadImage(img);
-        try {
-            Path imagePath = imageResource.getFile().toPath();
-            byte[] imageBytes = Files.readAllBytes(imagePath);
-            String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-            return "data:image/jpeg;base64," + base64Image;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
+//    @GetMapping("/images/{img}")
+//    public String getGoodsImage(@PathVariable String img){
+//        Resource imageResource = imageService.loadImage(img);
+//        try {
+//            Path imagePath = imageResource.getFile().toPath();
+//            byte[] imageBytes = Files.readAllBytes(imagePath);
+//            String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+//            return "data:image/jpeg;base64," + base64Image;
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//    }
     @RequestMapping("/onenable")
     public Goods getGoods(){
         Goods goods = goodsService.getGoods(1);

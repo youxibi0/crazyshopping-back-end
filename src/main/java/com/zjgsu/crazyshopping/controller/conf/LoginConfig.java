@@ -13,7 +13,7 @@ public class LoginConfig implements WebMvcConfigurer {
         InterceptorRegistration registration = registry.addInterceptor(new UserLoginInterceptor());
         registration.addPathPatterns("/**"); //所有路径都被拦截
         registration.excludePathPatterns(    //添加不拦截路径
-                "/a",
+                "/**",
                 "/user/login",
                 "/user/isLogin",
                 "/goods",
