@@ -2,8 +2,7 @@ package com.zjgsu.crazyshopping.controller;
 
 import com.zjgsu.crazyshopping.entity.RespBean;
 import com.zjgsu.crazyshopping.entity.User;
-import com.zjgsu.crazyshopping.service.UserServiceImpl.UserServiceImpl;
-import jakarta.servlet.http.Cookie;
+import com.zjgsu.crazyshopping.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 public class UserController {
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
 
 
     @PostMapping(value = "/login")

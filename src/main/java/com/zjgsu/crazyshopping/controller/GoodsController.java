@@ -5,24 +5,16 @@ import com.zjgsu.crazyshopping.entity.Goods;
 import com.zjgsu.crazyshopping.entity.RespBean;
 import com.zjgsu.crazyshopping.entity.RespGoodsBean;
 import com.zjgsu.crazyshopping.service.ImageService;
-import com.zjgsu.crazyshopping.service.UserServiceImpl.GoodsServiceImpl;
+import com.zjgsu.crazyshopping.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Base64;
-import java.util.List;
 
 
 @RestController
 @RequestMapping("/goods")
 public class GoodsController {
     @Autowired
-    private GoodsServiceImpl goodsService;
+    private GoodsService goodsService;
     @Autowired
     private ImageService imageService;
 //    @GetMapping("/images/{img}")
