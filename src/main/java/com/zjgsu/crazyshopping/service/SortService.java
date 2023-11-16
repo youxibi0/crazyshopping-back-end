@@ -61,5 +61,16 @@ public class SortService {
         return sortOneMapper.update(sortOne,updateWrapper);
 
     }
+    public int modifySortTwo(String one , String oldTwo , String newTwo){
+        UpdateWrapper<SortTwo> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("one" , one);
+        updateWrapper.eq("two",oldTwo);
+        SortTwo sortTwo =new SortTwo();
+        sortTwo.setOne(one);
+        sortTwo.setTwo(newTwo);
+        System.out.println(sortTwo);
+        return sortTwoMapper.update(sortTwo,updateWrapper);
+
+    }
 
 }

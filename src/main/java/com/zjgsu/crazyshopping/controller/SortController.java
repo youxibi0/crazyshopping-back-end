@@ -57,4 +57,14 @@ public class SortController {
         }
 
     }
+    @PutMapping("update2")
+    public RespBean modifySortTwo(String one ,String oldTwo ,String newTwo){
+        if(sortService.modifySortTwo(one,oldTwo,newTwo)==1){
+            return RespBean.ok("修改二级分类成功");
+
+        }
+        else {
+            return RespBean.error("修改二级分类失败");
+        }
+    }
 }
