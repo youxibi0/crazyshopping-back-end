@@ -67,6 +67,22 @@ public class SortController {
             return RespBean.error("修改二级分类失败");
         }
     }
+    @DeleteMapping("/delete")
+    public RespBean deleteSortOne(SortOne sortOne){
+        if(sortService.deleteSortOne(sortOne)==1){
+            return RespBean.ok("删除一级分类成功");
+        }
+        else if(sortService.deleteSortOne(sortOne)==2){
+            return RespBean.error("此一级分类不存在");
+        }
+        else if(sortService.deleteSortOne(sortOne)==3){
+            return RespBean.error("此二级分类不存在");
+        }
+        else {
+            return RespBean.error("删除一级分类失败");
+        }
+
+    }
     @DeleteMapping("/delete2")
     public RespBean deleteSortTwo(SortTwo sortTwo){
         if(sortService.deleteSortTwo(sortTwo)==1){

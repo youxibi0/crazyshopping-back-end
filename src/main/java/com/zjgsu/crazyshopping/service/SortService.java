@@ -72,6 +72,21 @@ public class SortService {
         return sortTwoMapper.update(sortTwo,updateWrapper);
 
     }
+    public int deleteSortOne(SortOne sortOne){
+        HashMap<String,Object> map = new HashMap<String,Object>();
+        map.put("one",sortOne.getOne());
+        if(sortOneMapper.deleteByMap(map)!=1){
+            return 2;
+        }
+        if(sortTwoMapper.deleteByMap(map)!=1){
+            return 3;
+        }
+        else {
+            return 1;
+        }
+
+
+    }
     public int deleteSortTwo(SortTwo sortTwo){
         HashMap<String,Object> map = new HashMap<String,Object>();
         map.put("one",sortTwo.getOne());
