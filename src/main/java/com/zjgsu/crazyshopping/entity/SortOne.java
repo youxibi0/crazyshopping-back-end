@@ -9,7 +9,9 @@ public class SortOne {
     public SortOne(String one) {
         this.one = one;
     }
+    public SortOne() {
 
+    }
     public String getOne() {
         return one;
     }

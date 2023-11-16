@@ -32,6 +32,21 @@ public class SortController {
             return RespBean.error("添加一级分类失败");
         }
     }
+    @PostMapping("/add2")
+    public RespBean addSortTwo(SortTwo sortTwo){
+        if(sortService.addSortTwo(sortTwo)==1){
+            return RespBean.ok("添加二级分类成功");
+        }
+        else if(sortService.addSortTwo(sortTwo)==2){
+            return RespBean.ok("没有这个一级分类");
+        }
+        else if(sortService.addSortTwo(sortTwo)==3){
+            return RespBean.ok("二级分类重名");
+        }
+        else {
+            return RespBean.error("添加二级分类失败");
+        }
+    }
     @PutMapping("update")
     public RespBean modifySortOne(String oldOne , String newOne){
         if(sortService.modifySortOne(oldOne,newOne)==1){

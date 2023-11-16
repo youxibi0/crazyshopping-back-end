@@ -11,6 +11,9 @@ public class SortTwo {
         this.one = one;
         this.two = two;
     }
+    public SortTwo() {
+
+    }
 
     public String getOne() {
         return one;
