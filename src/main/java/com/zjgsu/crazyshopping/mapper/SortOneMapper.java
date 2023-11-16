@@ -5,5 +5,5 @@ import com.zjgsu.crazyshopping.entity.SortOne;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface SortMapper extends BaseMapper<SortOne> {
+public interface SortOneMapper extends BaseMapper<SortOne> {
 }
