@@ -2,12 +2,10 @@ package com.zjgsu.crazyshopping.controller;
 
 import com.zjgsu.crazyshopping.entity.RespBean;
 import com.zjgsu.crazyshopping.entity.SortOne;
+import com.zjgsu.crazyshopping.entity.SortTwo;
 import com.zjgsu.crazyshopping.service.SortService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,6 +17,11 @@ public class SortController {
     @RequestMapping("")
     public List<SortOne> getAllOneSort(){
         return sortService.getAllSortOne();
+    }
+    @RequestMapping("/{one}")//根据一级分类名字查询二级分类
+    public List<SortTwo> getSortTwo(@PathVariable String one){
+
+        return sortService.getAllSortTwo(one);
     }
     @PostMapping("/add")
     public RespBean addSortOne(SortOne sortOne){
