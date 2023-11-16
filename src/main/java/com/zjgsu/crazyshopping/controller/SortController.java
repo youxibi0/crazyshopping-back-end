@@ -67,4 +67,13 @@ public class SortController {
             return RespBean.error("修改二级分类失败");
         }
     }
+    @DeleteMapping("/delete2")
+    public RespBean deleteSortTwo(SortTwo sortTwo){
+        if(sortService.deleteSortTwo(sortTwo)==1){
+            return RespBean.ok("删除二级分类成功");
+        }
+        else {
+            return RespBean.error("删除二级分类失败");
+        }
+    }
 }

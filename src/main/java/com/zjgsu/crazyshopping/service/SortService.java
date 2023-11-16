@@ -72,5 +72,11 @@ public class SortService {
         return sortTwoMapper.update(sortTwo,updateWrapper);
 
     }
+    public int deleteSortTwo(SortTwo sortTwo){
+        HashMap<String,Object> map = new HashMap<String,Object>();
+        map.put("one",sortTwo.getOne());
+        map.put("two",sortTwo.getTwo());
+        return sortTwoMapper.deleteByMap(map);
+    }
 
 }
