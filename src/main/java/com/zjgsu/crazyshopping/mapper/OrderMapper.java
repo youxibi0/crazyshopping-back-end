@@ -17,9 +17,10 @@ public interface OrderMapper extends BaseMapper<Order> {
     @Delete("Delete from orders where id = #{id};")
     int delete(Integer id);
 
-    @Update("UPDATE orders SET info = CASE WHEN id = #{id} THEN '已接受' ELSE '已拒绝' END ," +
-            " isComplete = CASE WHEN id <> #{id} THEN 1 ELSE isComplete END "+
-            "WHERE goodsId = (SELECT goodsId FROM orders WHERE id = #{id});")
+//    @Update("UPDATE orders SET info = CASE WHEN id = #{id} THEN '已接受' ELSE '已拒绝' END ," +
+//            " isComplete = CASE WHEN id <> #{id} THEN 1 ELSE isComplete END "+
+//            "WHERE goodsId = (SELECT goodsId FROM orders WHERE id = #{id});")
+    @Update("UPDATE orders SET info = '已接受',isComplete = 1 WHERE id = #{id}")
     int acceptOrder(Integer id);
 
     @Update("UPDATE goods SET isFreeze = 1 WHERE id IN ( SELECT goodsId FROM orders WHERE id = #{id} );")
@@ -28,6 +29,8 @@ public interface OrderMapper extends BaseMapper<Order> {
     @Update("Update orders set info = '已拒绝' , isComplete = 1 where id = #{id};")
     int refuseOrder(Integer id);
 
+    @Select("select isFreeze FROM goods WHERE id=#{goodsId}")
+    int isFreeze(Integer goodsId);
 
     @Select("select orders.* ,goods.img as img ,goods.name as goodsName from orders,goods where orders.goodsId = goods.id and orders.id = #{id}")
     Order selectOrderById(Integer id);
