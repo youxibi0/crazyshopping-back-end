@@ -14,6 +14,7 @@ public class OrderService {
     @Autowired
     OrderMapper orderMapper;
     public int addOrder(Order order){
+        if(orderMapper.isFreeze(order.getGoodsId())==1)return 0;
         return orderMapper.add(order);
     }
     public int deleteOrder(Integer id){
