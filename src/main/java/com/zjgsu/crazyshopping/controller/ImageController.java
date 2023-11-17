@@ -1,7 +1,9 @@
 package com.zjgsu.crazyshopping.controller;
 
+import com.zjgsu.crazyshopping.service.ImageService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
@@ -20,18 +22,11 @@ import java.nio.file.Paths;
 @RequestMapping("/images")
 public class ImageController {
 
-        @GetMapping("/{img}")
-        public ResponseEntity<Resource> getGoodsImage(@PathVariable String img, HttpServletResponse response, HttpServletRequest request) throws MalformedURLException {
-            String projectDirectory = System.getProperty("user.dir");
-            String path = projectDirectory+"\\images\\"+img;
-            System.out.println(path);
-            Resource file = new UrlResource(Paths.get(path).toUri());
-            if (!file.exists() || !file.isReadable()) {
-                throw new RuntimeException("无法读取图片");
-            }
-            // 返回图片内容
-            return ResponseEntity.ok()
-                    .contentType(MediaType.IMAGE_JPEG)
-                    .body(file);
+
+    @Autowired
+    private ImageService imageService;
+    @GetMapping("/{img}")
+    public ResponseEntity<Resource> getGoodsImage(@PathVariable String img, HttpServletResponse response, HttpServletRequest request) throws MalformedURLException {
+        return imageService.getGoodsImage(img,response,request);
     }
 }

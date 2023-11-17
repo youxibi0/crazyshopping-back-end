@@ -5,21 +5,36 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Goods {
     @TableId(type = IdType.AUTO)
     private Integer id;
     private String name;
     private String info;
-    private String img;
+
     private Double price;
-    private Integer isFreeze;
     private Integer onEnable;
+    private Integer num;
     @TableField(exist = false)
-    private MultipartFile imgFile;
+    private List<MultipartFile> imgFiles;
+
+    @TableField(exist = false)
+    private List<String> imgNameList;
+
     public Goods() {
     }
 
-
+    public Goods(Integer id, String name, String info, Double price, Integer onEnable, Integer num, List<MultipartFile> imgFiles) {
+        this.id = id;
+        this.name = name;
+        this.info = info;
+        this.price = price;
+        this.onEnable = onEnable;
+        this.num = num;
+        this.imgFiles = imgFiles;
+    }
 
     public Integer getId() {
         return id;
@@ -45,28 +60,12 @@ public class Goods {
         this.info = info;
     }
 
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
-    }
-
     public Double getPrice() {
         return price;
     }
 
     public void setPrice(Double price) {
         this.price = price;
-    }
-
-    public Integer getIsFreeze() {
-        return isFreeze;
-    }
-
-    public void setIsFreeze(Integer isFreeze) {
-        this.isFreeze = isFreeze;
     }
 
     public Integer getOnEnable() {
@@ -77,11 +76,32 @@ public class Goods {
         this.onEnable = onEnable;
     }
 
-    public MultipartFile getImgFile() {
-        return imgFile;
+    public Integer getNum() {
+        return num;
     }
 
-    public void setImgFile(MultipartFile imgFile) {
-        this.imgFile = imgFile;
+    public void setNum(Integer num) {
+        this.num = num;
+    }
+
+    public List<MultipartFile> getImgFiles() {
+        return imgFiles;
+    }
+
+    public void setImgFiles(List<MultipartFile> imgFiles) {
+        this.imgFiles = imgFiles;
+    }
+
+    public List<String> getImgNameList() {
+        return imgNameList;
+    }
+
+    public void setImgNameList(List<String> imgNameList) {
+        this.imgNameList = imgNameList;
+    }
+
+    public void addImgName(String name){
+        if(this.imgNameList==null)this.imgNameList = new ArrayList<String>();
+        this.imgNameList.add(name);
     }
 }

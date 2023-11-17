@@ -36,14 +36,14 @@ public class GoodsController {
         return goods;
 
     }
-    @RequestMapping("")
+    @GetMapping("/all")
     public RespGoodsBean getAllGoods(){
         RespGoodsBean respGoodsBean = goodsService.getAllGoods();
         return respGoodsBean;
     }
-    @PostMapping(value = "")
+    @PostMapping(value = "/add")
     public RespBean addGoods(Goods goods){
-        String temp = goodsService.doImg(goods.getImgFile());
+        String temp = imageService.doImg(goods.getImgFiles());
         if(!"true".equals(temp)){
             return RespBean.error(temp);
         }

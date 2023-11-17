@@ -22,11 +22,12 @@ public class GoodsService {
     private String UPLOAD_FOLDER;
     @Autowired
     private GoodsMapper goodsMapper;
+    @Autowired ImageService imageService;
 
     public int addGoods(Goods goods) {
         Goods goodsTemp = this.getGoods(1);
         if(goodsTemp.getId()!=null)return 0;
-        this.saveImg(goods);
+        imageService.saveImg(goods);
         return goodsMapper.add(goods);
     }
 
@@ -64,48 +65,12 @@ public class GoodsService {
         UpdateWrapper<Goods> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id",id);
         Goods goods = new Goods();
-        goods.setIsFreeze(0);
         goods.setOnEnable(0);
         return goodsMapper.update(goods,updateWrapper);
 
 
     }
 
-    public String doImg(MultipartFile imgFile){
-        if(imgFile!=null){
-            if (imgFile.getSize() > 1024 * 1024 * 10) {
-                return "文件大小不能大于10M";
-            }
-            //获取文件后缀
-            String suffix = imgFile.getOriginalFilename().substring(imgFile.getOriginalFilename().lastIndexOf(".") + 1, imgFile.getOriginalFilename().length());
-            if (!"jpg,jpeg,gif,png".toUpperCase().contains(suffix.toUpperCase())) {
-                return "请选择jpg,jpeg,gif,png格式的图片";
-            }
-        }
-        return "true";
-    }
 
-    public void saveImg(Goods goods){
-        if(goods.getImgFile()==null)return;
-        MultipartFile file = goods.getImgFile();
-        String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1, file.getOriginalFilename().length());
-        String savePath = UPLOAD_FOLDER;
-        String filename = null;
-        String absolutePath = null;
-        try {
-            File savePathFile = new File(savePath);
-             absolutePath = savePathFile.getCanonicalPath();
-            File absolutePathFile = new File(absolutePath);
-            if (!absolutePathFile.exists()) {
-                absolutePathFile.mkdir();
-            }
-            //通过UUID生成唯一文件名
-            filename = UUID.randomUUID().toString().replaceAll("-","") + "." + suffix;
-            //将文件保存指定目录
-            file.transferTo(new File(absolutePath + "/" +filename));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        goods.setImg(filename);
-    }
+
 }
