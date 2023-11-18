@@ -35,7 +35,7 @@ public class UserController {
     @GetMapping(value = "/logout")
     public RespBean logout(HttpServletRequest request) {
         request.getSession().removeAttribute("user");
-        return RespBean.ok("清除成功");
+        return RespBean.ok("退出登录成功");
     }
 
     @GetMapping(value = "/level")
@@ -50,6 +50,14 @@ public class UserController {
         }
         else return RespBean.ok("2");
         return RespBean.error("error");
+    }
+
+    @PostMapping(value = "/register")
+    public RespBean register(Account user){
+        int resp = userService.register(user);
+        if(resp == 1)return RespBean.ok("注册成功");
+        else if(resp==2)return RespBean.error("账号已存在");
+        else return  RespBean.error("注册失败");
     }
 
     @PutMapping(value = "/update")

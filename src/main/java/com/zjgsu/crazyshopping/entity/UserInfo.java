@@ -40,4 +40,12 @@ public class UserInfo {
     public void setLocation(String location) {
         this.location = location;
     }
+
+    public static UserInfo getUserInfo(Account account){
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUsername(account.getUsername());
+        userInfo.setPhone(account.getPhone());
+        userInfo.setLocation(account.getLocation());
+        return userInfo;
+    }
 }
