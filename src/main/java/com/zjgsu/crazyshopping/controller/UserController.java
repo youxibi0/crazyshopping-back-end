@@ -1,7 +1,7 @@
 package com.zjgsu.crazyshopping.controller;
 
+import com.zjgsu.crazyshopping.entity.Account;
 import com.zjgsu.crazyshopping.entity.RespBean;
-import com.zjgsu.crazyshopping.entity.User;
 import com.zjgsu.crazyshopping.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,7 +19,7 @@ public class UserController {
 
     @PostMapping(value = "/login")
     public RespBean login(String password, HttpServletRequest request, HttpServletResponse response){
-        User u = new User();
+        Account u = new Account();
         u = userService.login(password);
         if(u.getPassword()!=null){
             request.getSession().setAttribute("user", u);

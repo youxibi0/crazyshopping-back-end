@@ -1,6 +1,6 @@
 package com.zjgsu.crazyshopping.controller.conf;
 
-import com.zjgsu.crazyshopping.entity.User;
+import com.zjgsu.crazyshopping.entity.Account;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -18,8 +18,8 @@ public class UserLoginInterceptor implements HandlerInterceptor {
 
         try {
             HttpSession session = request.getSession();
-            User user = (User) session.getAttribute("user");
-            if (user != null) {
+            Account account = (Account) session.getAttribute("user");
+            if (account != null) {
                 return true;
             }
             System.out.println("执行了拦截器的preHandle方法");
