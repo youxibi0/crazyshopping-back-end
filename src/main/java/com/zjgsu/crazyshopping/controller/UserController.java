@@ -18,13 +18,14 @@ public class UserController {
 
 
     @PostMapping(value = "/login")
-    public RespBean login(Account user, HttpServletRequest request, HttpServletResponse response){
+    public RespBean login(Account user, HttpServletRequest request, HttpServletResponse response) {
+        if(request.getSession().getAttribute("user")!=null)
+            return RespBean.error("已经登录");
         Account u = userService.login(user);
-        if(u.getPassword()!=null){
-            request.getSession().setAttribute("user", u);
+        if (u.getPassword() != null) {
+           request.getSession().setAttribute("user", u);
             return RespBean.ok("登录成功");
-        }
-        else {
+        } else {
             return RespBean.error("登录失败");
         }
 
@@ -32,29 +33,33 @@ public class UserController {
     }
 
     @GetMapping(value = "/logout")
-    public  RespBean logout(HttpServletRequest request){
+    public RespBean logout(HttpServletRequest request) {
         request.getSession().removeAttribute("user");
         return RespBean.ok("清除成功");
     }
-    @GetMapping(value = "/isLogin")
-    public RespBean isLogin(HttpServletRequest request){
-        HttpSession session =request.getSession();
-        if(session.getAttribute("user")!=null){
-            return RespBean.ok("已登录");
+
+    @GetMapping(value = "/level")
+    public RespBean isLogin(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Account user = (Account) session.getAttribute("user");
+        if (user != null) {
+            if (user.getLevel() == 0)
+                return RespBean.ok("0");
+            if (user.getLevel() == 1)
+                return RespBean.ok("1");
         }
-        return RespBean.error("未登录");
+        else return RespBean.ok("2");
+        return RespBean.error("error");
     }
+
     @PutMapping(value = "/update")
-    public RespBean modifyPassword(String oldPassword,String newPassword){
-        if(userService.modifyPassword(oldPassword,newPassword)==1){
+    public RespBean modifyPassword(String oldPassword, String newPassword) {
+        if (userService.modifyPassword(oldPassword, newPassword) == 1) {
             return RespBean.ok("修改密码成功");
-        }
-        else {
+        } else {
             return RespBean.error("修改密码失败");
         }
     }
-
-
 
 
 }
