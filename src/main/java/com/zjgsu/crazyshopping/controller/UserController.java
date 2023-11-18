@@ -18,9 +18,8 @@ public class UserController {
 
 
     @PostMapping(value = "/login")
-    public RespBean login(String password, HttpServletRequest request, HttpServletResponse response){
-        Account u = new Account();
-        u = userService.login(password);
+    public RespBean login(Account user, HttpServletRequest request, HttpServletResponse response){
+        Account u = userService.login(user);
         if(u.getPassword()!=null){
             request.getSession().setAttribute("user", u);
             return RespBean.ok("登录成功");

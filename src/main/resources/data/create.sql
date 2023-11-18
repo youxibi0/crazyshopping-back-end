@@ -7,6 +7,7 @@ CREATE TABLE "account" (
 );
 
 INSERT INTO "account" VALUES ('admin', '123456', 0);
+INSERT INTO "account" VALUES ('user', '123456', 1);
 
 DROP TABLE IF EXISTS "goods";
 CREATE TABLE "goods" (
@@ -69,6 +70,7 @@ CREATE TABLE "userInfo" (
                             "location" TEXT NOT NULL,
                             PRIMARY KEY ("username")
 );
+INSERT INTO "userInfo" VALUES ('user', '12345678901', '钱江湾');
 
 
 

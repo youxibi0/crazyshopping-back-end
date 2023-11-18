@@ -2,6 +2,8 @@ package com.zjgsu.crazyshopping.service;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.zjgsu.crazyshopping.entity.Account;
+import com.zjgsu.crazyshopping.entity.UserInfo;
+import com.zjgsu.crazyshopping.mapper.UserInfoMapper;
 import com.zjgsu.crazyshopping.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,17 +16,33 @@ import java.util.Map;
 public class UserService {
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private UserInfoMapper userInfoMapper;
 
-    public Account login(String password) {
+    public Account login(Account user) {
         Map<String,Object> map = new HashMap<String,Object>();
-        map.put("password",password);
+        map.put("username",user.getUsername());
+        map.put("password",user.getPassword());
         List<Account> accountList = userMapper.selectByMap(map);
         Account u = new Account();
         for(Account account : accountList){
             u = account;
         }
+        if(u.getLevel()==1){
+            UserInfo userInfo = new UserInfo();
+            this.setUserInfo(u,userInfo);
+        }
         return u;
+    }
 
+    public void setUserInfo(Account user,UserInfo userInfo){
+        Map<String,Object> userInfoMap = new HashMap<>();
+        userInfoMap.put("username",user.getUsername());
+        List<UserInfo> userInfoList = userInfoMapper.selectByMap(userInfoMap);
+        for(UserInfo userInfoTemp : userInfoList){
+            userInfo = userInfoTemp;
+        }
+        user.setUserInfo(userInfo);
     }
 
 

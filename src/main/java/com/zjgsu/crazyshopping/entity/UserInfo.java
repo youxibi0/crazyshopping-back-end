@@ -1,5 +1,8 @@
 package com.zjgsu.crazyshopping.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+
+@TableName("userInfo")
 public class UserInfo {
     private String username;
     private String phone;

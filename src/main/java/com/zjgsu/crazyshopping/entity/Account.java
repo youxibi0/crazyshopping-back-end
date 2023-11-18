@@ -64,4 +64,9 @@ public class Account {
     public void setLocation(String location) {
         this.location = location;
     }
+
+    public void setUserInfo(UserInfo userInfo){
+        this.phone = userInfo.getPhone();
+        this.location = userInfo.getLocation();
+    }
 }
