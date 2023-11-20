@@ -1,5 +1,9 @@
 package com.zjgsu.crazyshopping.entity;
 
+
+import com.baomidou.mybatisplus.annotation.TableName;
+
+@TableName("goodsImages")
 public class GoodsImages {
     private Integer goodsId;
     private String imgName;
