@@ -42,12 +42,13 @@ public class GoodsController {
         return respGoodsBean;
     }
     @PostMapping(value = "/add")
-    public RespBean addGoods(Goods goods){
+    public RespBean addGoods(Goods goods,String one,String two){
         String temp = imageService.doImg(goods.getImgFiles());
         if(!"true".equals(temp)){
             return RespBean.error(temp);
         }
-        if(goodsService.addGoods(goods)==1){
+
+        if(goodsService.addGoods(goods,one,two)==1){
             return RespBean.ok("添加商品成功");
         }
             return RespBean.error("已有商品");

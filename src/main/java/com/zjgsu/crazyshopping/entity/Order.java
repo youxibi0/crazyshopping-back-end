@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 public class Order {
 
 
-    @TableId(type = IdType.INPUT)
+    @TableId(type = IdType.ASSIGN_ID)
     private Integer id;
     private String username;
     private String phone;

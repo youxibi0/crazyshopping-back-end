@@ -96,7 +96,6 @@ public class ImageService {
             }
             goods.addImgName(filename);
         }
-        //TODO 添加数据到数据库
 
     }
 }

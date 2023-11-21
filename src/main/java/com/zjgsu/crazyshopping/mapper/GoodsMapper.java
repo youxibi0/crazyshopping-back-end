@@ -8,7 +8,4 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface GoodsMapper extends BaseMapper<Goods> {
-    @Insert("INSERT INTO GOODS (name, info, img, price)\n" +
-            "VALUES(#{name}, #{info}, #{img}, #{price});")
-    int add(Goods goods);
 }

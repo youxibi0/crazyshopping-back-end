@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.zjgsu.crazyshopping.entity.Goods;
 import com.zjgsu.crazyshopping.entity.GoodsImages;
 import com.zjgsu.crazyshopping.entity.RespGoodsBean;
+import com.zjgsu.crazyshopping.entity.SortGoods;
 import com.zjgsu.crazyshopping.mapper.GoodsImagesMapper;
 import com.zjgsu.crazyshopping.mapper.GoodsMapper;
+import com.zjgsu.crazyshopping.mapper.SortGoodsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,12 +28,20 @@ public class GoodsService {
     ImageService imageService;
     @Autowired
     GoodsImagesMapper goodsImagesMapper;
+    @Autowired
+    SortService sortService;
+    @Autowired
+    SortGoodsMapper sortGoodsMapper;
 
-    public int addGoods(Goods goods) {
-        Goods goodsTemp = this.getGoods(1);
-        if (goodsTemp.getId() != null) return 0;
+    public int addGoods(Goods goods, String one, String two) {
+        goods.setOnEnable(1);
+        int temp = goodsMapper.insert(goods);
         imageService.saveImg(goods);
-        return goodsMapper.add(goods);
+        saveImgName(goods);
+        //TODO:分类检测
+        SortGoods sortGoods = new SortGoods(one, two, goods.getId());
+        sortGoodsMapper.insert(sortGoods);
+        return temp;
     }
 
 
@@ -87,9 +97,9 @@ public class GoodsService {
 
     }
 
-    public void setGoodsImgNameList(Goods goods){
-        Map<String,Object> map =new HashMap<String,Object>();
-        map.put("goodsId",goods.getId());
+    public void setGoodsImgNameList(Goods goods) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("goodsId", goods.getId());
         List<GoodsImages> goodsImages = goodsImagesMapper.selectByMap(map);
         List<String> imgList = new ArrayList<>();
         for (GoodsImages image : goodsImages) {
@@ -98,46 +108,54 @@ public class GoodsService {
         goods.setImgNameList(imgList);
     }
 
-    public void addNum(Integer id){
+    public void addNum(Integer id) {
         Goods goods = getGoodsById(id);
         UpdateWrapper<Goods> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id", id);
-        goods.setNum(goods.getNum()+1);
-        goodsMapper.update(goods,updateWrapper);
+        goods.setNum(goods.getNum() + 1);
+        goodsMapper.update(goods, updateWrapper);
         checkOnenable(id);
     }
 
-    public void subNum(Integer id){
+    public void subNum(Integer id) {
         Goods goods = getGoodsById(id);
         UpdateWrapper<Goods> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id", id);
-        goods.setNum(goods.getNum()-1);
-        goodsMapper.update(goods,updateWrapper);
+        goods.setNum(goods.getNum() - 1);
+        goodsMapper.update(goods, updateWrapper);
         checkOnenable(id);
     }
 
-    public void checkOnenable(Integer id){
-        Goods goods=getGoodsById(id);
-        if(goods==null)return;
+    public void checkOnenable(Integer id) {
+        Goods goods = getGoodsById(id);
+        if (goods == null) return;
         UpdateWrapper<Goods> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id", id);
-        if(goods.getNum()==0&&goods.getOnEnable()!=0){
+        if (goods.getNum() == 0 && goods.getOnEnable() != 0) {
             goods.setOnEnable(0);
-            goodsMapper.update(goods,updateWrapper);
+            goodsMapper.update(goods, updateWrapper);
             return;
         }
-        if(goods.getNum()!=0 && goods.getOnEnable()==0){
+        if (goods.getNum() != 0 && goods.getOnEnable() == 0) {
             goods.setOnEnable(1);
-            goodsMapper.update(goods,updateWrapper);
+            goodsMapper.update(goods, updateWrapper);
             return;
         }
     }
 
-    public Goods getGoodsById(Integer id){
-        Map<String,Object> map =new HashMap<String,Object>();
-        map.put("id",id);
-        Goods goods=goodsMapper.selectByMap(map).get(0);
+    public Goods getGoodsById(Integer id) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("id", id);
+        Goods goods = goodsMapper.selectByMap(map).get(0);
         return goods;
+    }
+
+    public void saveImgName(Goods goods) {
+        for (String imgName : goods.getImgNameList()
+        ) {
+            GoodsImages goodsImages=new GoodsImages(goods.getId(),imgName);
+            goodsImagesMapper.insert(goodsImages);
+        }
     }
 
 
