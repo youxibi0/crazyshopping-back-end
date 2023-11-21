@@ -17,25 +17,6 @@ public class GoodsController {
     private GoodsService goodsService;
     @Autowired
     private ImageService imageService;
-//    @GetMapping("/images/{img}")
-//    public String getGoodsImage(@PathVariable String img){
-//        Resource imageResource = imageService.loadImage(img);
-//        try {
-//            Path imagePath = imageResource.getFile().toPath();
-//            byte[] imageBytes = Files.readAllBytes(imagePath);
-//            String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-//            return "data:image/jpeg;base64," + base64Image;
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//    }
-    @RequestMapping("/onenable")
-    public Goods getGoods(){
-        Goods goods = goodsService.getGoods(1);
-        return goods;
-
-    }
     @GetMapping("/all")
     public RespGoodsBean getAllGoods(){
         RespGoodsBean respGoodsBean = goodsService.getAllGoods();
@@ -51,24 +32,23 @@ public class GoodsController {
         if(goodsService.addGoods(goods,one,two)==1){
             return RespBean.ok("添加商品成功");
         }
-            return RespBean.error("已有商品");
+            return RespBean.error("出现错误");
     }
-    @PutMapping(value = "/delete/{id}")
+    @PutMapping(value = "/disenable/{id}")
     public RespBean deleteGoods(@PathVariable Integer id){
-        if(goodsService.deleteGoods(id)==1){
+        if(goodsService.disOnenable(id)==1){
             return RespBean.ok("下架商品成功");
 
         }
         return RespBean.error("下架商品失败");
 
     }
-    @PutMapping(value = "/{id}")
-    public RespBean modifyGoods(@PathVariable Integer id , Goods newGoods){
-        if(goodsService.modifyGoods(id,newGoods)==1){
+    @PutMapping(value = "/update")
+    public RespBean modifyGoods(Goods newGoods){
+        if(goodsService.modifyGoods(newGoods)==1){
             return RespBean.ok("修改商品信息成功");
         }
         return RespBean.error("密码错误");
-
     }
 
 }
