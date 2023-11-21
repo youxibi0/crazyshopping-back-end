@@ -1,6 +1,5 @@
 package com.zjgsu.crazyshopping.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.zjgsu.crazyshopping.entity.Goods;
 import com.zjgsu.crazyshopping.entity.GoodsImages;
@@ -12,9 +11,7 @@ import com.zjgsu.crazyshopping.mapper.SortGoodsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.*;
 
 @Service
@@ -80,14 +77,16 @@ public class GoodsService {
         return respGoodsBean;
     }
 
-    public int modifyGoods(int id, Goods newGoods) {
+    public int modifyGoods(Goods newGoods) {
+        Goods goods = getGoodsById(newGoods.getId());
         UpdateWrapper<Goods> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("id", id);
-        return goodsMapper.update(newGoods, updateWrapper);
+        updateWrapper.eq("id", newGoods.getId());
+        goods.setNewGoods(newGoods);
+        return goodsMapper.update(goods, updateWrapper);
     }
 
 
-    public int deleteGoods(int id) {
+    public int disOnenable(int id) {
         UpdateWrapper<Goods> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id", id);
         Goods goods = new Goods();
@@ -151,6 +150,7 @@ public class GoodsService {
     }
 
     public void saveImgName(Goods goods) {
+        if(goods.getImgNameList()==null)return;
         for (String imgName : goods.getImgNameList()
         ) {
             GoodsImages goodsImages=new GoodsImages(goods.getId(),imgName);

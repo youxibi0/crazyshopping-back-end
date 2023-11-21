@@ -58,6 +58,7 @@ public class ImageService {
     }
 
     public String doImg(List<MultipartFile> imgFiles) {
+        if(imgFiles==null)return "true";
         for (MultipartFile imgFile : imgFiles
         ) {
             if (imgFile.getSize() > 1024 * 1024 * 10) {

@@ -107,4 +107,11 @@ public class Goods {
         if(this.imgNameList==null)this.imgNameList = new ArrayList<String>();
         this.imgNameList.add(name);
     }
+
+    public void setNewGoods(Goods goods){
+        this.name=goods.getName();
+        this.price=goods.getPrice();
+        this.info=goods.getInfo();
+        this.num=goods.getNum();
+    }
 }
