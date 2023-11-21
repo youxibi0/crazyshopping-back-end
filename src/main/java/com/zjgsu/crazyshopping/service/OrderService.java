@@ -1,21 +1,49 @@
 package com.zjgsu.crazyshopping.service;
 
+import com.zjgsu.crazyshopping.entity.Goods;
 import com.zjgsu.crazyshopping.entity.Order;
 import com.zjgsu.crazyshopping.entity.RespOrderBean;
+import com.zjgsu.crazyshopping.mapper.GoodsImagesMapper;
+import com.zjgsu.crazyshopping.mapper.GoodsMapper;
 import com.zjgsu.crazyshopping.mapper.OrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderService {
 
     @Autowired
     OrderMapper orderMapper;
+    @Autowired
+    GoodsMapper goodsMapper;
+    @Autowired
+    GoodsImagesMapper goodsImagesMapper;
+    @Autowired
+    GoodsService goodsService;
+    @Autowired
+    UserService userService;
     public int addOrder(Order order){
-        if(orderMapper.isFreeze(order.getGoodsId())==1)return 0;
-        return orderMapper.add(order);
+        Map<String,Object> map =new HashMap<String,Object>();
+        map.put("id",order.getGoodsId());
+        Goods goods = goodsMapper.selectByMap(map).get(0);
+        goodsService.setGoodsImgNameList(goods);
+
+        order.setUser(userService.getUserAndSetUserInfo(order.getUsername()));
+
+        Date now = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = sdf.format(now);
+        order.setTime(dateString);
+
+        order.setState(1);
+        order.setGoods(goods);
+        return orderMapper.insert(order);
     }
     public int deleteOrder(Integer id){
         return  orderMapper.delete(id);

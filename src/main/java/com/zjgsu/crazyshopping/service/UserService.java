@@ -28,7 +28,7 @@ public class UserService {
         for(Account account : accountList){
             u = account;
         }
-        if(u.getLevel()==1){
+        if(null!=u.getLevel() && u.getLevel()==1){
             UserInfo userInfo = new UserInfo();
             this.setUserInfo(u,userInfo);
         }
@@ -56,6 +56,22 @@ public class UserService {
         if(userInfoMapper.insert(UserInfo.getUserInfo(user))==0)
             return 0;
         return userMapper.insert(user);
+    }
+
+    public Account getUserAndSetUserInfo(String username){
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("username",username);
+        List<Account> accountList = userMapper.selectByMap(map);
+        Account user = new Account();
+        for(Account account : accountList){
+            user = account;
+        }
+        if(null!=user.getLevel() && user.getLevel()==1){
+            UserInfo userInfo = new UserInfo();
+            this.setUserInfo(user,userInfo);
+        }
+
+        return user;
     }
 
 

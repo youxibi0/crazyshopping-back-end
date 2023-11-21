@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 public class Order {
 
 
-    @TableId(type = IdType.AUTO)
+    @TableId(type = IdType.INPUT)
     private Integer id;
     private String username;
     private String phone;
@@ -130,5 +130,17 @@ public class Order {
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public void setGoods(Goods goods){
+        this.goodsInfo=goods.getInfo();
+        this.goodsName=goods.getName();
+        this.goodsPrice=goods.getPrice();
+        this.imgName=goods.getImgNameList().get(0);
+    }
+
+    public void setUser(Account account){
+        this.phone=account.getPhone();
+        this.location=account.getLocation();
     }
 }

@@ -16,7 +16,7 @@ public class OrderController {
 
     @Autowired
     OrderService orderService;
-    @PostMapping(value = "")
+    @PostMapping(value = "/add")
     public RespBean addOrder(Order order){
         if(orderService.addOrder(order)==1){
             return RespBean.ok("添加成功!");

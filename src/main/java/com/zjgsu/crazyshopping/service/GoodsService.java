@@ -54,14 +54,15 @@ public class GoodsService {
 
         for (Goods goods : goodsList
         ) {
-            Map<String,Object> map = new HashMap<String,Object>();
-            map.put("goodsId",goods.getId());
-            List<GoodsImages> goodsImages = goodsImagesMapper.selectByMap(map);
-            List<String> imgList = new ArrayList<>();
-            for (GoodsImages image : goodsImages) {
-                imgList.add(image.getImgName());
-            }
-            goods.setImgNameList(imgList);
+            this.setGoodsImgNameList(goods);
+//            Map<String,Object> map = new HashMap<String,Object>();
+//            map.put("goodsId",goods.getId());
+//            List<GoodsImages> goodsImages = goodsImagesMapper.selectByMap(map);
+//            List<String> imgList = new ArrayList<>();
+//            for (GoodsImages image : goodsImages) {
+//                imgList.add(image.getImgName());
+//            }
+//            goods.setImgNameList(imgList);
         }
         RespGoodsBean respGoodsBean = new RespGoodsBean();
         respGoodsBean.setGoodsList(goodsList);
@@ -84,6 +85,17 @@ public class GoodsService {
         return goodsMapper.update(goods, updateWrapper);
 
 
+    }
+
+    public void setGoodsImgNameList(Goods goods){
+        Map<String,Object> map =new HashMap<String,Object>();
+        map.put("goodsId",goods.getId());
+        List<GoodsImages> goodsImages = goodsImagesMapper.selectByMap(map);
+        List<String> imgList = new ArrayList<>();
+        for (GoodsImages image : goodsImages) {
+            imgList.add(image.getImgName());
+        }
+        goods.setImgNameList(imgList);
     }
 
 
