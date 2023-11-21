@@ -98,5 +98,47 @@ public class GoodsService {
         goods.setImgNameList(imgList);
     }
 
+    public void addNum(Integer id){
+        Goods goods = getGoodsById(id);
+        UpdateWrapper<Goods> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id", id);
+        goods.setNum(goods.getNum()+1);
+        goodsMapper.update(goods,updateWrapper);
+        checkOnenable(id);
+    }
+
+    public void subNum(Integer id){
+        Goods goods = getGoodsById(id);
+        UpdateWrapper<Goods> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id", id);
+        goods.setNum(goods.getNum()-1);
+        goodsMapper.update(goods,updateWrapper);
+        checkOnenable(id);
+    }
+
+    public void checkOnenable(Integer id){
+        Goods goods=getGoodsById(id);
+        if(goods==null)return;
+        UpdateWrapper<Goods> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id", id);
+        if(goods.getNum()==0&&goods.getOnEnable()!=0){
+            goods.setOnEnable(0);
+            goodsMapper.update(goods,updateWrapper);
+            return;
+        }
+        if(goods.getNum()!=0 && goods.getOnEnable()==0){
+            goods.setOnEnable(1);
+            goodsMapper.update(goods,updateWrapper);
+            return;
+        }
+    }
+
+    public Goods getGoodsById(Integer id){
+        Map<String,Object> map =new HashMap<String,Object>();
+        map.put("id",id);
+        Goods goods=goodsMapper.selectByMap(map).get(0);
+        return goods;
+    }
+
 
 }

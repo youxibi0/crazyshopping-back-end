@@ -43,6 +43,8 @@ public class OrderService {
 
         order.setState(1);
         order.setGoods(goods);
+
+        goodsService.addNum(goods.getId());
         return orderMapper.insert(order);
     }
     public int deleteOrder(Integer id){
