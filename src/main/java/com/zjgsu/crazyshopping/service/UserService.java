@@ -75,9 +75,17 @@ public class UserService {
     }
 
 
-    public int modifyPassword(String oldPassword, String newPassword) {
+    public int modifyPassword(String username , String oldPassword, String newPassword) {
+            Map<String,Object> map = new HashMap<>();
+            map.put("username",username);
+            map.put("password",oldPassword);
+            List<Account> accountList = userMapper.selectByMap(map);
+            if(accountList.isEmpty()){
+                return 2;//用户名和对应的老密码不正确
+            }
             UpdateWrapper<Account> updateWrapper = new UpdateWrapper<>();
             updateWrapper.eq("password",oldPassword);
+            updateWrapper.eq("username",username);
             Account u = new Account();
             u.setPassword(newPassword);
             return userMapper.update(u,updateWrapper);

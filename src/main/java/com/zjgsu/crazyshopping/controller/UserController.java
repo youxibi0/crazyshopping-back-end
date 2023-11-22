@@ -61,10 +61,15 @@ public class UserController {
     }
 
     @PutMapping(value = "/update")
-    public RespBean modifyPassword(String oldPassword, String newPassword) {
-        if (userService.modifyPassword(oldPassword, newPassword) == 1) {
+    public RespBean modifyPassword(String username, String oldPassword, String newPassword) {
+        if (userService.modifyPassword(username,oldPassword, newPassword) == 1) {
             return RespBean.ok("修改密码成功");
-        } else {
+        }
+        else if(userService.modifyPassword(username,oldPassword,newPassword)==2){
+
+            return RespBean.error("用户名或老密码错误");
+        }
+        else {
             return RespBean.error("修改密码失败");
         }
     }
