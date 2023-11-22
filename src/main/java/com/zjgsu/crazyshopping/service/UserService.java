@@ -92,4 +92,15 @@ public class UserService {
 
 
     }
+    public int modifyInfo(String username, String phone , String location){
+        UpdateWrapper<UserInfo> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("username",username);
+        UserInfo userInfo = new UserInfo();
+        userInfo.setPhone(phone);
+        userInfo.setLocation(location);
+        return userInfoMapper.update(userInfo,updateWrapper);
+
+
+    }
+
 }

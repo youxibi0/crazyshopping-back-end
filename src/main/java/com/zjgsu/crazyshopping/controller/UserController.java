@@ -73,6 +73,15 @@ public class UserController {
             return RespBean.error("修改密码失败");
         }
     }
+    @PutMapping(value = "modifyInfo")
+    public RespBean modifyInfo(String username , String phone , String location){
+        if(userService.modifyInfo(username,phone,location)==1){
+            return RespBean.ok("修改信息成功");
+        }
+        else {
+            return RespBean.error("修改信息失败");
+        }
+    }
 
 
 }
