@@ -62,8 +62,13 @@ public class SortService {
     }
     public int modifySortOne(String oldOne , String newOne){
         UpdateWrapper<SortOne> updateWrapper = new UpdateWrapper<>();
+        UpdateWrapper<SortTwo> sortTwoUpdateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("one",oldOne);
+        sortTwoUpdateWrapper.eq("one",oldOne);
         SortOne sortOne = new SortOne(newOne);
+        SortTwo sortTwo = new SortTwo();
+        sortTwo.setOne(newOne);
+        sortTwoMapper.update(sortTwo,sortTwoUpdateWrapper);
         return sortOneMapper.update(sortOne,updateWrapper);
 
     }
