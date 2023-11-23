@@ -6,6 +6,7 @@ import com.zjgsu.crazyshopping.entity.RespBean;
 import com.zjgsu.crazyshopping.entity.RespGoodsBean;
 import com.zjgsu.crazyshopping.service.ImageService;
 import com.zjgsu.crazyshopping.service.GoodsService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,6 +50,11 @@ public class GoodsController {
             return RespBean.ok("修改商品信息成功");
         }
         return RespBean.error("密码错误");
+    }
+
+    @GetMapping(value = "/search")
+    public RespGoodsBean searchGoods(@Param("text") String text, @Param("one") String one, @Param("two") String two){
+        return  goodsService.searchGoods(text,one,two);
     }
 
 }

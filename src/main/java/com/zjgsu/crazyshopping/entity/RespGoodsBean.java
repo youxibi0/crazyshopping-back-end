@@ -6,6 +6,9 @@ public class RespGoodsBean {
     private Integer total;
     private List<Goods> goodsList;
 
+    public RespGoodsBean() {
+    }
+
     public Integer getTotal() {
         return total;
     }

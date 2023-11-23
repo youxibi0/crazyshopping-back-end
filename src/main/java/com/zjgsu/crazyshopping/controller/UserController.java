@@ -86,6 +86,7 @@ public class UserController {
     }
     @GetMapping(value = "/all")
     public List<Account> getAllUser(){
+
         return userService.getAllUser();
     }
 

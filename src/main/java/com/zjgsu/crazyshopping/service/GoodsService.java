@@ -1,5 +1,6 @@
 package com.zjgsu.crazyshopping.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.zjgsu.crazyshopping.entity.Goods;
 import com.zjgsu.crazyshopping.entity.GoodsImages;
@@ -156,6 +157,16 @@ public class GoodsService {
             GoodsImages goodsImages=new GoodsImages(goods.getId(),imgName);
             goodsImagesMapper.insert(goodsImages);
         }
+    }
+
+    public RespGoodsBean searchGoods(String text,String one,String two){
+        if(text==null)text="";
+        text = text.trim();
+        text="%"+text+"%";
+        List<Goods> goodsList = goodsMapper.searchGoods(text,one,two);
+        RespGoodsBean respGoodsBean = new RespGoodsBean();
+        respGoodsBean.setGoodsList(goodsList);
+        return respGoodsBean;
     }
 
 
