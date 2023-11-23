@@ -44,9 +44,9 @@ public class UserController {
         Account user = (Account) session.getAttribute("user");
         if (user != null) {
             if (user.getLevel() == 0)
-                return RespBean.ok("0");
+                return RespBean.ok("0",user);
             if (user.getLevel() == 1)
-                return RespBean.ok("1");
+                return RespBean.ok("1",user);
         }
         else return RespBean.ok("2");
         return RespBean.error("error");
