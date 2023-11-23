@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/user")
@@ -73,7 +75,7 @@ public class UserController {
             return RespBean.error("修改密码失败");
         }
     }
-    @PutMapping(value = "modifyInfo")
+    @PutMapping(value = "/modifyInfo")
     public RespBean modifyInfo(String username , String phone , String location){
         if(userService.modifyInfo(username,phone,location)==1){
             return RespBean.ok("修改信息成功");
@@ -81,6 +83,10 @@ public class UserController {
         else {
             return RespBean.error("修改信息失败");
         }
+    }
+    @GetMapping(value = "/all")
+    public List<Account> getAllUser(){
+        return userService.getAllUser();
     }
 
 

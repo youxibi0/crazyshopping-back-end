@@ -8,6 +8,7 @@ import com.zjgsu.crazyshopping.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,6 +100,19 @@ public class UserService {
         userInfo.setPhone(phone);
         userInfo.setLocation(location);
         return userInfoMapper.update(userInfo,updateWrapper);
+
+
+    }
+    public List<Account> getAllUser(){
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("level",1);
+        List<Account> accountList = userMapper.selectByMap(map);
+        List<Account> result = new ArrayList<>();
+        for(Account account : accountList){
+            account = this.getUserAndSetUserInfo(account.getUsername());
+            result.add(account);
+        }
+       return result;
 
 
     }

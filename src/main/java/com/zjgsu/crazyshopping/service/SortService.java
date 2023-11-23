@@ -31,6 +31,12 @@ public class SortService {
         return sortTwoMapper.selectByMap(map);
     }
     public int addSortOne(SortOne sortOne){
+        Map<String,Object> map = new HashMap<>();
+        map.put("one",sortOne.getOne());
+        List<SortOne> sortOneList = sortOneMapper.selectByMap(map);
+        if(!sortOneList.isEmpty()){
+            return 2;
+        }
 
         return sortOneMapper.insert(sortOne);
 
@@ -75,15 +81,10 @@ public class SortService {
     public int deleteSortOne(SortOne sortOne){
         HashMap<String,Object> map = new HashMap<String,Object>();
         map.put("one",sortOne.getOne());
-        if(sortOneMapper.deleteByMap(map)!=1){
-            return 2;
-        }
-        if(sortTwoMapper.deleteByMap(map)!=1){
-            return 3;
-        }
-        else {
-            return 1;
-        }
+        int result = sortOneMapper.deleteByMap(map);
+        sortTwoMapper.deleteByMap(map);
+        return result;
+
 
 
     }

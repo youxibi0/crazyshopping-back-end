@@ -39,6 +39,9 @@ public class SortController {
         if(sortService.addSortOne(sortOne)==1){
             return RespBean.ok("添加一级分类成功");
         }
+        else if(sortService.addSortOne(sortOne)==2){
+            return RespBean.error("此一级分类已经存在");
+        }
         else {
             return RespBean.error("添加一级分类失败");
         }
@@ -81,12 +84,6 @@ public class SortController {
     public RespBean deleteSortOne(SortOne sortOne){
         if(sortService.deleteSortOne(sortOne)==1){
             return RespBean.ok("删除一级分类成功");
-        }
-        else if(sortService.deleteSortOne(sortOne)==2){
-            return RespBean.error("此一级分类不存在");
-        }
-        else if(sortService.deleteSortOne(sortOne)==3){
-            return RespBean.error("此二级分类不存在");
         }
         else {
             return RespBean.error("删除一级分类失败");
