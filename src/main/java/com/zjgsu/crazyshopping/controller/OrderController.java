@@ -16,6 +16,7 @@ public class OrderController {
 
     @Autowired
     OrderService orderService;
+
     @PostMapping(value = "/add")
     public RespBean addOrder(Order order){
         if(orderService.addOrder(order)==1){
@@ -47,8 +48,8 @@ public class OrderController {
     }
 
     @GetMapping(value = "")
-    public RespOrderBean selectAllOrders(){
-        return orderService.selectAllOrders();
+    public List<Order> selectAllOrders(){
+        return orderService.getAllOrder();
     }
 
     @PutMapping(value = "/finish/{id}")

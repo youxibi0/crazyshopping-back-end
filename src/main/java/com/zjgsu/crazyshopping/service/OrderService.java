@@ -8,6 +8,7 @@ import com.zjgsu.crazyshopping.mapper.GoodsMapper;
 import com.zjgsu.crazyshopping.mapper.OrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,6 +29,9 @@ public class OrderService {
     GoodsService goodsService;
     @Autowired
     UserService userService;
+    public List<Order> getAllOrder(){
+        return orderMapper.selectList(null);
+    }
     public int addOrder(Order order){
         Map<String,Object> map =new HashMap<String,Object>();
         map.put("id",order.getGoodsId());
@@ -50,7 +54,7 @@ public class OrderService {
     public int deleteOrder(Integer id){
         return  orderMapper.delete(id);
     }
-    public int acceptOrder(Integer id){
+    public int acceptOrder(@PathVariable  Integer id){
         if(orderMapper.acceptOrder_goods(id)>0 && orderMapper.acceptOrder(id)>0)
             return 1;
         return 0;
