@@ -100,4 +100,17 @@ public class SortService {
         return sortTwoMapper.deleteByMap(map);
     }
 
+    /**
+     * two可为null,查询内容不存在则返回true
+     * @param one
+     * @param two
+     * @return
+     */
+    public boolean checkSort(String one,String two){
+        HashMap<String,Object> map = new HashMap<String,Object>();
+        map.put("one",one);
+        if(two!=null)map.put("two",two);
+        return sortTwoMapper.selectByMap(map).isEmpty();
+    }
+
 }

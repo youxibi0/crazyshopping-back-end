@@ -32,11 +32,14 @@ public class GoodsService {
     SortGoodsMapper sortGoodsMapper;
 
     public int addGoods(Goods goods, String one, String two) {
+        if(sortService.checkSort(one,two)){
+            return 3;
+        }
         goods.setOnEnable(1);
         int temp = goodsMapper.insert(goods);
         imageService.saveImg(goods);
         saveImgName(goods);
-        //TODO:分类检测
+
         SortGoods sortGoods = new SortGoods(one, two, goods.getId());
         sortGoodsMapper.insert(sortGoods);
         return temp;

@@ -33,11 +33,13 @@ public class GoodsController {
         if(!"true".equals(temp)){
             return RespBean.error(temp);
         }
-
-        if(goodsService.addGoods(goods,one,two)==1){
+        int ans = goodsService.addGoods(goods,one,two);
+        if(ans == 1){
             return RespBean.ok("添加商品成功");
+        } else if (ans==3) {
+            return RespBean.ok("分类出现错误");
         }
-            return RespBean.error("出现错误");
+        return RespBean.error("出现错误");
     }
     @PutMapping(value = "/disenable/{id}")
     public RespBean deleteGoods(@PathVariable Integer id){
