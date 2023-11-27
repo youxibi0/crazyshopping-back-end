@@ -136,7 +136,8 @@ public class Order {
         this.goodsInfo=goods.getInfo();
         this.goodsName=goods.getName();
         this.goodsPrice=goods.getPrice();
-        this.imgName=goods.getImgNameList().get(0);
+        if(!goods.getImgNameList().isEmpty())
+            this.imgName=goods.getImgNameList().get(0);
     }
 
     public void setUser(Account account){
