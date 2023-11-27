@@ -26,7 +26,7 @@ public interface OrderMapper extends BaseMapper<Order> {
     @Update("UPDATE goods SET isFreeze = 1 WHERE id IN ( SELECT goodsId FROM orders WHERE id = #{id} );")
     int acceptOrder_goods(Integer id);
 
-    @Update("Update orders set info = '已拒绝' , isComplete = 1 where id = #{id};")
+    @Update("Update orders set state = 2  where id = #{id};")
     int refuseOrder(Integer id);
 
     @Select("select orders.* ,goods.img as img ,goods.name as goodsName from orders,goods where orders.goodsId = goods.id and orders.id = #{id}")

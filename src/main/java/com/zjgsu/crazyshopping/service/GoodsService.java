@@ -135,7 +135,6 @@ public class GoodsService {
     public Goods getGoodsById(Integer id) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("id", id);
-        System.out.println(id);
         Goods goods = goodsMapper.selectByMap(map).get(0);
         return goods;
     }
