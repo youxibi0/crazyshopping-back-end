@@ -32,7 +32,7 @@ public class GoodsService {
     SortGoodsMapper sortGoodsMapper;
 
     public int addGoods(Goods goods, String one, String two) {
-        if(sortService.checkSort(one,two)){
+        if(!sortService.checkSort(one,two)){
             return 3;
         }
         goods.setOnEnable(1);
@@ -51,18 +51,9 @@ public class GoodsService {
     public RespGoodsBean getAllGoods() {
         List<Goods> goodsList = goodsMapper.selectList(null);
         Integer total = Math.toIntExact(goodsMapper.selectCount(null));
-
         for (Goods goods : goodsList
         ) {
             this.setGoodsImgNameList(goods);
-//            Map<String,Object> map = new HashMap<String,Object>();
-//            map.put("goodsId",goods.getId());
-//            List<GoodsImages> goodsImages = goodsImagesMapper.selectByMap(map);
-//            List<String> imgList = new ArrayList<>();
-//            for (GoodsImages image : goodsImages) {
-//                imgList.add(image.getImgName());
-//            }
-//            goods.setImgNameList(imgList);
         }
         RespGoodsBean respGoodsBean = new RespGoodsBean();
         respGoodsBean.setGoodsList(goodsList);
@@ -139,6 +130,7 @@ public class GoodsService {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("id", id);
         Goods goods = goodsMapper.selectByMap(map).get(0);
+        setGoodsImgNameList(goods);
         return goods;
     }
 

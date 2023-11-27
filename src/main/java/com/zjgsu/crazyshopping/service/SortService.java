@@ -109,7 +109,7 @@ public class SortService {
     public boolean checkSort(String one,String two){
         HashMap<String,Object> map = new HashMap<String,Object>();
         map.put("one",one);
-        if(two!=null)map.put("two",two);
+        map.put("two",two);
         return sortTwoMapper.selectByMap(map).isEmpty();
     }
 
