@@ -23,6 +23,10 @@ public class GoodsController {
         RespGoodsBean respGoodsBean = goodsService.getAllGoods();
         return respGoodsBean;
     }
+    @GetMapping("/{id}")
+    public Goods getGoodsById(@PathVariable Integer id){
+        return goodsService.getGoodsById(id);
+    }
     @PostMapping(value = "/add")
     public RespBean addGoods(Goods goods,String one,String two){
         String temp = imageService.doImg(goods.getImgFiles());
