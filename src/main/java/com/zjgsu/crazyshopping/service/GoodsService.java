@@ -114,12 +114,12 @@ public class GoodsService {
         if (goods == null) return;
         UpdateWrapper<Goods> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id", id);
-        if (goods.getNum() == 0 && goods.getOnEnable() != 0) {
+        if (goods.getNum() <=0 && goods.getOnEnable() != 0) {
             goods.setOnEnable(0);
             goodsMapper.update(goods, updateWrapper);
             return;
         }
-        if (goods.getNum() != 0 && goods.getOnEnable() == 0) {
+        if (goods.getNum() > 0 && goods.getOnEnable() == 0) {
             goods.setOnEnable(1);
             goodsMapper.update(goods, updateWrapper);
             return;

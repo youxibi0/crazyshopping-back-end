@@ -37,6 +37,9 @@ public class OrderService {
         Map<String,Object> map =new HashMap<String,Object>();
         map.put("id",order.getGoodsId());
         Goods goods = goodsMapper.selectByMap(map).get(0);
+
+        if(goods.getNum()<=0)return 0;
+
         goodsService.setGoodsImgNameList(goods);
 
         order.setUser(userService.getUserAndSetUserInfo(order.getUsername()));
@@ -49,7 +52,8 @@ public class OrderService {
         order.setState(1);
         order.setGoods(goods);
 
-        goodsService.addNum(goods.getId());
+        goodsService.subNum(goods.getId());
+        goodsService.checkOnenable(order.getGoodsId());
         return orderMapper.insert(order);
     }
     public int deleteOrder(Integer id){
