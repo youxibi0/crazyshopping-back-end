@@ -32,6 +32,19 @@ public class OrderService {
     public List<Order> getAllOrder(){
         return orderMapper.selectList(null);
     }
+    public Order getOrderByName(String username){
+        Map<String,Object> map = new HashMap<>();
+        map.put("username",username);
+        Order order = new Order();
+        System.out.println(orderMapper.selectByMap(map));
+        if(!orderMapper.selectByMap(map).isEmpty()){
+            order = orderMapper.selectByMap(map).get(0);
+        }
+
+        return order;
+
+
+    }
     public int addOrder(Order order){
         Map<String,Object> map =new HashMap<String,Object>();
         map.put("id",order.getGoodsId());

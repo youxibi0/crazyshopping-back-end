@@ -51,6 +51,10 @@ public class OrderController {
     public List<Order> selectAllOrders(){
         return orderService.getAllOrder();
     }
+    @GetMapping(value = "/{username}")
+    public Order selectOrderByName(@PathVariable String username){
+        return orderService.getOrderByName(username);
+    }
 
     @PutMapping(value = "/finish/{id}")
     public RespBean finishOrder(@PathVariable Integer id){
