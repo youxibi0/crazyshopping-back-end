@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.net.http.HttpResponse;
 import java.nio.file.Paths;
 
@@ -30,5 +32,12 @@ public class Test {
                 .body(file);
     }
     //bb
+
+    @GetMapping("/b")
+    public String b() throws UnknownHostException {
+        InetAddress localhost =InetAddress.getLocalHost();
+        System.out.println(localhost);
+        return localhost.getHostAddress().toString()+"/";
+    }
 
 }

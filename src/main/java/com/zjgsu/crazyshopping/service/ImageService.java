@@ -1,6 +1,7 @@
 package com.zjgsu.crazyshopping.service;
 
 import com.zjgsu.crazyshopping.entity.Goods;
+import com.zjgsu.crazyshopping.entity.RespBean;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -25,7 +27,8 @@ import java.util.UUID;
 public class ImageService {
     @Value("${prop.upload-folder}")
     private String UPLOAD_FOLDER;
-
+    @Value("${server.port}")
+    private String port;
     public Resource loadImage(String img) {
         String savePath = UPLOAD_FOLDER;
         String absolutePath = null;
@@ -98,5 +101,35 @@ public class ImageService {
             goods.addImgName(filename);
         }
 
+    }
+
+    public RespBean addImage(MultipartFile imgFile){
+        if (imgFile.getSize() > 1024 * 1024 * 10) {
+            return RespBean.error("单个文件大小不能大于10M");
+        }
+        String suffix = imgFile.getOriginalFilename().substring(imgFile.getOriginalFilename().lastIndexOf(".") + 1, imgFile.getOriginalFilename().length());
+        if (!"jpg,jpeg,gif,png".toUpperCase().contains(suffix.toUpperCase())) {
+            return RespBean.error("请选择jpg,jpeg,gif,png格式的图片");
+        }
+
+        String savePath = UPLOAD_FOLDER;
+        String filename = null;
+        String absolutePath = null;
+        try {
+            File savePathFile = new File(savePath);
+            absolutePath = savePathFile.getCanonicalPath();
+            File absolutePathFile = new File(absolutePath);
+            if (!absolutePathFile.exists()) {
+                absolutePathFile.mkdir();
+            }
+            filename = UUID.randomUUID().toString().replaceAll("-", "") + "." + suffix;
+            imgFile.transferTo(new File(absolutePath + "/" + filename));
+            InetAddress localhost =InetAddress.getLocalHost();
+            System.out.println(localhost.getHostAddress());
+            return RespBean.ok(localhost.getHostAddress().toString()+":"+port+"/images/"+filename);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return RespBean.error("error");
     }
 }
