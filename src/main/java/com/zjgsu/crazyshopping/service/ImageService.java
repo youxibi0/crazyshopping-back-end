@@ -126,7 +126,7 @@ public class ImageService {
             imgFile.transferTo(new File(absolutePath + "/" + filename));
             InetAddress localhost =InetAddress.getLocalHost();
             System.out.println(localhost.getHostAddress());
-            return RespBean.ok(localhost.getHostAddress().toString()+":"+port+"/images/"+filename);
+            return RespBean.ok("/images/"+filename);
         } catch (Exception e) {
             e.printStackTrace();
         }
