@@ -52,7 +52,7 @@ public class OrderController {
         return orderService.getAllOrder();
     }
     @GetMapping(value = "/{username}")
-    public Order selectOrderByName(@PathVariable String username){
+    public List<Order> selectOrderByName(@PathVariable String username){
         return orderService.getOrderByName(username);
     }
 
