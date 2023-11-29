@@ -25,7 +25,7 @@ public class OrderController {
         return RespBean.error("添加失败!");
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/delete/{id}")
     public  RespBean delOrder(@PathVariable Integer id){
         if(orderService.deleteOrder(id)==1){
             return RespBean.ok("删除成功!");
@@ -34,7 +34,7 @@ public class OrderController {
     }
     @PutMapping(value = "/accept/{id}")
     public  RespBean acceptOrder(@PathVariable Integer id){
-        if(orderService.acceptOrder(id)>=1){
+        if(orderService.acceptOrder(id)==1){
             return RespBean.ok("接受成功!");
         }
         return RespBean.error("接受失败!");
@@ -52,7 +52,7 @@ public class OrderController {
         return orderService.getAllOrder();
     }
     @GetMapping(value = "/{username}")
-    public Order selectOrderByName(@PathVariable String username){
+    public List<Order> selectOrderByName(@PathVariable String username){
         return orderService.getOrderByName(username);
     }
 

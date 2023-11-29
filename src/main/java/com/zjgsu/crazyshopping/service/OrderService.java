@@ -33,16 +33,10 @@ public class OrderService {
     public List<Order> getAllOrder(){
         return orderMapper.selectList(null);
     }
-    public Order getOrderByName(String username){
+    public List<Order> getOrderByName(String username){
         Map<String,Object> map = new HashMap<>();
         map.put("username",username);
-        Order order = new Order();
-        System.out.println(orderMapper.selectByMap(map));
-        if(!orderMapper.selectByMap(map).isEmpty()){
-            order = orderMapper.selectByMap(map).get(0);
-        }
-
-        return order;
+        return orderMapper.selectByMap(map);
 
 
     }
@@ -72,10 +66,12 @@ public class OrderService {
     public int deleteOrder(Integer id){
         return  orderMapper.delete(id);
     }
-    public int acceptOrder(@PathVariable  Integer id){
-        if(orderMapper.acceptOrder_goods(id)>0 && orderMapper.acceptOrder(id)>0)
-            return 1;
-        return 0;
+    public int acceptOrder(Integer id){
+        Order order = orderMapper.selectById(id);
+        order.setState(3);
+        UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id",id);
+        return orderMapper.update(order,updateWrapper);
     }
 
     public int refuseOrder(Integer id){
