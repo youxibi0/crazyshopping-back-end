@@ -1,5 +1,6 @@
 package com.zjgsu.crazyshopping.service;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.zjgsu.crazyshopping.entity.Goods;
 import com.zjgsu.crazyshopping.entity.Order;
 import com.zjgsu.crazyshopping.entity.RespOrderBean;
@@ -32,6 +33,19 @@ public class OrderService {
     public List<Order> getAllOrder(){
         return orderMapper.selectList(null);
     }
+    public Order getOrderByName(String username){
+        Map<String,Object> map = new HashMap<>();
+        map.put("username",username);
+        Order order = new Order();
+        System.out.println(orderMapper.selectByMap(map));
+        if(!orderMapper.selectByMap(map).isEmpty()){
+            order = orderMapper.selectByMap(map).get(0);
+        }
+
+        return order;
+
+
+    }
     public int addOrder(Order order){
         Map<String,Object> map =new HashMap<String,Object>();
         map.put("id",order.getGoodsId());
@@ -55,9 +69,11 @@ public class OrderService {
         return  orderMapper.delete(id);
     }
     public int acceptOrder(@PathVariable  Integer id){
-        if(orderMapper.acceptOrder_goods(id)>0 && orderMapper.acceptOrder(id)>0)
-            return 1;
-        return 0;
+        Order order = orderMapper.selectById(id);
+        order.setState(3);
+        UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id",id);
+        return orderMapper.update(order,updateWrapper);
     }
 
     public int refuseOrder(Integer id){

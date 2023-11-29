@@ -34,7 +34,7 @@ public class OrderController {
     }
     @PutMapping(value = "/accept/{id}")
     public  RespBean acceptOrder(@PathVariable Integer id){
-        if(orderService.acceptOrder(id)>=1){
+        if(orderService.acceptOrder(id)==1){
             return RespBean.ok("接受成功!");
         }
         return RespBean.error("接受失败!");
@@ -50,6 +50,10 @@ public class OrderController {
     @GetMapping(value = "")
     public List<Order> selectAllOrders(){
         return orderService.getAllOrder();
+    }
+    @GetMapping(value = "/{username}")
+    public Order selectOrderByName(@PathVariable String username){
+        return orderService.getOrderByName(username);
     }
 
     @PutMapping(value = "/finish/{id}")
