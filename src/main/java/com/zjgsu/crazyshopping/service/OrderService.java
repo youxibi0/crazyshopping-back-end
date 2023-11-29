@@ -91,15 +91,25 @@ public class OrderService {
         return respOrderBean;
     }
     public int finishOrder(Integer id){
-        if(orderMapper.finishOrder_goods(id)>0 && orderMapper.finishOrder(id)>0)
-            return 1;
-        return 0;
+        UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id",id);
+        Order order = new Order();
+        order.setState(4);
+        return orderMapper.update(order,updateWrapper);
     }
 
     public int failOrder(Integer id){
-        if(orderMapper.failOrder_goods(id)>0 && orderMapper.failOrder(id)>0)
-            return 1;
-        return 0;
+        UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id",id);
+        Order order = new Order();
+        Map<String,Object> map =new HashMap<String,Object>();
+        map.put("id",id);
+        List<Order> orderList=orderMapper.selectByMap(map);
+        if(!orderList.isEmpty())order = orderList.get(0);
+        order.setState(5);
+        goodsService.addNum(order.getGoodsId());
+        goodsService.checkOnenable(order.getGoodsId());
+        return orderMapper.update(order,updateWrapper);
     }
 
     public Order getOrderById(Integer id){

@@ -38,16 +38,5 @@ public interface OrderMapper extends BaseMapper<Order> {
     @Select("SELECT COUNT(*) FROM orders")
     Integer getOrdersTotal();
 
-    @Update("UPDATE orders SET info = '已完成', isComplete = 1 WHERE id = #{id}; " )
-    int finishOrder(Integer id);
-
-    @Update("UPDATE goods SET onenable = 0,isFreeze = 0 WHERE id IN ( SELECT goodsId FROM orders WHERE id = #{id} );")
-    int finishOrder_goods(Integer id);
-
-    @Update("UPDATE orders SET  info = '交易失败',isComplete = 1 WHERE id = #{id}")
-    int failOrder(Integer id);
-
-    @Update("UPDATE goods Set isFreeze = 0,onEnable = 1 WHERE id IN ( SELECT goodsId FROM orders WHERE id = #{id} );")
-    int failOrder_goods(Integer id);
 
 }
