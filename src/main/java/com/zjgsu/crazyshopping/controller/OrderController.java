@@ -25,7 +25,7 @@ public class OrderController {
         return RespBean.error("添加失败!");
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/delete/{id}")
     public  RespBean delOrder(@PathVariable Integer id){
         if(orderService.deleteOrder(id)==1){
             return RespBean.ok("删除成功!");

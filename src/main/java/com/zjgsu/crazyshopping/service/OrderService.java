@@ -68,7 +68,7 @@ public class OrderService {
     public int deleteOrder(Integer id){
         return  orderMapper.delete(id);
     }
-    public int acceptOrder(@PathVariable  Integer id){
+    public int acceptOrder(Integer id){
         Order order = orderMapper.selectById(id);
         order.setState(3);
         UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
