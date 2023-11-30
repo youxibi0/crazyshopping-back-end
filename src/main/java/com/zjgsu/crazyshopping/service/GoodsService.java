@@ -56,6 +56,7 @@ public class GoodsService {
         for (Goods goods : goodsList
         ) {
             this.setGoodsImgNameList(goods);
+            this.setSortList(goods);
         }
         RespGoodsBean respGoodsBean = new RespGoodsBean();
         respGoodsBean.setGoodsList(goodsList);
@@ -91,6 +92,13 @@ public class GoodsService {
             imgList.add(image.getImgName());
         }
         goods.setImgNameList(imgList);
+    }
+
+    public void setSortList(Goods goods){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("goodsId", goods.getId());
+        List<SortGoods> sortGoodsList = sortGoodsMapper.selectByMap(map);
+        goods.setSortList(sortGoodsList);
     }
 
     public void addNum(Integer id) {
@@ -133,6 +141,7 @@ public class GoodsService {
         map.put("id", id);
         Goods goods = goodsMapper.selectByMap(map).get(0);
         setGoodsImgNameList(goods);
+        this.setSortList(goods);
         return goods;
     }
 
@@ -150,6 +159,11 @@ public class GoodsService {
         text = text.trim();
         text="%"+text+"%";
         List<Goods> goodsList = goodsMapper.searchGoods(text,one,two);
+        for (Goods goods : goodsList
+        ) {
+            this.setGoodsImgNameList(goods);
+            this.setSortList(goods);
+        }
         RespGoodsBean respGoodsBean = new RespGoodsBean();
         respGoodsBean.setGoodsList(goodsList);
         return respGoodsBean;

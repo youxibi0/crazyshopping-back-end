@@ -26,6 +26,9 @@ public class Goods {
     @TableField(exist = false)
     private List<String> imgNameList;
 
+    @TableField(exist = false)
+    private List<SortGoods> sortList;
+
     public Goods() {
     }
 
@@ -37,6 +40,14 @@ public class Goods {
         this.onEnable = onEnable;
         this.num = num;
         this.imgFiles = imgFiles;
+    }
+
+    public List<SortGoods> getSortList() {
+        return sortList;
+    }
+
+    public void setSortList(List<SortGoods> sortList) {
+        this.sortList = sortList;
     }
 
     public Integer getId() {
