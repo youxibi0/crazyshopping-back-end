@@ -28,18 +28,13 @@ public class GoodsController {
         return goodsService.getGoodsById(id);
     }
     @PostMapping(value = "/add")
-    public RespBean addGoods(Goods goods,String one,String two){
+    public RespBean addGoods(Goods goods){
         String temp = imageService.doImg(goods.getImgFiles());
         if(!"true".equals(temp)){
             return RespBean.error(temp);
         }
-        int ans = goodsService.addGoods(goods,one,two);
-        if(ans == 1){
-            return RespBean.ok("添加商品成功");
-        } else if (ans==3) {
-            return RespBean.ok("分类出现错误");
-        }
-        return RespBean.error("出现错误");
+        return goodsService.addGoods(goods);
+
     }
     @PutMapping(value = "/disenable/{id}")
     public RespBean deleteGoods(@PathVariable Integer id){

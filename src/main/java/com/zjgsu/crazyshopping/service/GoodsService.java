@@ -2,13 +2,11 @@ package com.zjgsu.crazyshopping.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.zjgsu.crazyshopping.entity.Goods;
-import com.zjgsu.crazyshopping.entity.GoodsImages;
-import com.zjgsu.crazyshopping.entity.RespGoodsBean;
-import com.zjgsu.crazyshopping.entity.SortGoods;
+import com.zjgsu.crazyshopping.entity.*;
 import com.zjgsu.crazyshopping.mapper.GoodsImagesMapper;
 import com.zjgsu.crazyshopping.mapper.GoodsMapper;
 import com.zjgsu.crazyshopping.mapper.SortGoodsMapper;
+import com.zjgsu.crazyshopping.mapper.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,19 +28,23 @@ public class GoodsService {
     SortService sortService;
     @Autowired
     SortGoodsMapper sortGoodsMapper;
+    @Autowired
+    Tools tools;
 
-    public int addGoods(Goods goods, String one, String two) {
-        if(!sortService.checkSort(one,two)){
-            return 3;
-        }
+    public RespBean addGoods(Goods goods) {
         goods.setOnEnable(1);
         int temp = goodsMapper.insert(goods);
+        goods.setId(tools.getId());
         imageService.saveImg(goods);
         saveImgName(goods);
 
-        SortGoods sortGoods = new SortGoods(one, two, goods.getId());
-        sortGoodsMapper.insert(sortGoods);
-        return temp;
+        Goods newGoods = new Goods();
+        newGoods.setId(goods.getId());
+
+        if(temp == 1){
+            return RespBean.ok("添加商品成功",newGoods);
+        }
+        return RespBean.error("出现错误");
     }
 
 

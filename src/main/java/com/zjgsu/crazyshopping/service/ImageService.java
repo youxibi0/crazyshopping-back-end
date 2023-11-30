@@ -77,7 +77,7 @@ public class ImageService {
     }
 
     public void saveImg(Goods goods) {
-        if(goods.getImgFiles() == null) return;
+        if(null == goods.getImgFiles() || goods.getImgFiles().isEmpty()) return;
         for (MultipartFile file : goods.getImgFiles()
         ) {
             String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1, file.getOriginalFilename().length());
