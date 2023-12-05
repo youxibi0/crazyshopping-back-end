@@ -40,4 +40,9 @@ public class ImageController {
         if(imageService.deleteImg(imgName))return RespBean.ok("删除成功");
         return RespBean.error("删除失败");
     }
+
+    @PutMapping("/update")
+    public RespBean updateImage(String imgName,MultipartFile imgFile){
+        return  imageService.updateImg(imgName,imgFile);
+    }
 }

@@ -146,4 +146,29 @@ public class ImageService {
             return false;
         }
     }
+
+    public RespBean updateImg(String imgName,MultipartFile imgFile){
+        if(!deleteImg(imgName))return RespBean.error("修改失败");
+        if (imgFile.getSize() > 1024 * 1024 * 10) {
+            return RespBean.error("单个文件大小不能大于10M");
+        }
+        String suffix = imgFile.getOriginalFilename().substring(imgFile.getOriginalFilename().lastIndexOf(".") + 1, imgFile.getOriginalFilename().length());
+        if (!"jpg,jpeg,gif,png".toUpperCase().contains(suffix.toUpperCase())) {
+            return RespBean.error("请选择jpg,jpeg,gif,png格式的图片");
+        }
+        String savePath = UPLOAD_FOLDER;
+        String absolutePath = null;
+        try {
+            absolutePath = new File(savePath).getCanonicalPath();
+            File absolutePathFile = new File(absolutePath);
+            if (!absolutePathFile.exists()) {
+                absolutePathFile.mkdir();
+            }
+            imgFile.transferTo(new File(absolutePath + "/" + imgName));
+            return RespBean.ok("/"+UPLOAD_FOLDER+imgName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespBean.error("error");
+        }
+    }
 }
