@@ -132,4 +132,18 @@ public class ImageService {
         }
         return RespBean.error("error");
     }
+
+    public Boolean deleteImg(String imgName){
+        String savePath = UPLOAD_FOLDER+imgName;
+        String filename = null;
+        String absolutePath = null;
+        try {
+            absolutePath = new File(savePath).getCanonicalPath();
+            File absolutePathFile = new File(absolutePath);
+            return absolutePathFile.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

@@ -4,6 +4,7 @@ import com.zjgsu.crazyshopping.entity.RespBean;
 import com.zjgsu.crazyshopping.service.ImageService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -32,5 +33,11 @@ public class ImageController {
     @PostMapping("/add")
     public RespBean addImage(MultipartFile imgFile){
         return imageService.addImage(imgFile);
+    }
+
+    @DeleteMapping("/delete")
+    public RespBean deleteImage(String imgName){
+        if(imageService.deleteImg(imgName))return RespBean.ok("删除成功");
+        return RespBean.error("删除失败");
     }
 }
