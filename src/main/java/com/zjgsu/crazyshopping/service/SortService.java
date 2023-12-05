@@ -1,9 +1,8 @@
 package com.zjgsu.crazyshopping.service;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.zjgsu.crazyshopping.entity.RespOrderBean;
-import com.zjgsu.crazyshopping.entity.SortOne;
-import com.zjgsu.crazyshopping.entity.SortTwo;
+import com.zjgsu.crazyshopping.entity.*;
+import com.zjgsu.crazyshopping.mapper.SortGoodsMapper;
 import com.zjgsu.crazyshopping.mapper.SortOneMapper;
 import com.zjgsu.crazyshopping.mapper.SortTwoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,8 @@ public class SortService {
     private SortOneMapper sortOneMapper;
     @Autowired
     private SortTwoMapper sortTwoMapper;
+    @Autowired
+    private SortGoodsMapper sortGoodsMapper;
     public List<SortOne> getAllSortOne(){
 
         return sortOneMapper.selectList(null);
@@ -111,6 +112,21 @@ public class SortService {
         map.put("one",one);
         map.put("two",two);
         return sortTwoMapper.selectByMap(map).isEmpty();
+    }
+
+    public RespBean UpdateSortGoods(Integer goodsId,String one,String two){
+        HashMap<String,Object> map = new HashMap<String,Object>();
+        map.put("goodsId",goodsId);
+        List<SortGoods> sortGoodsList = sortGoodsMapper.selectByMap(map);
+        if(null!=sortGoodsList && !sortGoodsList.isEmpty()){
+            sortGoodsMapper.deleteByMap(map);
+        }
+        SortGoods  sortGoods=new SortGoods();
+        sortGoods.setGoodsId(goodsId);sortGoods.setOne(one);sortGoods.setTwo(two);
+        if(sortGoodsMapper.insert(sortGoods)>0){
+            return RespBean.ok("成功");
+        }
+        return RespBean.error("失败");
     }
 
 }

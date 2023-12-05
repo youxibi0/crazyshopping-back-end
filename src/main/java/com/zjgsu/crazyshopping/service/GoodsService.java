@@ -1,6 +1,5 @@
 package com.zjgsu.crazyshopping.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.zjgsu.crazyshopping.entity.*;
 import com.zjgsu.crazyshopping.mapper.GoodsImagesMapper;
@@ -56,7 +55,7 @@ public class GoodsService {
         for (Goods goods : goodsList
         ) {
             this.setGoodsImgNameList(goods);
-            this.setSortList(goods);
+            this.setSort(goods);
         }
         RespGoodsBean respGoodsBean = new RespGoodsBean();
         respGoodsBean.setGoodsList(goodsList);
@@ -94,11 +93,14 @@ public class GoodsService {
         goods.setImgNameList(imgList);
     }
 
-    public void setSortList(Goods goods){
+    public void setSort(Goods goods){
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("goodsId", goods.getId());
         List<SortGoods> sortGoodsList = sortGoodsMapper.selectByMap(map);
-        goods.setSortList(sortGoodsList);
+        if(null!=sortGoodsList && !sortGoodsList.isEmpty()){
+            goods.setOne(sortGoodsList.get(0).getOne());
+            goods.setTwo(sortGoodsList.get(0).getTwo());
+        }
     }
 
     public void addNum(Integer id) {
@@ -141,7 +143,7 @@ public class GoodsService {
         map.put("id", id);
         Goods goods = goodsMapper.selectByMap(map).get(0);
         setGoodsImgNameList(goods);
-        this.setSortList(goods);
+        this.setSort(goods);
         return goods;
     }
 
@@ -162,7 +164,7 @@ public class GoodsService {
         for (Goods goods : goodsList
         ) {
             this.setGoodsImgNameList(goods);
-            this.setSortList(goods);
+            this.setSort(goods);
         }
         RespGoodsBean respGoodsBean = new RespGoodsBean();
         respGoodsBean.setGoodsList(goodsList);

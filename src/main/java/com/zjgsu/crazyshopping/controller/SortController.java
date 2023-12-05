@@ -1,6 +1,7 @@
 package com.zjgsu.crazyshopping.controller;
 
 import com.zjgsu.crazyshopping.entity.RespBean;
+import com.zjgsu.crazyshopping.entity.SortGoods;
 import com.zjgsu.crazyshopping.entity.SortOne;
 import com.zjgsu.crazyshopping.entity.SortTwo;
 import com.zjgsu.crazyshopping.service.SortService;
@@ -98,5 +99,10 @@ public class SortController {
         else {
             return RespBean.error("删除二级分类失败");
         }
+    }
+
+    @PutMapping("/goods")
+    public RespBean UpdateSortGoods(Integer goodsId,String one,String two){
+        return sortService.UpdateSortGoods(goodsId,one,two);
     }
 }

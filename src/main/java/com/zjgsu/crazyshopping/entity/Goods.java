@@ -27,7 +27,10 @@ public class Goods {
     private List<String> imgNameList;
 
     @TableField(exist = false)
-    private List<SortGoods> sortList;
+    private String one;
+
+    @TableField(exist = false)
+    private String two;
 
     public Goods() {
     }
@@ -42,13 +45,22 @@ public class Goods {
         this.imgFiles = imgFiles;
     }
 
-    public List<SortGoods> getSortList() {
-        return sortList;
+    public String getOne() {
+        return one;
     }
 
-    public void setSortList(List<SortGoods> sortList) {
-        this.sortList = sortList;
+    public void setOne(String one) {
+        this.one = one;
     }
+
+    public String getTwo() {
+        return two;
+    }
+
+    public void setTwo(String two) {
+        this.two = two;
+    }
+
 
     public Integer getId() {
         return id;
