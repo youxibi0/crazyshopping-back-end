@@ -47,10 +47,11 @@ public class GoodsController {
     }
     @PutMapping(value = "/update")
     public RespBean modifyGoods(Goods newGoods){
-        if(goodsService.modifyGoods(newGoods)==1){
+        String ans =goodsService.modifyGoods(newGoods);
+        if(ans.equals("true")){
             return RespBean.ok("修改商品信息成功");
         }
-        return RespBean.error("密码错误");
+        return RespBean.error(ans);
     }
 
     @GetMapping(value = "/search")

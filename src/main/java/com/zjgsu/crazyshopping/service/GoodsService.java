@@ -30,6 +30,9 @@ public class GoodsService {
     @Autowired
     Tools tools;
 
+    public GoodsService() {
+    }
+
     public RespBean addGoods(Goods goods) {
         goods.setOnEnable(1);
         int temp = goodsMapper.insert(goods);
@@ -63,12 +66,17 @@ public class GoodsService {
         return respGoodsBean;
     }
 
-    public int modifyGoods(Goods newGoods) {
+    public String modifyGoods(Goods newGoods) {
         Goods goods = getGoodsById(newGoods.getId());
         UpdateWrapper<Goods> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id", newGoods.getId());
         goods.setNewGoods(newGoods);
-        return goodsMapper.update(goods, updateWrapper);
+        if(goodsMapper.update(goods, updateWrapper)<=0){
+            return "修改失败";
+        }
+        String temp =imageService.updateImg(newGoods);
+        if(!temp.equals("true"))return temp;
+        return "true";
     }
 
 

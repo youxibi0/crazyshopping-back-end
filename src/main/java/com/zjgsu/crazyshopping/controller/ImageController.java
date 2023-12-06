@@ -17,6 +17,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.http.HttpResponse;
 import java.nio.file.Paths;
+import java.util.List;
 
 @RestController
 @RequestMapping("/images")
@@ -36,13 +37,9 @@ public class ImageController {
     }
 
     @DeleteMapping("/delete")
-    public RespBean deleteImage(String imgName){
-        if(imageService.deleteImg(imgName))return RespBean.ok("删除成功");
+    public RespBean deleteImage(List<String> imgNameList){
+        if(imageService.deleteImgs(imgNameList))return RespBean.ok("删除成功");
         return RespBean.error("删除失败");
     }
 
-    @PutMapping("/update")
-    public RespBean updateImage(String imgName,MultipartFile imgFile){
-        return  imageService.updateImg(imgName,imgFile);
-    }
 }
