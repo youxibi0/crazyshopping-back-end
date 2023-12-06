@@ -61,6 +61,14 @@ public class SortService {
 
     }
     public int modifySortOne(String oldOne , String newOne){
+        HashMap<String,Object>  map = new HashMap<String,Object>();
+        map.put("one",newOne);
+        List<SortOne> sortOneList = sortOneMapper.selectByMap(map);
+        if(!sortOneList.isEmpty()){
+            return 2;
+        }
+
+
         UpdateWrapper<SortOne> updateWrapper = new UpdateWrapper<>();
         UpdateWrapper<SortTwo> sortTwoUpdateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("one",oldOne);

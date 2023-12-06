@@ -66,6 +66,9 @@ public class SortController {
         if(sortService.modifySortOne(oldOne,newOne)==1){
             return RespBean.ok("修改一级分类成功");
         }
+        else if(sortService.modifySortOne(oldOne,newOne)==2){
+            return RespBean.ok("一级分类名字重复");
+        }
         else {
             return RespBean.error("修改一级分类失败");
         }

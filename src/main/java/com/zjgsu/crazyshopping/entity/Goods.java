@@ -12,6 +12,7 @@ import java.util.List;
 
 @TableName("goods")
 public class Goods {
+
     @TableId(type = IdType.ASSIGN_ID)
     private Integer id;
     private String name;
