@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpRequest;
 import java.util.List;
 
 
@@ -63,8 +64,9 @@ public class UserController {
     }
 
     @PutMapping(value = "/update")
-    public RespBean modifyPassword(String username, String oldPassword, String newPassword) {
+    public RespBean modifyPassword(String username, String oldPassword, String newPassword,HttpServletRequest request) {
         if (userService.modifyPassword(username,oldPassword, newPassword) == 1) {
+            userService.updateUserSession(username,request);
             return RespBean.ok("修改密码成功");
         }
         else if(userService.modifyPassword(username,oldPassword,newPassword)==2){
@@ -76,8 +78,9 @@ public class UserController {
         }
     }
     @PutMapping(value = "/modifyInfo")
-    public RespBean modifyInfo(String username , String phone , String location){
+    public RespBean modifyInfo(String username , String phone , String location, HttpServletRequest request){
         if(userService.modifyInfo(username,phone,location)==1){
+            userService.updateUserSession(username,request);
             return RespBean.ok("修改信息成功");
         }
         else {

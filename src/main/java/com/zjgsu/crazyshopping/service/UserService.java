@@ -5,6 +5,7 @@ import com.zjgsu.crazyshopping.entity.Account;
 import com.zjgsu.crazyshopping.entity.UserInfo;
 import com.zjgsu.crazyshopping.mapper.UserInfoMapper;
 import com.zjgsu.crazyshopping.mapper.UserMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +60,12 @@ public class UserService {
         return userMapper.insert(user);
     }
 
+    public void updateUserSession(String username, HttpServletRequest request){
+        Account account = getUserAndSetUserInfo(username);
+        request.getSession().removeAttribute("user");
+        request.getSession().setAttribute("user", account);
+    }
+
     public Account getUserAndSetUserInfo(String username){
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("username",username);
@@ -100,8 +107,6 @@ public class UserService {
         userInfo.setPhone(phone);
         userInfo.setLocation(location);
         return userInfoMapper.update(userInfo,updateWrapper);
-
-
     }
     public List<Account> getAllUser(){
         Map<String,Object> map = new HashMap<String,Object>();
