@@ -67,6 +67,9 @@ public class SortController {
         if(sortService.modifySortOne(oldOne,newOne)==1){
             return RespBean.ok("修改一级分类成功");
         }
+        else if(sortService.modifySortOne(oldOne,newOne)==2){
+            return RespBean.error("一级分类名字重复");
+        }
         else {
             return RespBean.error("修改一级分类失败");
         }
@@ -76,6 +79,9 @@ public class SortController {
     public RespBean modifySortTwo(String one ,String oldTwo ,String newTwo){
         if(sortService.modifySortTwo(one,oldTwo,newTwo)==1){
             return RespBean.ok("修改二级分类成功");
+        }
+        else if(sortService.modifySortTwo(one,oldTwo,newTwo)==2){
+            return RespBean.error("二级分类名字重复");
         }
         else {
             return RespBean.error("修改二级分类失败");
