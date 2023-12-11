@@ -1,6 +1,7 @@
 package com.zjgsu.crazyshopping.controller.conf;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -10,11 +11,14 @@ import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 public class CorsConfig {
+    @Autowired
+    ServerConfig serverConfig;
     private CorsConfiguration corsConfig(){
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.addAllowedOrigin(serverConfig.getUrlandPort()+"/");
         corsConfiguration.addAllowedOrigin("http://localhost:5173/");
         corsConfiguration.setMaxAge(3600L);
         return corsConfiguration;
