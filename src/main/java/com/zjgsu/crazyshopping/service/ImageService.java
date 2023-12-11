@@ -56,7 +56,7 @@ public class ImageService {
 
     public ResponseEntity<Resource> getGoodsImage(String img, HttpServletResponse response, HttpServletRequest request) throws MalformedURLException {
         String projectDirectory = System.getProperty("user.dir");
-        String path = projectDirectory + "\\images\\" + img;
+        String path = projectDirectory + File.separator + "images" + File.separator + img;
         System.out.println(path);
         Resource file = new UrlResource(Paths.get(path).toUri());
         if (!file.exists() || !file.isReadable()) {

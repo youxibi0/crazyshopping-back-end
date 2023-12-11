@@ -21,12 +21,13 @@ public class CorsConfig {
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.setAllowCredentials(true);
-        List<String> list = serverConfig.getAllUrlandPort();
-        for (String url : list
-        ) {
-            corsConfiguration.addAllowedOrigin(url + "/");
-        }
-        corsConfiguration.addAllowedOrigin("http://localhost:5173/");
+//        List<String> list = serverConfig.getAllUrlandPort();
+//        for (String url : list
+//        ) {
+//            corsConfiguration.addAllowedOrigin(url + "/");
+//        }
+//        corsConfiguration.addAllowedOrigin("http://localhost:5173/");
+        corsConfiguration.addAllowedOrigin(serverConfig.getIp()+"/");
         corsConfiguration.setMaxAge(3600L);
         return corsConfiguration;
     }
