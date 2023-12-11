@@ -6,7 +6,12 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 
 @Component
 public class ServerConfig implements ApplicationListener<WebServerInitializedEvent> {
@@ -29,6 +34,28 @@ public class ServerConfig implements ApplicationListener<WebServerInitializedEve
             e.printStackTrace();
         }
         return "http://"+address.getHostAddress() +":"+this.serverPort;
+    }
+
+    public List<String> getAllUrlandPort() {
+        List<String> list = new ArrayList<>();
+        try {
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface networkInterface = interfaces.nextElement();
+                if (networkInterface.isLoopback() || !networkInterface.isUp()) {
+                    continue; // 跳过回环接口和未启用的接口
+                }
+
+                Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
+                while (addresses.hasMoreElements()) {
+                    InetAddress addr = addresses.nextElement();
+                    list.add("http://"+addr.getHostAddress()+":"+this.serverPort);
+                }
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
     @Override
