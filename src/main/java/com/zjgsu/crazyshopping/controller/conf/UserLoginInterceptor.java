@@ -41,8 +41,7 @@ public class UserLoginInterceptor implements HandlerInterceptor {
             case "POST":
                 if(isUrlAllowed(url,Arrays.asList("/user/login","/user/register"))){return  true;}
                 //0
-                if(isUrlAllowed(url,Arrays.asList("/goods/add","/orders/refuse/**","/orders/accept/**","/orders/finish/**","/orders/fail/**",
-                        "/sort/add","/sort/add2","/images/add","/images/delete"
+                if(isUrlAllowed(url,Arrays.asList("/goods/add","/sort/add","/sort/add2","/images/add","/images/delete"
                 )) && Arrays.asList(0).contains(level)){return  true;}
                 //1
                 if(isUrlAllowed(url,Arrays.asList("/orders/add")) && Arrays.asList(1).contains(level)){return  true;}
@@ -51,7 +50,8 @@ public class UserLoginInterceptor implements HandlerInterceptor {
                 //0,1
                 if(isUrlAllowed(url,Arrays.asList("/user/update","/user/modifyInfo")) && Arrays.asList(0,1).contains(level)){return  true;}
                 //0
-                if(isUrlAllowed(url,Arrays.asList("/goods/update","/goods/disenable/**","/sort/update","/sort/update2","/sort/goods"))&& Arrays.asList(0).contains(level)){return  true;}
+                if(isUrlAllowed(url,Arrays.asList("/goods/update","/goods/disenable/**","/sort/update","/sort/update2","/sort/goods",
+                        "/orders/refuse/**","/orders/accept/**","/orders/finish/**","/orders/fail/**"))&& Arrays.asList(0).contains(level)){return  true;}
                 //1
                 if(isUrlAllowed(url,Arrays.asList("/user/modifyInfo")) && Arrays.asList(1).contains(level)){return  true;}
                 break;
