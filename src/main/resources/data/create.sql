@@ -19,6 +19,20 @@ CREATE TABLE "goods" (
                          "num" INTEGER NOT NULL
 );
 
+DROP TABLE IF EXISTS "cart";
+CREATE TABLE "cart" (
+                        "goodsId" INTEGER NOT NULL,
+                        "username" text NOT NULL,
+                        PRIMARY KEY ("goodsId", "username")
+);
+
+DROP TABLE IF EXISTS "collection";
+CREATE TABLE "collection" (
+                              "goodsId" INTEGER NOT NULL,
+                              "username" TEXT NOT NULL,
+                              PRIMARY KEY ("goodsId", "username")
+);
+
 
 DROP TABLE IF EXISTS "goodsImages";
 CREATE TABLE "goodsImages" (
@@ -40,6 +54,16 @@ CREATE TABLE "orders" (
                           "goodsName" TEXT NOT NULL,
                           "imgName" TEXT,
                           "time" text NOT NULL
+);
+
+DROP TABLE IF EXISTS "ordersMain";
+CREATE TABLE "ordersMain" (
+                              "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                              "time" text,
+                              "state" integer,
+                              "username" TEXT NOT NULL,
+                              "phone" TEXT,
+                              "location" TEXT
 );
 
 
