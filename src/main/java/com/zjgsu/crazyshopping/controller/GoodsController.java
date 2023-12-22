@@ -1,9 +1,11 @@
 package com.zjgsu.crazyshopping.controller;
 
 
+import com.zjgsu.crazyshopping.entity.Cart;
 import com.zjgsu.crazyshopping.entity.Goods;
 import com.zjgsu.crazyshopping.entity.RespBean;
 import com.zjgsu.crazyshopping.entity.RespGoodsBean;
+import com.zjgsu.crazyshopping.service.CartService;
 import com.zjgsu.crazyshopping.service.ImageService;
 import com.zjgsu.crazyshopping.service.GoodsService;
 import org.apache.ibatis.annotations.Param;
@@ -18,6 +20,8 @@ public class GoodsController {
     private GoodsService goodsService;
     @Autowired
     private ImageService imageService;
+    @Autowired
+    private CartService cartService;
     @GetMapping("/all")
     public RespGoodsBean getAllGoods(){
         RespGoodsBean respGoodsBean = goodsService.getAllGoods();
@@ -57,6 +61,18 @@ public class GoodsController {
     @GetMapping(value = "/search")
     public RespGoodsBean searchGoods(@Param("text") String text, @Param("one") String one, @Param("two") String two){
         return  goodsService.searchGoods(text,one,two);
+    }
+    @PostMapping("/addCart")
+    public RespBean addCart(Cart cart){
+        if(cartService.addCart(cart)==1){
+            return RespBean.ok("商品成功添加到购物车");
+        }
+        else if(cartService.addCart(cart)==2){
+            return RespBean.error(("此商品已在购物车中"));
+        }
+        else {
+            return RespBean.error("添加商品至购物车失败");
+        }
     }
 
 }
