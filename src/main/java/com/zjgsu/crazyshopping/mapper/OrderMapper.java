@@ -1,18 +1,17 @@
 package com.zjgsu.crazyshopping.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.zjgsu.crazyshopping.entity.Order;
+import com.zjgsu.crazyshopping.entity.OrdersMain;
 import org.apache.ibatis.annotations.*;
-import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.List;
 
 @Mapper
-public interface OrderMapper extends BaseMapper<Order> {
+public interface OrderMapper extends BaseMapper<OrdersMain> {
 
     @Insert("INSERT INTO ORDERS (name, phone, time, goodsId,info)\n" +
             "VALUES(#{name}, #{phone}, #{time}, #{goodsId},'等待处理');")
-    int add(Order order);
+    int add(OrdersMain order);
 
     @Delete("Delete from orders where id = #{id};")
     int delete(Integer id);
@@ -30,10 +29,10 @@ public interface OrderMapper extends BaseMapper<Order> {
     int refuseOrder(Integer id);
 
     @Select("select orders.* ,goods.img as img ,goods.name as goodsName from orders,goods where orders.goodsId = goods.id and orders.id = #{id}")
-    Order selectOrderById(Integer id);
+    OrdersMain selectOrderById(Integer id);
 
     @Select("select orders.* ,goods.img as img ,goods.name as goodsName from orders,goods where orders.goodsId = goods.id")
-    List<Order> selectAllOrders();
+    List<OrdersMain> selectAllOrders();
 
     @Select("SELECT COUNT(*) FROM orders")
     Integer getOrdersTotal();

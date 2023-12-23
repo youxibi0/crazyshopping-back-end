@@ -2,14 +2,13 @@ package com.zjgsu.crazyshopping.service;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.zjgsu.crazyshopping.entity.Goods;
-import com.zjgsu.crazyshopping.entity.Order;
+import com.zjgsu.crazyshopping.entity.OrdersMain;
 import com.zjgsu.crazyshopping.entity.RespOrderBean;
 import com.zjgsu.crazyshopping.mapper.GoodsImagesMapper;
 import com.zjgsu.crazyshopping.mapper.GoodsMapper;
 import com.zjgsu.crazyshopping.mapper.OrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,17 +29,17 @@ public class OrderService {
     GoodsService goodsService;
     @Autowired
     UserService userService;
-    public List<Order> getAllOrder(){
+    public List<OrdersMain> getAllOrder(){
         return orderMapper.selectList(null);
     }
-    public List<Order> getOrderByName(String username){
+    public List<OrdersMain> getOrderByName(String username){
         Map<String,Object> map = new HashMap<>();
         map.put("username",username);
         return orderMapper.selectByMap(map);
 
 
     }
-    public int addOrder(Order order){
+    public int addOrder(OrdersMain order){
         Map<String,Object> map =new HashMap<String,Object>();
         map.put("id",order.getGoodsId());
         Goods goods = goodsMapper.selectByMap(map).get(0);
@@ -67,15 +66,15 @@ public class OrderService {
         return  orderMapper.delete(id);
     }
     public int acceptOrder(Integer id){
-        Order order = orderMapper.selectById(id);
+        OrdersMain order = orderMapper.selectById(id);
         order.setState(3);
-        UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
+        UpdateWrapper<OrdersMain> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id",id);
         return orderMapper.update(order,updateWrapper);
     }
 
     public int refuseOrder(Integer id){
-        Order order = getOrderById(id);
+        OrdersMain order = getOrderById(id);
         order.setState(2);
         int temp = orderMapper.updateById(order);
         goodsService.addNum(order.getGoodsId());
@@ -83,7 +82,7 @@ public class OrderService {
         return temp;
     }
     public RespOrderBean selectAllOrders(){
-        List<Order> data = orderMapper.selectAllOrders();
+        List<OrdersMain> data = orderMapper.selectAllOrders();
         Integer total = orderMapper.getOrdersTotal();
         RespOrderBean respOrderBean = new RespOrderBean();
         respOrderBean.setTotal(total);
@@ -91,20 +90,20 @@ public class OrderService {
         return respOrderBean;
     }
     public int finishOrder(Integer id){
-        UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
+        UpdateWrapper<OrdersMain> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id",id);
-        Order order = new Order();
+        OrdersMain order = new OrdersMain();
         order.setState(4);
         return orderMapper.update(order,updateWrapper);
     }
 
     public int failOrder(Integer id){
-        UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
+        UpdateWrapper<OrdersMain> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id",id);
-        Order order = new Order();
+        OrdersMain order = new OrdersMain();
         Map<String,Object> map =new HashMap<String,Object>();
         map.put("id",id);
-        List<Order> orderList=orderMapper.selectByMap(map);
+        List<OrdersMain> orderList=orderMapper.selectByMap(map);
         if(!orderList.isEmpty())order = orderList.get(0);
         order.setState(5);
         goodsService.addNum(order.getGoodsId());
@@ -112,11 +111,11 @@ public class OrderService {
         return orderMapper.update(order,updateWrapper);
     }
 
-    public Order getOrderById(Integer id){
+    public OrdersMain getOrderById(Integer id){
         Map<String,Object> map =new HashMap<String,Object>();
         map.put("id",id);
-        Order order=new Order();
-        List<Order> orderList = orderMapper.selectByMap(map);
+        OrdersMain order=new OrdersMain();
+        List<OrdersMain> orderList = orderMapper.selectByMap(map);
         if(!orderList.isEmpty())order=orderList.get(0);
         return order;
     }

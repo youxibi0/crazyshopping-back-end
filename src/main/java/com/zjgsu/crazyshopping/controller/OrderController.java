@@ -1,10 +1,8 @@
 package com.zjgsu.crazyshopping.controller;
 
-import com.zjgsu.crazyshopping.entity.Order;
+import com.zjgsu.crazyshopping.entity.OrdersMain;
 import com.zjgsu.crazyshopping.entity.RespBean;
-import com.zjgsu.crazyshopping.entity.RespOrderBean;
 import com.zjgsu.crazyshopping.service.OrderService;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +16,7 @@ public class OrderController {
     OrderService orderService;
 
     @PostMapping(value = "/add")
-    public RespBean addOrder(Order order){
+    public RespBean addOrder(OrdersMain order){
         if(orderService.addOrder(order)==1){
             return RespBean.ok("添加成功!");
         }
@@ -48,11 +46,11 @@ public class OrderController {
     }
 
     @GetMapping(value = "")
-    public List<Order> selectAllOrders(){
+    public List<OrdersMain> selectAllOrders(){
         return orderService.getAllOrder();
     }
     @GetMapping(value = "/{username}")
-    public List<Order> selectOrderByName(@PathVariable String username){
+    public List<OrdersMain> selectOrderByName(@PathVariable String username){
         return orderService.getOrderByName(username);
     }
 

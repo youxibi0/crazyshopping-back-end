@@ -44,16 +44,12 @@ CREATE TABLE "goodsImages" (
 DROP TABLE IF EXISTS "orders";
 CREATE TABLE "orders" (
                           "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                          "username" TEXT NOT NULL,
-                          "phone" TEXT NOT NULL,
-                          "location" text NOT NULL,
                           "goodsId" INTEGER NOT NULL,
                           "goodsInfo" TEXT,
-                          "state" integer NOT NULL DEFAULT 1,
                           "goodsPrice" real NOT NULL,
                           "goodsName" TEXT NOT NULL,
                           "imgName" TEXT,
-                          "time" text NOT NULL
+                          "ordersId" INTEGER NOT NULL
 );
 
 DROP TABLE IF EXISTS "ordersMain";
