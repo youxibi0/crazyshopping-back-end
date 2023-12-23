@@ -12,6 +12,8 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/goods")
@@ -73,6 +75,11 @@ public class GoodsController {
         else {
             return RespBean.error("添加商品至购物车失败");
         }
+    }
+    @GetMapping("/cart/{username}")
+    public List<Goods> getCartByUsername(@PathVariable String username){
+
+        return cartService.getCartByUsername(username);
     }
 
 }
