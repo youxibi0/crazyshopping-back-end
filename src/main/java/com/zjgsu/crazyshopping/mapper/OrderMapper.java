@@ -1,13 +1,14 @@
 package com.zjgsu.crazyshopping.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zjgsu.crazyshopping.entity.Order;
 import com.zjgsu.crazyshopping.entity.OrdersMain;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 @Mapper
-public interface OrderMapper extends BaseMapper<OrdersMain> {
+public interface OrderMapper extends BaseMapper<Order> {
 
     @Insert("INSERT INTO ORDERS (name, phone, time, goodsId,info)\n" +
             "VALUES(#{name}, #{phone}, #{time}, #{goodsId},'等待处理');")

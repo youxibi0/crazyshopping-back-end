@@ -82,6 +82,7 @@ public class OrdersMain {
 
 
     public void setUser(Account account){
+        this.username=account.getUsername();
         this.phone=account.getPhone();
         this.location=account.getLocation();
     }

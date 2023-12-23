@@ -16,8 +16,8 @@ public class OrderController {
     OrderService orderService;
 
     @PostMapping(value = "/add")
-    public RespBean addOrder(OrdersMain order){
-        if(orderService.addOrder(order)==1){
+    public RespBean addOrder(String username,List<Integer> goodsIdList){
+        if(orderService.addOrder(username,goodsIdList)==1){
             return RespBean.ok("添加成功!");
         }
         return RespBean.error("添加失败!");
