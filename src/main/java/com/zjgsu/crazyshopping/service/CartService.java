@@ -40,6 +40,13 @@ public class CartService {
 
         return goodsList;
     }
+    public int deleteCart(Cart cart){
+        Map<String,Object> map = new HashMap<>();
+        map.put("username",cart.getUsername());
+        map.put("goodsId",cart.getGoodsId());
+        return cartMapper.deleteByMap(map);
+    }
+
 
 
 

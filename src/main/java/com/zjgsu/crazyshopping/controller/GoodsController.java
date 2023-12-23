@@ -81,5 +81,14 @@ public class GoodsController {
 
         return cartService.getCartByUsername(username);
     }
+    @DeleteMapping("/cart")
+    public RespBean deleteCart(Cart cart){
+        if(cartService.deleteCart(cart)==1){
+            return RespBean.ok("商品移出购物车成功");
+        }
+        else {
+            return RespBean.error("商品移出购物车失败");
+        }
+    }
 
 }
