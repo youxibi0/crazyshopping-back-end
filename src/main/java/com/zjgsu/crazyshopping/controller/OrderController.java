@@ -66,11 +66,5 @@ public class OrderController {
         return  RespBean.error("完成订单失败!");
     }
 
-    @PutMapping(value = "/fail/{id}")
-    public RespBean failOrder(@PathVariable Integer id){
-        if(orderService.failOrder(id)==1)
-            return  RespBean.ok("交易失败!");
-        return  RespBean.error("处理出现错误!");
-    }
 
 }
