@@ -74,6 +74,7 @@ public class Order {
         this.ordersId = ordersId;
     }
     public void setGoods(Goods goods){
+        this.goodsId=goods.getId();
         this.goodsInfo=goods.getInfo();
         this.goodsName=goods.getName();
         this.goodsPrice=goods.getPrice();

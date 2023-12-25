@@ -5,10 +5,7 @@ import com.zjgsu.crazyshopping.entity.Goods;
 import com.zjgsu.crazyshopping.entity.Order;
 import com.zjgsu.crazyshopping.entity.OrdersMain;
 import com.zjgsu.crazyshopping.entity.RespOrderBean;
-import com.zjgsu.crazyshopping.mapper.GoodsImagesMapper;
-import com.zjgsu.crazyshopping.mapper.GoodsMapper;
-import com.zjgsu.crazyshopping.mapper.OrderMapper;
-import com.zjgsu.crazyshopping.mapper.OrdersMainMapper;
+import com.zjgsu.crazyshopping.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +30,8 @@ public class OrderService {
     UserService userService;
     @Autowired
     OrdersMainMapper ordersMainMapper;
+    @Autowired
+    Tools tools;
 
     public List<OrdersMain> getAllOrder() {
         List<OrdersMain> ordersMainList = ordersMainMapper.selectList(null);
@@ -78,7 +77,7 @@ public class OrderService {
         ordersMain.setTime(dateString);
         ordersMain.setState(1);
         if(ordersMainMapper.insert(ordersMain)<=0)return 0;
-
+        Integer ordersId = tools.getId();
         for (Integer goodsId : goodsIdList
         ) {
             Map<String, Object> map = new HashMap<String, Object>();
@@ -87,9 +86,10 @@ public class OrderService {
             goodsService.setGoodsImgNameList(goods);
             Order order = new Order();
             order.setGoods(goods);
+            order.setOrdersId(ordersId);
             goodsService.subNum(goods.getId());
             goodsService.checkOnenable(order.getGoodsId());
-            if( orderMapper.insert(order)<=0)return 0;
+            if( orderMapper.add(order)<=0)return 0;
         }
 
         return 1;
