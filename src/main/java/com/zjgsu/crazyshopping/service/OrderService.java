@@ -35,15 +35,29 @@ public class OrderService {
     OrdersMainMapper ordersMainMapper;
 
     public List<OrdersMain> getAllOrder() {
-        return orderMapper.selectList(null);
+        List<OrdersMain> ordersMainList = ordersMainMapper.selectList(null);
+        for (OrdersMain temp:ordersMainList
+             ) {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("ordersId", temp.getId());
+            List<Order> orderList = orderMapper.selectByMap(map);
+            temp.setOrderList(orderList);
+        }
+        return ordersMainList;
     }
 
     public List<OrdersMain> getOrderByName(String username) {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("username", username);
-        return orderMapper.selectByMap(map);
-
-
+        List<OrdersMain> ordersMainList = ordersMainMapper.selectByMap(map);
+        for (OrdersMain temp:ordersMainList
+        ) {
+            Map<String, Object> map2 = new HashMap<String, Object>();
+            map.put("ordersId", temp.getId());
+            List<Order> orderList = orderMapper.selectByMap(map2);
+            temp.setOrderList(orderList);
+        }
+        return ordersMainList;
     }
 
     public int addOrder(String username, List<Integer> goodsIdList) {
