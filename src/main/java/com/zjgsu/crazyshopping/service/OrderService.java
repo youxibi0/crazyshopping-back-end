@@ -114,9 +114,9 @@ public class OrderService {
     public int finishOrder(Integer id) {
         UpdateWrapper<OrdersMain> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id", id);
-        OrdersMain order = new OrdersMain();
-        order.setState(4);
-        return orderMapper.update(order, updateWrapper);
+        OrdersMain ordersMain = new OrdersMain();
+        ordersMain.setState(6);
+        return ordersMainMapper.update(ordersMain, updateWrapper);
     }
 
     public int failOrder(Integer id) {
