@@ -31,4 +31,12 @@ public class GoodsImages {
     public void setImgName(String imgName) {
         this.imgName = imgName;
     }
+
+    @Override
+    public String toString() {
+        return "GoodsImages{" +
+                "goodsId=" + goodsId +
+                ", imgName='" + imgName + '\'' +
+                '}';
+    }
 }

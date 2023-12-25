@@ -40,4 +40,13 @@ public class SortGoods {
     public void setGoodsId(Integer goodsId) {
         this.goodsId = goodsId;
     }
+
+    @Override
+    public String toString() {
+        return "SortGoods{" +
+                "one='" + one + '\'' +
+                ", two='" + two + '\'' +
+                ", goodsId=" + goodsId +
+                '}';
+    }
 }
