@@ -1,14 +1,16 @@
 package com.zjgsu.crazyshopping.controller;
 
 
-import com.zjgsu.crazyshopping.entity.Goods;
-import com.zjgsu.crazyshopping.entity.RespBean;
-import com.zjgsu.crazyshopping.entity.RespGoodsBean;
+import com.zjgsu.crazyshopping.entity.*;
+import com.zjgsu.crazyshopping.service.CartService;
+import com.zjgsu.crazyshopping.service.CollectionService;
 import com.zjgsu.crazyshopping.service.ImageService;
 import com.zjgsu.crazyshopping.service.GoodsService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -18,6 +20,10 @@ public class GoodsController {
     private GoodsService goodsService;
     @Autowired
     private ImageService imageService;
+    @Autowired
+    private CartService cartService;
+    @Autowired
+    private CollectionService collectionService;
     @GetMapping("/all")
     public RespGoodsBean getAllGoods(){
         RespGoodsBean respGoodsBean = goodsService.getAllGoods();
@@ -57,6 +63,44 @@ public class GoodsController {
     @GetMapping(value = "/search")
     public RespGoodsBean searchGoods(@Param("text") String text, @Param("one") String one, @Param("two") String two){
         return  goodsService.searchGoods(text,one,two);
+    }
+    @PostMapping("/addCart")
+    public RespBean addCart(Cart cart){
+        if(cartService.addCart(cart)==1){
+            return RespBean.ok("商品成功添加到购物车");
+        }
+        else if(cartService.addCart(cart)==2){
+            return RespBean.error(("此商品已在购物车中"));
+        }
+        else {
+            return RespBean.error("添加商品至购物车失败");
+        }
+    }
+    @GetMapping("/cart/{username}")
+    public List<Goods> getCartByUsername(@PathVariable String username){
+
+        return cartService.getCartByUsername(username);
+    }
+    @DeleteMapping("/cart")
+    public RespBean deleteCart(Cart cart){
+        if(cartService.deleteCart(cart)==1){
+            return RespBean.ok("商品移出购物车成功");
+        }
+        else {
+            return RespBean.error("商品移出购物车失败");
+        }
+    }
+    @PostMapping("/like")
+    public RespBean addCollection(Collection collection){
+        if(collectionService.addCollection(collection)==1){
+            return RespBean.ok("添加收藏成功");
+        }
+        else if(collectionService.addCollection(collection)==2){
+            return RespBean.error("此商品已在收藏中");
+        }
+        else {
+            return RespBean.error("添加收藏失败");
+        }
     }
 
 }
