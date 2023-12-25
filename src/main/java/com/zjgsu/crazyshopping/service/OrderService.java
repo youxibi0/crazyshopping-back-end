@@ -86,11 +86,11 @@ public class OrderService {
     }
 
     public int acceptOrder(Integer id) {
-        OrdersMain order = orderMapper.selectById(id);
-        order.setState(3);
+        OrdersMain ordersMain = ordersMainMapper.selectById(id);
+        ordersMain.setState(3);
         UpdateWrapper<OrdersMain> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id", id);
-        return orderMapper.update(order, updateWrapper);
+        return ordersMainMapper.update(ordersMain, updateWrapper);
     }
 
     public int refuseOrder(Integer id) {
