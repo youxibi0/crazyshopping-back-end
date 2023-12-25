@@ -1,8 +1,11 @@
 package com.zjgsu.crazyshopping.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.util.List;
 
 @TableName(value = "ordersMain")
 public class OrdersMain {
@@ -15,6 +18,10 @@ public class OrdersMain {
     private String time;
     private String location;
     private Integer state;
+
+
+    @TableField(exist = false)
+    private List<Order> orderList;
 
 
 
@@ -79,7 +86,13 @@ public class OrdersMain {
         this.state = state;
     }
 
+    public List<Order> getOrderList() {
+        return orderList;
+    }
 
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
+    }
 
     public void setUser(Account account){
         this.username=account.getUsername();
