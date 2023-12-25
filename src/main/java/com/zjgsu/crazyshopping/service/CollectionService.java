@@ -55,6 +55,12 @@ public class CollectionService {
 
         return goodsList;
     }
+    public int deleteCollection(Collection collection){
+        Map<String,Object> map = new HashMap<>();
+        map.put("goodsId",collection.getGoodsId());
+        map.put("username",collection.getUsername());
+        return collectionMapper.deleteByMap(map);
+    }
 
 
 

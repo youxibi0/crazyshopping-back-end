@@ -12,7 +12,11 @@ public class LoginConfig implements WebMvcConfigurer {
         //注册TestInterceptor拦截器
         InterceptorRegistration registration = registry.addInterceptor(new UserLoginInterceptor());
         registration.addPathPatterns("/**"); //所有路径都被拦截
-        registration.excludePathPatterns(    //添加不拦截路径
-        );
+        registration.excludePathPatterns("/goods/addCart");
+        registration.excludePathPatterns("/goods/addLike");
+        registration.excludePathPatterns("/goods/cart");
+        registration.excludePathPatterns("/goods/like");
+        registration.excludePathPatterns("/goods/cart/{username}}");
+        registration.excludePathPatterns("/goods/like/{username}}");
     }
 }
