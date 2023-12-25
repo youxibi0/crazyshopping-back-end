@@ -37,6 +37,20 @@ public class OrderController {
         }
         return RespBean.error("接受失败!");
     }
+    @PutMapping(value = "/stockup")
+    public  RespBean stockup(Integer id){
+        if(orderService.stockup(id)==1){
+            return RespBean.ok("备货完成!");
+        }
+        return RespBean.error("失败!");
+    }
+    @PutMapping(value = "/sendGoods")
+    public  RespBean sendGoods(Integer id){
+        if(orderService.sendGoods(id)==1){
+            return RespBean.ok("开始发货!");
+        }
+        return RespBean.error("失败!");
+    }
 
     @PutMapping(value = "/refuse/{id}")
     public RespBean refuseOrder(@PathVariable Integer id){

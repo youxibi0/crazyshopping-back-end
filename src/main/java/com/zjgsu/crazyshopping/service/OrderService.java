@@ -106,6 +106,20 @@ public class OrderService {
         updateWrapper.eq("id", id);
         return ordersMainMapper.update(ordersMain, updateWrapper);
     }
+    public int stockup(Integer id) {
+        OrdersMain ordersMain = ordersMainMapper.selectById(id);
+        ordersMain.setState(4);
+        UpdateWrapper<OrdersMain> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id", id);
+        return ordersMainMapper.update(ordersMain, updateWrapper);
+    }
+    public int sendGoods(Integer id) {
+        OrdersMain ordersMain = ordersMainMapper.selectById(id);
+        ordersMain.setState(5);
+        UpdateWrapper<OrdersMain> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id", id);
+        return ordersMainMapper.update(ordersMain, updateWrapper);
+    }
 
     public int refuseOrder(Integer id) {
         OrdersMain ordersMain = getOrdersMainById(id);
