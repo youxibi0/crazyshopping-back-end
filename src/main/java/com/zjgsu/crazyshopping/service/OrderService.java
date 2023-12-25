@@ -108,11 +108,14 @@ public class OrderService {
     }
 
     public int refuseOrder(Integer id) {
-        OrdersMain order = getOrderById(id);
-        order.setState(2);
-        int temp = orderMapper.updateById(order);
-        goodsService.addNum(order.getGoodsId());
-        goodsService.checkOnenable(order.getGoodsId());
+        OrdersMain ordersMain = getOrdersMainById(id);
+        ordersMain.setState(2);
+        int temp = ordersMainMapper.updateById(ordersMain);
+        for (Order order:ordersMain.getOrderList()
+             ) {
+            goodsService.addNum(order.getGoodsId());
+            goodsService.checkOnenable(order.getGoodsId());
+        }
         return temp;
     }
 
@@ -133,26 +136,19 @@ public class OrderService {
         return ordersMainMapper.update(ordersMain, updateWrapper);
     }
 
-    public int failOrder(Integer id) {
-        UpdateWrapper<OrdersMain> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("id", id);
-        OrdersMain order = new OrdersMain();
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("id", id);
-        List<OrdersMain> orderList = orderMapper.selectByMap(map);
-        if (!orderList.isEmpty()) order = orderList.get(0);
-        order.setState(5);
-        goodsService.addNum(order.getGoodsId());
-        goodsService.checkOnenable(order.getGoodsId());
-        return orderMapper.update(order, updateWrapper);
-    }
 
-    public OrdersMain getOrderById(Integer id) {
+    public OrdersMain getOrdersMainById(Integer id) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("id", id);
-        OrdersMain order = new OrdersMain();
-        List<OrdersMain> orderList = orderMapper.selectByMap(map);
-        if (!orderList.isEmpty()) order = orderList.get(0);
-        return order;
+        OrdersMain ordersMain = new OrdersMain();
+        List<OrdersMain> ordersMainList = ordersMainMapper.selectByMap(map);
+        if (!ordersMainList.isEmpty()) {
+            ordersMain = ordersMainList.get(0);
+            Map<String, Object> map2 = new HashMap<String, Object>();
+            map.put("ordersId", ordersMain.getId());
+            List<Order> orderList = orderMapper.selectByMap(map2);
+            ordersMain.setOrderList(orderList);
+        }
+        return ordersMain;
     }
 }
