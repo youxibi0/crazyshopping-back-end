@@ -102,5 +102,9 @@ public class GoodsController {
             return RespBean.error("添加收藏失败");
         }
     }
+    @GetMapping("/like/{username}")
+    public List<Goods> getCollectionByUsername(@PathVariable String username){
+        return collectionService.getCollectionByUsername(username);
+    }
 
 }
