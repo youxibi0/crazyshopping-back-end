@@ -90,7 +90,7 @@ public class GoodsController {
             return RespBean.error("商品移出购物车失败");
         }
     }
-    @PostMapping("/like")
+    @PostMapping("/addLike")
     public RespBean addCollection(Collection collection){
         if(collectionService.addCollection(collection)==1){
             return RespBean.ok("添加收藏成功");
@@ -100,6 +100,19 @@ public class GoodsController {
         }
         else {
             return RespBean.error("添加收藏失败");
+        }
+    }
+    @GetMapping("/like/{username}")
+    public List<Goods> getCollectionByUsername(@PathVariable String username){
+        return collectionService.getCollectionByUsername(username);
+    }
+    @DeleteMapping("/like")
+    public RespBean deleteCollection(Collection collection){
+        if(collectionService.deleteCollection(collection)==1){
+            return RespBean.ok("取消收藏成功");
+        }
+        else {
+            return RespBean.error("取消收藏失败");
         }
     }
 
