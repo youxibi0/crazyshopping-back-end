@@ -23,6 +23,14 @@ public class OrderController {
         return RespBean.error("添加失败!");
     }
 
+    @PostMapping(value = "/addCart")
+    public RespBean addCart(String username, @RequestParam("goodsIdList") List<Integer> goodsIdList){
+        if(orderService.addCart(username,goodsIdList)==1){
+            return RespBean.ok("添加成功!");
+        }
+        return RespBean.error("添加失败!");
+    }
+
     @DeleteMapping(value = "/delete/{id}")
     public  RespBean delOrder(@PathVariable Integer id){
         if(orderService.deleteOrder(id)==1){

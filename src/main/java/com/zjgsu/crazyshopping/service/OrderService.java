@@ -32,6 +32,8 @@ public class OrderService {
     OrdersMainMapper ordersMainMapper;
     @Autowired
     Tools tools;
+    @Autowired
+    CartMapper cartMapper;
 
     public List<OrdersMain> getAllOrder() {
         List<OrdersMain> ordersMainList = ordersMainMapper.selectList(null);
@@ -60,7 +62,6 @@ public class OrderService {
     }
 
     public int addOrder(String username, List<Integer> goodsIdList) {
-        //TODO:测试
         OrdersMain ordersMain = new OrdersMain();
         for (Integer goodsId : goodsIdList
         ) {
@@ -92,6 +93,18 @@ public class OrderService {
             if( orderMapper.add(order)<=0)return 0;
         }
 
+        return 1;
+    }
+
+    public int addCart(String username, List<Integer> goodsIdList) {
+        if(addOrder(username,goodsIdList)!=1)return 0;
+        for (Integer goodsId:goodsIdList
+             ) {
+            Map<String,Object> map = new HashMap<>();
+            map.put("username",username);
+            map.put("goodsId",goodsId);
+            cartMapper.deleteByMap(map);
+        }
         return 1;
     }
 
