@@ -16,6 +16,7 @@ public class LoginConfig implements WebMvcConfigurer {
         registration.excludePathPatterns("/goods/addLike");
         registration.excludePathPatterns("/goods/cart");
         registration.excludePathPatterns("/goods/like");
+        registration.excludePathPatterns("/goods/isLike");
         registration.excludePathPatterns("/goods/cart/{username}}");
         registration.excludePathPatterns("/goods/like/{username}}");
     }
