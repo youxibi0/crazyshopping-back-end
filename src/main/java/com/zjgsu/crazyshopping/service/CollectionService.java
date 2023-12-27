@@ -61,6 +61,18 @@ public class CollectionService {
         map.put("username",collection.getUsername());
         return collectionMapper.deleteByMap(map);
     }
+    public int isCollection(Collection collection){
+        Map<String,Object> map = new HashMap<>();
+        map.put("goodsId",collection.getGoodsId());
+        map.put("username",collection.getUsername());
+        List<Collection> collectionList = collectionMapper.selectByMap(map);
+        if(collectionList.isEmpty()){
+            return 1;
+        }
+        else {
+            return 2;
+        }
+    }
 
 
 

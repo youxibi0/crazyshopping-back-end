@@ -115,5 +115,14 @@ public class GoodsController {
             return RespBean.error("取消收藏失败");
         }
     }
+    @PostMapping("/isLike")
+    public RespBean isCollection(Collection collection){
+        if(collectionService.isCollection(collection)==1){
+            return RespBean.ok("商品还未收藏");
+        }
+        else {
+            return RespBean.error("商品已经收藏");
+        }
+    }
 
 }
