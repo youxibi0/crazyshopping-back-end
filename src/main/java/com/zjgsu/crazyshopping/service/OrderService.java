@@ -54,7 +54,7 @@ public class OrderService {
         for (OrdersMain temp:ordersMainList
         ) {
             Map<String, Object> map2 = new HashMap<String, Object>();
-            map.put("ordersId", temp.getId());
+            map2.put("ordersId", temp.getId());
             List<Order> orderList = orderMapper.selectByMap(map2);
             temp.setOrderList(orderList);
         }
