@@ -32,7 +32,7 @@ public class UserLoginInterceptor implements HandlerInterceptor {
 //        if(Arrays.asList("").contains(url) && Arrays.asList().contains(level)){return  true;}
         switch (request.getMethod()) {
             case "GET":
-                if(isUrlAllowed(url,Arrays.asList("/user/level","/goods/all","/goods/search","/goods/**","/sort","/sort/**","/images/**"))){return  true;}
+                if(isUrlAllowed(url,Arrays.asList("/user/level","/goods/all","/goods/search","/goods/byId/**","/sort","/sort/**","/images/**"))){return  true;}
                 //0,1
                 if(isUrlAllowed(url,Arrays.asList("/user/logout","/orders/**","/goods/like/**","/goods/cart/**")) && Arrays.asList(0,1).contains(level)){return  true;}
                 //0

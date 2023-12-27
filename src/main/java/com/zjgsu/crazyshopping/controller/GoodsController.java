@@ -29,7 +29,7 @@ public class GoodsController {
         RespGoodsBean respGoodsBean = goodsService.getAllGoods();
         return respGoodsBean;
     }
-    @GetMapping("/{id}")
+    @GetMapping("/byId/{id}")
     public Goods getGoodsById(@PathVariable Integer id){
         return goodsService.getGoodsById(id);
     }
