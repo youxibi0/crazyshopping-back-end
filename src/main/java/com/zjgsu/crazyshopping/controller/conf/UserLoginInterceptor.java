@@ -34,30 +34,30 @@ public class UserLoginInterceptor implements HandlerInterceptor {
             case "GET":
                 if(isUrlAllowed(url,Arrays.asList("/user/level","/goods/all","/goods/search","/goods/**","/sort","/sort/**","/images/**"))){return  true;}
                 //0,1
-                if(isUrlAllowed(url,Arrays.asList("/user/logout","/orders/**")) && Arrays.asList(0,1).contains(level)){return  true;}
+                if(isUrlAllowed(url,Arrays.asList("/user/logout","/orders/**","/goods/like/**","/goods/cart/**")) && Arrays.asList(0,1).contains(level)){return  true;}
                 //0
                 if(isUrlAllowed(url,Arrays.asList("/user/all","/orders")) && Arrays.asList(0).contains(level)){return  true;}
                 break;
             case "POST":
-                if(isUrlAllowed(url,Arrays.asList("/user/login","/user/register"))){return  true;}
+                if(isUrlAllowed(url,Arrays.asList("/user/login","/user/register","/goods/isLike"))){return  true;}
                 //0
                 if(isUrlAllowed(url,Arrays.asList("/goods/add","/sort/add","/sort/add2","/images/add","/images/delete"
                 )) && Arrays.asList(0).contains(level)){return  true;}
                 //1
-                if(isUrlAllowed(url,Arrays.asList("/orders/add")) && Arrays.asList(1).contains(level)){return  true;}
+                if(isUrlAllowed(url,Arrays.asList("/orders/add","/orders/addCart","/goods/addLike","/goods/addCart")) && Arrays.asList(1).contains(level)){return  true;}
                 break;
             case "PUT":
                 //0,1
                 if(isUrlAllowed(url,Arrays.asList("/user/update","/user/modifyInfo")) && Arrays.asList(0,1).contains(level)){return  true;}
                 //0
                 if(isUrlAllowed(url,Arrays.asList("/goods/update","/goods/disenable/**","/sort/update","/sort/update2","/sort/goods",
-                        "/orders/refuse/**","/orders/accept/**","/orders/finish/**","/orders/fail/**"))&& Arrays.asList(0).contains(level)){return  true;}
+                        "/orders/refuse/**","/orders/accept/**","/orders/finish/**","/orders/fail/**","/orders/stockup","/orders/sendGoods"))&& Arrays.asList(0).contains(level)){return  true;}
                 //1
                 if(isUrlAllowed(url,Arrays.asList("/user/modifyInfo")) && Arrays.asList(1).contains(level)){return  true;}
                 break;
             case "DELETE":
                 //0,1
-                if(isUrlAllowed(url,Arrays.asList("/orders/delete/**")) && Arrays.asList(0,1).contains(level)){return  true;}
+                if(isUrlAllowed(url,Arrays.asList("/orders/delete/**","/goods/like","/goods/cart")) && Arrays.asList(0,1).contains(level)){return  true;}
                 //0
                 if(isUrlAllowed(url,Arrays.asList("/sort/delete","/sort/delete2")) && Arrays.asList(0).contains(level)){return  true;}
                 break;
