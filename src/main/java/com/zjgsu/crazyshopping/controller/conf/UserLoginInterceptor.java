@@ -48,10 +48,10 @@ public class UserLoginInterceptor implements HandlerInterceptor {
                 break;
             case "PUT":
                 //0,1
-                if(isUrlAllowed(url,Arrays.asList("/user/update","/user/modifyInfo")) && Arrays.asList(0,1).contains(level)){return  true;}
+                if(isUrlAllowed(url,Arrays.asList("/orders/refuse/**","/user/update","/user/modifyInfo")) && Arrays.asList(0,1).contains(level)){return  true;}
                 //0
                 if(isUrlAllowed(url,Arrays.asList("/goods/update","/goods/disenable/**","/sort/update","/sort/update2","/sort/goods",
-                        "/orders/refuse/**","/orders/accept/**","/orders/finish/**","/orders/fail/**","/orders/stockup","/orders/sendGoods"))&& Arrays.asList(0).contains(level)){return  true;}
+                        "/orders/accept/**","/orders/finish/**","/orders/fail/**","/orders/stockup","/orders/sendGoods"))&& Arrays.asList(0).contains(level)){return  true;}
                 //1
                 if(isUrlAllowed(url,Arrays.asList("/user/modifyInfo")) && Arrays.asList(1).contains(level)){return  true;}
                 break;
