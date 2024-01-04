@@ -16,6 +16,7 @@ public class CorsConfig {
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.addAllowedOrigin("http://localhost:80/");
+        corsConfiguration.addAllowedOrigin("http://localhost/");
         corsConfiguration.setMaxAge(3600L);
         return corsConfiguration;
     }
