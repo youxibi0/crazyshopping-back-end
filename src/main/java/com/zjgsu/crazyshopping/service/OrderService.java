@@ -37,8 +37,8 @@ public class OrderService {
 
     public List<OrdersMain> getAllOrder() {
         List<OrdersMain> ordersMainList = ordersMainMapper.selectList(null);
-        for (OrdersMain temp:ordersMainList
-             ) {
+        for (OrdersMain temp : ordersMainList
+        ) {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("ordersId", temp.getId());
             List<Order> orderList = orderMapper.selectByMap(map);
@@ -51,7 +51,7 @@ public class OrderService {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("username", username);
         List<OrdersMain> ordersMainList = ordersMainMapper.selectByMap(map);
-        for (OrdersMain temp:ordersMainList
+        for (OrdersMain temp : ordersMainList
         ) {
             Map<String, Object> map2 = new HashMap<String, Object>();
             map2.put("ordersId", temp.getId());
@@ -77,7 +77,7 @@ public class OrderService {
         String dateString = sdf.format(now);
         ordersMain.setTime(dateString);
         ordersMain.setState(1);
-        if(ordersMainMapper.insert(ordersMain)<=0)return 0;
+        if (ordersMainMapper.insert(ordersMain) <= 0) return 0;
         Integer ordersId = tools.getId();
         for (Integer goodsId : goodsIdList
         ) {
@@ -90,26 +90,31 @@ public class OrderService {
             order.setOrdersId(ordersId);
             goodsService.subNum(goods.getId());
             goodsService.checkOnenable(order.getGoodsId());
-            if( orderMapper.add(order)<=0)return 0;
+            if (orderMapper.add(order) <= 0) return 0;
         }
 
         return 1;
     }
 
     public int addCart(String username, List<Integer> goodsIdList) {
-        if(addOrder(username,goodsIdList)!=1)return 0;
-        for (Integer goodsId:goodsIdList
-             ) {
-            Map<String,Object> map = new HashMap<>();
-            map.put("username",username);
-            map.put("goodsId",goodsId);
+        if (addOrder(username, goodsIdList) != 1) return 0;
+        for (Integer goodsId : goodsIdList
+        ) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("username", username);
+            map.put("goodsId", goodsId);
             cartMapper.deleteByMap(map);
         }
         return 1;
     }
 
     public int deleteOrder(Integer id) {
-        return orderMapper.delete(id);
+        Map<String, Object> map1 = new HashMap<String, Object>();
+        map1.put("id", id);
+        orderMapper.deleteByordersId(id);
+        if (ordersMainMapper.deleteByMap(map1) <= 0) return 0;
+
+        return 1;
     }
 
     public int acceptOrder(Integer id) {
@@ -119,6 +124,7 @@ public class OrderService {
         updateWrapper.eq("id", id);
         return ordersMainMapper.update(ordersMain, updateWrapper);
     }
+
     public int stockup(Integer id) {
         OrdersMain ordersMain = ordersMainMapper.selectById(id);
         ordersMain.setState(4);
@@ -126,6 +132,7 @@ public class OrderService {
         updateWrapper.eq("id", id);
         return ordersMainMapper.update(ordersMain, updateWrapper);
     }
+
     public int sendGoods(Integer id) {
         OrdersMain ordersMain = ordersMainMapper.selectById(id);
         ordersMain.setState(5);
@@ -138,8 +145,8 @@ public class OrderService {
         OrdersMain ordersMain = getOrdersMainById(id);
         ordersMain.setState(2);
         int temp = ordersMainMapper.updateById(ordersMain);
-        for (Order order:ordersMain.getOrderList()
-             ) {
+        for (Order order : ordersMain.getOrderList()
+        ) {
             goodsService.addNum(order.getGoodsId());
             goodsService.checkOnenable(order.getGoodsId());
         }

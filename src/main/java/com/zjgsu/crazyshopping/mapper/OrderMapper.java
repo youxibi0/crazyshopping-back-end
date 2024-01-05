@@ -14,8 +14,8 @@ public interface OrderMapper extends BaseMapper<Order> {
             "VALUES(#{ordersId},#{goodsId}, #{goodsInfo}, #{goodsPrice}, #{goodsName},#{imgName});")
     int add(Order order);
 
-    @Delete("Delete from orders where id = #{id};")
-    int delete(Integer id);
+    @Delete("Delete from orders where ordersId = #{id};")
+    int deleteByordersId(Integer id);
 
 //    @Update("UPDATE orders SET info = CASE WHEN id = #{id} THEN '已接受' ELSE '已拒绝' END ," +
 //            " isComplete = CASE WHEN id <> #{id} THEN 1 ELSE isComplete END "+
