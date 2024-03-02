@@ -23,6 +23,7 @@ DROP TABLE IF EXISTS "cart";
 CREATE TABLE "cart" (
                         "goodsId" INTEGER NOT NULL,
                         "username" text NOT NULL,
+                        "amount" integer NOT NULL DEFAULT 1,
                         PRIMARY KEY ("goodsId", "username")
 );
 
@@ -59,7 +60,8 @@ CREATE TABLE "ordersMain" (
                               "state" integer,
                               "username" TEXT NOT NULL,
                               "phone" TEXT,
-                              "location" TEXT
+                              "location" TEXT,
+                            "amount" integer NOT NULL DEFAULT 1
 );
 
 
@@ -89,6 +91,29 @@ CREATE TABLE "userInfo" (
                             "phone" TEXT NOT NULL,
                             "location" TEXT NOT NULL,
                             PRIMARY KEY ("username")
+);
+DROP TABLE IF EXISTS "afterserviceimages";
+CREATE TABLE "afterserviceimages" (
+                                      "asId" INTEGER NOT NULL,
+                                      "imgName" TEXT NOT NULL,
+                                      PRIMARY KEY ("asId", "imgName")
+);
+
+DROP TABLE IF EXISTS "afterservice";
+CREATE TABLE "afterservice" (
+                                "id" INTEGER NOT NULL,
+                                "title" TEXT NOT NULL,
+                                "context" TEXT,
+                                "ordersId" INTEGER NOT NULL,
+                                "state" TEXT NOT NULL,
+                                PRIMARY KEY ("id")
+);
+
+DROP TABLE IF EXISTS "logistics";
+CREATE TABLE "logistics" (
+                             "id" INTEGER NOT NULL,
+                             "ordersId" INTEGER NOT NULL,
+                             PRIMARY KEY ("id", "ordersId")
 );
 INSERT INTO "userInfo" VALUES ('user', '12345678901', '钱江湾');
 
