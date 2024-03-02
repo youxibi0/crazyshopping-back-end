@@ -1,5 +1,6 @@
 package com.zjgsu.crazyshopping.service;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.zjgsu.crazyshopping.entity.Cart;
 import com.zjgsu.crazyshopping.entity.Goods;
 import com.zjgsu.crazyshopping.entity.GoodsImages;
@@ -9,6 +10,7 @@ import com.zjgsu.crazyshopping.mapper.GoodsImagesMapper;
 import com.zjgsu.crazyshopping.mapper.GoodsMapper;
 import com.zjgsu.crazyshopping.mapper.SortGoodsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.object.UpdatableSqlQuery;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ public class CartService {
         Map<String,Object> map = new HashMap<>();
         map.put("username",cart.getUsername());
         map.put("goodsId",cart.getGoodsId());
+        map.put("amount",cart.getAmount());
         if(!cartMapper.selectByMap(map).isEmpty()){
             return 2;
         }
@@ -65,6 +68,14 @@ public class CartService {
         map.put("username",cart.getUsername());
         map.put("goodsId",cart.getGoodsId());
         return cartMapper.deleteByMap(map);
+    }
+    public int updateAmount(Cart cart){
+        UpdateWrapper<Cart> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("goodsId",cart.getGoodsId());
+        updateWrapper.eq("username",cart.getUsername());
+        Cart newCart = new Cart();
+        newCart.setAmount(cart.getAmount());
+        return cartMapper.update(newCart,updateWrapper);
     }
 
 
