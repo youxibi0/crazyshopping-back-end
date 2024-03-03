@@ -90,6 +90,15 @@ public class GoodsController {
             return RespBean.error("商品移出购物车失败");
         }
     }
+    @PutMapping("/cart/updateAmount")
+    public RespBean updateAmount(Cart cart){
+        if(cartService.updateAmount(cart)==1){
+            return RespBean.ok("修改购物车商品数量成功");
+        }
+        else {
+            return RespBean.error("修改购物车商品数量失败");
+        }
+    }
     @PostMapping("/addLike")
     public RespBean addCollection(Collection collection){
         if(collectionService.addCollection(collection)==1){
