@@ -9,12 +9,14 @@ public class Cart {
     @TableId(type = IdType.INPUT)
     private Integer goodsId;
     private String username;
+    private int amount;
+    public Cart() {
 
-    public Cart(Integer goodsId, String username) {
+    }
+    public Cart(Integer goodsId, String username, int amount) {
         this.goodsId = goodsId;
         this.username = username;
-    }
-    public Cart() {
+        this.amount = amount;
     }
 
     public Integer getGoodsId() {
@@ -33,11 +35,20 @@ public class Cart {
         this.username = username;
     }
 
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
     @Override
     public String toString() {
         return "Cart{" +
                 "goodsId=" + goodsId +
                 ", username='" + username + '\'' +
+                ", amount=" + amount +
                 '}';
     }
 }
