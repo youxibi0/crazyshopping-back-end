@@ -18,6 +18,7 @@ public class OrdersMain {
     private String time;
     private String location;
     private Integer state;
+    private String name;
 
 
     @TableField(exist = false)
@@ -28,13 +29,14 @@ public class OrdersMain {
     public OrdersMain() {
     }
 
-    public OrdersMain(Integer id, String username, String phone, String time, String location, Integer state) {
+    public OrdersMain(Integer id, String username, String phone, String time, String location, Integer state, String name) {
         this.id = id;
         this.username = username;
         this.phone = phone;
         this.time = time;
         this.location = location;
         this.state = state;
+        this.name = name;
     }
 
     public Integer getId() {
@@ -98,5 +100,13 @@ public class OrdersMain {
         this.username=account.getUsername();
         this.phone=account.getPhone();
         this.location=account.getLocation();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

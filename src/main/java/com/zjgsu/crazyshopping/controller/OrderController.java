@@ -1,7 +1,6 @@
 package com.zjgsu.crazyshopping.controller;
 
-import com.zjgsu.crazyshopping.entity.OrdersMain;
-import com.zjgsu.crazyshopping.entity.RespBean;
+import com.zjgsu.crazyshopping.entity.*;
 import com.zjgsu.crazyshopping.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,16 +15,17 @@ public class OrderController {
     OrderService orderService;
 
     @PostMapping(value = "/add")
-    public RespBean addOrder(String username, @RequestParam("goodsIdList") List<Integer> goodsIdList){
-        if(orderService.addOrder(username,goodsIdList)==1){
+    public RespBean addOrder(@RequestBody OrderRequest orderRequest){
+        System.out.println(orderRequest);
+        if(orderService.addOrder(orderRequest)==1){
             return RespBean.ok("添加成功!");
         }
         return RespBean.error("添加失败!");
     }
 
     @PostMapping(value = "/addCart")
-    public RespBean addCart(String username, @RequestParam("goodsIdList") List<Integer> goodsIdList){
-        if(orderService.addCart(username,goodsIdList)==1){
+    public RespBean addCart(@RequestBody OrderRequest orderRequest){
+        if(orderService.addCart(orderRequest)==1){
             return RespBean.ok("添加成功!");
         }
         return RespBean.error("添加失败!");
