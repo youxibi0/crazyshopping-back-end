@@ -31,8 +31,6 @@ public class Goods {
 
     @TableField(exist = false)
     private String two;
-    @TableField(exist = false)
-    private int amount;
 
     public Goods() {
     }
@@ -138,13 +136,5 @@ public class Goods {
         this.price=goods.getPrice();
         this.info=goods.getInfo();
         this.num=goods.getNum();
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
     }
 }
