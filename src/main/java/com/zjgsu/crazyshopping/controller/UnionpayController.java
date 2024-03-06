@@ -22,9 +22,8 @@ public class UnionpayController {
     private UnionpayService unionpayService;
 
     @RequestMapping("/pay")
-    public String pay(HttpServletResponse response) throws Exception{
-        String pay = unionpayService.pay();
-        System.out.println(pay);
+    public String pay(Integer ordersId,String time,HttpServletResponse response) throws Exception{
+        String pay = unionpayService.pay(ordersId,time);
         return pay;
     }
 

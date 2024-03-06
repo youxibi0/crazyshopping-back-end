@@ -73,12 +73,12 @@ public class OrderService {
 
         ordersMain.setUser(userService.getUserAndSetUserInfo(username));
         Date now = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         String dateString = sdf.format(now);
         ordersMain.setTime(dateString);
         ordersMain.setState(1);
         if (ordersMainMapper.insert(ordersMain) <= 0) return 0;
-        Integer ordersId = tools.getId();
+        Integer ordersId = Integer.parseInt(UnionpayService.getUUID()) ;
         for (Integer goodsId : goodsIdList
         ) {
             Map<String, Object> map = new HashMap<String, Object>();

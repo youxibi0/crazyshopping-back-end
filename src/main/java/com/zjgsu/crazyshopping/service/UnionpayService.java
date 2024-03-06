@@ -14,7 +14,7 @@ import java.util.UUID;
 @Service
 public class UnionpayService {
 
-    public String pay() {
+    public String pay(Integer ordersId,String time) {
         Map<String, String> requestData = new HashMap<>();
 
         requestData.put("version", DemoBase.version);         //版本号，全渠道默认值
@@ -29,8 +29,8 @@ public class UnionpayService {
         /***商户接入参数***/
         requestData.put("merId", "777290058206701");      //商户号码，请改成自己申请的正式商户号或者open上注册得来的777测试商户号
         requestData.put("accessType", "0");               //接入类型，0：直连商户
-        requestData.put("orderId",getUUID());               //商户订单号，8-40位数字字母，不能含“-”或“_”，可以自行定制规则
-        requestData.put("txnTime", DemoBase.getCurrentTime());   //订单发送时间，取系统时间，格式为YYYYMMDDhhmmss，必须取当前时间，否则会报txnTime无效
+        requestData.put("orderId",ordersId.toString());               //商户订单号，8-40位数字字母，不能含“-”或“_”，可以自行定制规则
+        requestData.put("txnTime", time);   //订单发送时间，取系统时间，格式为YYYYMMDDhhmmss，必须取当前时间，否则会报txnTime无效
         requestData.put("currencyCode", "156");           //交易币种（境内商户一般是156 人民币）
         requestData.put("txnAmt", "10000");                //交易金额，单位分，不要带小数点
         requestData.put("bizScene","100001");
@@ -90,7 +90,6 @@ public class UnionpayService {
             hashCode = -hashCode;
         }
         String value = valueOf + String.format("%015d", hashCode);
-        System.out.println(value);
         return value;
     }
 
