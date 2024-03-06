@@ -39,16 +39,20 @@ public class CartService {
         return cartMapper.insert(cart);
     }
     public List<Goods> getCartByUsername(String username){
+        System.out.println(username);
         Map<String,Object> map = new HashMap<>();
         map.put("username",username);
         List<Cart> cartList;
         cartList = cartMapper.selectByMap(map);
         List<Goods> goodsList = new ArrayList<>();
         for(Cart cart:cartList){
+            System.out.println(cart);
             Map<String,Object> map2 = new HashMap<>();
             map2.put("goodsId",cart.getGoodsId());
             List<SortGoods> sortGoodsList  = sortGoodsMapper.selectByMap(map2);
             List<GoodsImages> goodsImagesList = goodsImagesMapper.selectByMap(map2);
+            System.out.println(sortGoodsList);
+            System.out.println(goodsImagesList);
             SortGoods sortGoods = sortGoodsList.get(0);
             GoodsImages goodsImages = goodsImagesList.get(0);
             Goods goods1 = goodsMapper.selectById(cart.getGoodsId());
