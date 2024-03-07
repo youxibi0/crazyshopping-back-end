@@ -79,8 +79,6 @@ public class OrderService {
         ordersMain.setState(1);
         if (ordersMainMapper.insert(ordersMain) <= 0) return 0;
         Integer ordersId = Integer.parseInt(UnionpayService.getUUID()) ;
-        for (Integer goodsId : goodsIdList
-        Integer ordersId = tools.getId();
         for (GoodsIdList goodsId : orderRequest.getGoodsIdList()
         ) {
             Map<String, Object> map = new HashMap<String, Object>();
