@@ -27,7 +27,7 @@ public class CorsConfig {
 //            corsConfiguration.addAllowedOrigin(url + "/");
 //        }
 //        corsConfiguration.addAllowedOrigin("http://localhost:5173/");
-        corsConfiguration.addAllowedOrigin(serverConfig.getIp()+"/");
+        corsConfiguration.addAllowedOriginPattern("*");
         corsConfiguration.setMaxAge(3600L);
         return corsConfiguration;
     }

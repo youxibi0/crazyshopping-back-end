@@ -8,6 +8,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,9 +22,15 @@ public class UnionpayController {
     @Autowired
     private UnionpayService unionpayService;
 
-    @RequestMapping("/pay")
+    @PostMapping("/pay")
     public String pay(Integer ordersId,String time,HttpServletResponse response) throws Exception{
         String pay = unionpayService.pay(ordersId,time);
+        return pay;
+    }
+
+    @RequestMapping("/test")
+    public String paytest(){
+        String pay = unionpayService.pay(11111111,"20240306203000");
         return pay;
     }
 
