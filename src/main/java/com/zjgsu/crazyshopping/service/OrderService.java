@@ -1,10 +1,7 @@
 package com.zjgsu.crazyshopping.service;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.zjgsu.crazyshopping.entity.Goods;
-import com.zjgsu.crazyshopping.entity.Order;
-import com.zjgsu.crazyshopping.entity.OrdersMain;
-import com.zjgsu.crazyshopping.entity.RespOrderBean;
+import com.zjgsu.crazyshopping.entity.*;
 import com.zjgsu.crazyshopping.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,17 +58,20 @@ public class OrderService {
         return ordersMainList;
     }
 
-    public int addOrder(String username, List<Integer> goodsIdList) {
+    public int addOrder(OrderRequest orderRequest) {
         OrdersMain ordersMain = new OrdersMain();
-        for (Integer goodsId : goodsIdList
+        for (GoodsIdList goodsId : orderRequest.getGoodsIdList()
         ) {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("id", goodsId);
+            map.put("id", goodsId.getGoodsId());
             Goods goods = goodsMapper.selectByMap(map).get(0);
             if (goods.getNum() <= 0) return 0;
         }
 
-        ordersMain.setUser(userService.getUserAndSetUserInfo(username));
+        ordersMain.setName(orderRequest.getName());
+        ordersMain.setLocation(orderRequest.getLocation());
+        ordersMain.setPhone(orderRequest.getPhone());
+        ordersMain.setUsername(orderRequest.getUsername());
         Date now = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         String dateString = sdf.format(now);
@@ -80,9 +80,11 @@ public class OrderService {
         if (ordersMainMapper.insert(ordersMain) <= 0) return 0;
         Integer ordersId = Integer.parseInt(UnionpayService.getUUID()) ;
         for (Integer goodsId : goodsIdList
+        Integer ordersId = tools.getId();
+        for (GoodsIdList goodsId : orderRequest.getGoodsIdList()
         ) {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("id", goodsId);
+            map.put("id", goodsId.getGoodsId());
             Goods goods = goodsMapper.selectByMap(map).get(0);
             goodsService.setGoodsImgNameList(goods);
             Order order = new Order();
@@ -96,13 +98,13 @@ public class OrderService {
         return 1;
     }
 
-    public int addCart(String username, List<Integer> goodsIdList) {
-        if (addOrder(username, goodsIdList) != 1) return 0;
-        for (Integer goodsId : goodsIdList
+    public int addCart(OrderRequest orderRequest) {
+        if (addOrder(orderRequest) != 1) return 0;
+        for (GoodsIdList goodsId : orderRequest.getGoodsIdList()
         ) {
             Map<String, Object> map = new HashMap<>();
-            map.put("username", username);
-            map.put("goodsId", goodsId);
+            map.put("username", orderRequest.getUsername());
+            map.put("goodsId", goodsId.getGoodsId());
             cartMapper.deleteByMap(map);
         }
         return 1;
