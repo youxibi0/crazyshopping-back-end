@@ -27,6 +27,9 @@ public class LocationService {
     public List<Location> getlocationList(){
         return locationMapper.selectList(null);
     }
+    public int deleteLocationById(Integer id){
+        return locationMapper.deleteById(id);
+    }
 
 
 

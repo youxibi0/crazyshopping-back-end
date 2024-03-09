@@ -8,10 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -44,6 +41,16 @@ public class LocationController {
     @GetMapping("/location")
     public List<Location> getAllLocation(){
         return locationService.getlocationList();
+    }
+    @DeleteMapping("/location/delete/{id}")
+    public RespBean deleteLocationById(@PathVariable Integer id){
+        if(locationService.deleteLocationById(id)==1){
+            return RespBean.ok("删除地址成功");
+
+        }
+        else {
+            return RespBean.error("删除地址失败");
+        }
     }
 
 
