@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -26,6 +27,15 @@ public class LocationController {
         }
         else {
             return RespBean.error("添加地址失败");
+        }
+    }
+    @PutMapping("/location/update")
+    public RespBean modifyLocation(Location newLocation){
+        if(locationService.modifyLocation(newLocation)==1){
+            return RespBean.ok("修改地址成功");
+        }
+        else {
+            return RespBean.error("修改地址失败");
         }
     }
 
