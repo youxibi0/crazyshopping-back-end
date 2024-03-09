@@ -51,8 +51,6 @@ public class CartService {
             map2.put("goodsId",cart.getGoodsId());
             List<SortGoods> sortGoodsList  = sortGoodsMapper.selectByMap(map2);
             List<GoodsImages> goodsImagesList = goodsImagesMapper.selectByMap(map2);
-            System.out.println(sortGoodsList);
-            System.out.println(goodsImagesList);
             SortGoods sortGoods = sortGoodsList.get(0);
             GoodsImages goodsImages = goodsImagesList.get(0);
             Goods goods1 = goodsMapper.selectById(cart.getGoodsId());
@@ -60,6 +58,7 @@ public class CartService {
             goods2.setOne(sortGoods.getOne());
             goods2.setTwo(sortGoods.getTwo());
             goods2.addImgName(goodsImages.getImgName());
+            goods2.setAmount(cart.getAmount());
             goodsList.add(goods2);
         }
 
