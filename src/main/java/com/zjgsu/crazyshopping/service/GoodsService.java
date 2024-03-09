@@ -129,6 +129,16 @@ public class GoodsService {
         checkOnenable(id);
     }
 
+    public void subNum(Integer id,Integer amount) {
+        Goods goods = getGoodsById(id);
+        UpdateWrapper<Goods> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id", id);
+        //TODO:
+        goods.setNum(goods.getNum() - amount);
+        goodsMapper.update(goods, updateWrapper);
+        checkOnenable(id);
+    }
+
     public void checkOnenable(Integer id) {
         Goods goods = getGoodsById(id);
         if (goods == null) return;
