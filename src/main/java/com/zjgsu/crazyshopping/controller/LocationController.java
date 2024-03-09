@@ -8,16 +8,19 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class LocationController {
 
     @Autowired
     private LocationService locationService;
-    @PostMapping("/location")
+    @PostMapping("/location/add")
     public RespBean addLocation(HttpServletRequest request, HttpServletResponse response, Location location){
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute("user");
@@ -37,6 +40,10 @@ public class LocationController {
         else {
             return RespBean.error("修改地址失败");
         }
+    }
+    @GetMapping("/location")
+    public List<Location> getAllLocation(){
+        return locationService.getlocationList();
     }
 
 

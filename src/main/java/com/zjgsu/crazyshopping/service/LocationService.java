@@ -9,6 +9,8 @@ import org.apache.ibatis.annotations.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LocationService {
     @Autowired
@@ -22,6 +24,10 @@ public class LocationService {
         updateWrapper.eq("id",newLocation.getId());
         return locationMapper.update(newLocation,updateWrapper);
     }
+    public List<Location> getlocationList(){
+        return locationMapper.selectList(null);
+    }
+
 
 
 }
