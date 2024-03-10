@@ -59,25 +59,28 @@ public class OrderService {
     }
 
     public int addOrder(OrderRequest orderRequest) {
-        OrdersMain ordersMain = new OrdersMain();
+
         for (GoodsIdList goodsId : orderRequest.getGoodsIdList()
         ) {
+            OrdersMain ordersMain = new OrdersMain();
+            ordersMain.setName(orderRequest.getName());
+            ordersMain.setLocation(orderRequest.getLocation());
+            ordersMain.setPhone(orderRequest.getPhone());
+            ordersMain.setUsername(orderRequest.getUsername());
+            ordersMain.setAmount(goodsId.getAmount());
+            Date now = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String dateString = sdf.format(now);
+            ordersMain.setTime(dateString);
+            ordersMain.setState(1);
+            if (ordersMainMapper.insert(ordersMain) <= 0) return 0;
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("id", goodsId.getGoodsId());
             Goods goods = goodsMapper.selectByMap(map).get(0);
             if (goods.getNum() <= 0) return 0;
         }
 
-        ordersMain.setName(orderRequest.getName());
-        ordersMain.setLocation(orderRequest.getLocation());
-        ordersMain.setPhone(orderRequest.getPhone());
-        ordersMain.setUsername(orderRequest.getUsername());
-        Date now = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dateString = sdf.format(now);
-        ordersMain.setTime(dateString);
-        ordersMain.setState(1);
-        if (ordersMainMapper.insert(ordersMain) <= 0) return 0;
+
         Integer ordersId = tools.getId();
         for (GoodsIdList goodsId : orderRequest.getGoodsIdList()
         ) {
