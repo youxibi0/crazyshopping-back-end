@@ -39,6 +39,7 @@ public class OrderService {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("ordersId", temp.getId());
             List<Order> orderList = orderMapper.selectByMap(map);
+
             temp.setOrderList(orderList);
         }
         return ordersMainList;
@@ -53,6 +54,10 @@ public class OrderService {
             Map<String, Object> map2 = new HashMap<String, Object>();
             map2.put("ordersId", temp.getId());
             List<Order> orderList = orderMapper.selectByMap(map2);
+            for(Order order : orderList){
+                System.out.println(temp.getAmount());
+                order.setAmount(temp.getAmount());
+            }
             temp.setOrderList(orderList);
         }
         return ordersMainList;
@@ -78,12 +83,15 @@ public class OrderService {
             map.put("id", goodsId.getGoodsId());
             Goods goods = goodsMapper.selectByMap(map).get(0);
             if (goods.getNum() <= 0) return 0;
+
+
         }
 
 
         Integer ordersId = tools.getId();
         for (GoodsIdList goodsId : orderRequest.getGoodsIdList()
         ) {
+            System.out.println(goodsId);
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("id", goodsId.getGoodsId());
             Goods goods = goodsMapper.selectByMap(map).get(0);
@@ -91,9 +99,11 @@ public class OrderService {
             Order order = new Order();
             order.setGoods(goods);
             order.setOrdersId(ordersId);
-            goodsService.subNum(goods.getId());
+            order.setAmount(goodsId.getAmount());
+            System.out.println(order);
+            goodsService.subNum(goods.getId(),goodsId.getAmount());
             goodsService.checkOnenable(order.getGoodsId());
-            if (orderMapper.add(order) <= 0) return 0;
+            if (orderMapper.add(order) <= 0) return 0;//数据库没有amount 所以查询的时候是0
         }
 
         return 1;
@@ -147,10 +157,11 @@ public class OrderService {
     public int refuseOrder(Integer id) {
         OrdersMain ordersMain = getOrdersMainById(id);
         ordersMain.setState(2);
+        System.out.println(ordersMain);
         int temp = ordersMainMapper.updateById(ordersMain);
         for (Order order : ordersMain.getOrderList()
         ) {
-            goodsService.addNum(order.getGoodsId());
+            goodsService.addNum(order.getGoodsId() , order.getAmount());
             goodsService.checkOnenable(order.getGoodsId());
         }
         return temp;

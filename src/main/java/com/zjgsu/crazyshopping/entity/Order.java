@@ -1,6 +1,7 @@
 package com.zjgsu.crazyshopping.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -14,6 +15,8 @@ public class Order {
     private String goodsName;
     private String imgName;
     private Integer ordersId;
+    @TableField(exist = false)
+    private int amount;
 
     public Order() {
     }
@@ -80,5 +83,27 @@ public class Order {
         this.goodsPrice=goods.getPrice();
         if(!goods.getImgNameList().isEmpty())
             this.imgName=goods.getImgNameList().get(0);
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", goodsId=" + goodsId +
+                ", goodsInfo='" + goodsInfo + '\'' +
+                ", goodsPrice=" + goodsPrice +
+                ", goodsName='" + goodsName + '\'' +
+                ", imgName='" + imgName + '\'' +
+                ", ordersId=" + ordersId +
+                ", amount=" + amount +
+                '}';
     }
 }

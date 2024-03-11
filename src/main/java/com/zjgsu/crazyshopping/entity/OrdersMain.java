@@ -120,4 +120,19 @@ public class OrdersMain {
     public void setAmount(int amount) {
         this.amount = amount;
     }
+
+    @Override
+    public String toString() {
+        return "OrdersMain{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", phone='" + phone + '\'' +
+                ", time='" + time + '\'' +
+                ", location='" + location + '\'' +
+                ", state=" + state +
+                ", name='" + name + '\'' +
+                ", amount=" + amount +
+                ", orderList=" + orderList +
+                '}';
+    }
 }
