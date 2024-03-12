@@ -52,6 +52,15 @@ public class LocationController {
             return RespBean.error("删除地址失败");
         }
     }
+    @PutMapping("/location/set/{id}")
+    public RespBean setDefault(@PathVariable Integer id){
+        if(locationService.setDefault(id)==1){
+            return RespBean.ok("设为默认地址成功");
+        }
+        else {
+            return RespBean.error("设为默认地址失败");
+        }
+    }
 
 
 }
