@@ -3,6 +3,8 @@ package com.zjgsu.crazyshopping.service;
 import com.unionpay.acp.demo.DemoBase;
 import com.unionpay.acp.sdk.AcpService;
 import com.unionpay.acp.sdk.SDKConfig;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -79,6 +81,73 @@ public class UnionpayService {
 
         return html;
     }
+
+    public String unionpayQuery(Integer ordersId,String time){
+
+        Map<String, String> data = new HashMap<String, String>();
+
+        /***银联全渠道系统，产品参数，除了encoding自行选择外其他不需修改***/
+        data.put("version", DemoBase.version);                 //版本号
+        data.put("encoding", DemoBase.encoding);               //字符集编码 可以使用UTF-8,GBK两种方式
+        data.put("signMethod", SDKConfig.getConfig().getSignMethod()); //签名方法
+        data.put("txnType", "00");                             //交易类型 00-默认
+        data.put("txnSubType", "00");                          //交易子类型  默认00
+        data.put("bizType", "000201");                         //业务类型
+
+        /***商户接入参数***/
+        data.put("merId", "777290058206701");                  			   //商户号码，请改成自己申请的商户号或者open上注册得来的777商户号测试
+        data.put("accessType", "0");                           //接入类型，商户接入固定填0，不需修改
+
+        /***要调通交易以下字段必须修改***/
+        data.put("orderId", ordersId.toString());                 //****商户订单号，每次发交易测试需修改为被查询的交易的订单号
+        data.put("txnTime", time);                 //****订单发送时间，每次发交易测试需修改为被查询的交易的订单发送时间
+
+        /**请求参数设置完毕，以下对请求参数进行签名并发送http post请求，接收同步应答报文------------->**/
+
+        Map<String, String> reqData = AcpService.sign(data,DemoBase.encoding);			//报文中certId,signature的值是在signData方法中获取并自动赋值的，只要证书配置正确即可。
+        String url = SDKConfig.getConfig().getSingleQueryUrl();								//交易请求url从配置文件读取对应属性文件acp_sdk.properties中的 acpsdk.singleQueryUrl
+        Map<String, String> rspData = AcpService.post(reqData,url,DemoBase.encoding);  //发送请求报文并接受同步应答（默认连接超时时间30秒，读取返回结果超时时间30秒）;这里调用signData之后，调用submitUrl之前不能对submitFromData中的键值对做任何修改，如果修改会导致验签不通过
+
+        /**对应答码的处理，请根据您的业务逻辑来编写程序,以下应答码处理逻辑仅供参考------------->**/
+        //应答码规范参考open.unionpay.com帮助中心 下载  产品接口规范  《平台接入接口规范-第5部分-附录》
+        if(!rspData.isEmpty()){
+            if(AcpService.validate(rspData, DemoBase.encoding)){
+                //logger.info("验证签名成功");
+                if(("00").equals(rspData.get("respCode"))){//如果查询交易成功
+                    String origRespCode = rspData.get("origRespCode");
+                    if(("00").equals(origRespCode)){
+                        //交易成功，更新商户订单状态
+                        return "success";
+                    }else if(("03").equals(origRespCode)||
+                            ("04").equals(origRespCode)||
+                            ("05").equals(origRespCode)){
+                        //订单处理中或交易状态未明，需稍后发起交易状态查询交易 【如果最终尚未确定交易是否成功请以对账文件为准】
+                        return "订单处理中或交易状态未明，需稍后发起交易状态查询交易";
+                    }else{
+                        //其他应答码为交易失败
+                        return "交易失败";
+                    }
+                }else if(("34").equals(rspData.get("respCode"))){
+                    //订单不存在，可认为交易状态未明，需要稍后发起交易状态查询，或依据对账结果为准
+                        return "订单不存在";
+                }else{//查询交易本身失败，如应答码10/11检查查询报文是否正确
+                    return "查询失败";
+                }
+            }else{
+                //logger.error("验证签名失败");
+                return "验证签名失败";
+            }
+        }else{
+            //未返回正确的http状态
+            //logger.error("未获取到返回报文或返回http状态码非200");
+            return "查询失败";
+        }
+
+//        String reqMessage = DemoBase.genHtmlResult(reqData);
+//        String rspMessage = DemoBase.genHtmlResult(rspData);
+//         return  "交易状态查询交易</br>请求报文:<br/>"+reqMessage+"<br/>" + "应答报文:</br>"+rspMessage;
+    }
+
     public static String getUUID(){
         //随机生成一位整数
         int random = (int) (Math.random()*9+1);

@@ -3,6 +3,7 @@ package com.zjgsu.crazyshopping.controller;
 import com.unionpay.acp.demo.DemoBase;
 import com.unionpay.acp.sdk.AcpService;
 import com.unionpay.acp.sdk.SDKConstants;
+import com.zjgsu.crazyshopping.entity.RespBean;
 import com.zjgsu.crazyshopping.service.UnionpayService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,6 +33,13 @@ public class UnionpayController {
     public String paytest(){
         String pay = unionpayService.pay(11111111,"20240306203000");
         return pay;
+    }
+
+    @PostMapping("/unionQuery")
+    public RespBean unionQuery(Integer ordersId, String time){
+        String resp =  unionpayService.unionpayQuery(ordersId, time);
+        if(resp.equals("success"))return RespBean.ok("交易成功");
+        return RespBean.error(resp);
     }
 
 }
