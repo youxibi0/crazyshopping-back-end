@@ -30,6 +30,18 @@ public class LocationService {
     public int deleteLocationById(Integer id){
         return locationMapper.deleteById(id);
     }
+    public int setDefault(Integer id){//将传入地址的isDefault设为1 将其余地址的isDefault设为0
+        Location location = locationMapper.selectById(id);
+        UpdateWrapper<Location> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.set("isDefault", 0); // 设置 isDefault 属性为 0
+
+        locationMapper.update(null, updateWrapper);
+
+        UpdateWrapper<Location> updateWrapper2 = new UpdateWrapper<>();
+        location.setIsDefault(1);
+        updateWrapper2.eq("id",location.getId());
+        return locationMapper.update(location,updateWrapper2);
+    }
 
 
 
