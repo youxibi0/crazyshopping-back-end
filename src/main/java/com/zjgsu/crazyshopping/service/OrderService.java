@@ -54,10 +54,6 @@ public class OrderService {
             Map<String, Object> map2 = new HashMap<String, Object>();
             map2.put("ordersId", temp.getId());
             List<Order> orderList = orderMapper.selectByMap(map2);
-            for(Order order : orderList){
-                System.out.println(temp.getAmount());
-                order.setAmount(temp.getAmount());
-            }
             temp.setOrderList(orderList);
         }
         return ordersMainList;
@@ -72,7 +68,6 @@ public class OrderService {
             ordersMain.setLocation(orderRequest.getLocation());
             ordersMain.setPhone(orderRequest.getPhone());
             ordersMain.setUsername(orderRequest.getUsername());
-            ordersMain.setAmount(goodsId.getAmount());
             Date now = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String dateString = sdf.format(now);
@@ -83,27 +78,24 @@ public class OrderService {
             map.put("id", goodsId.getGoodsId());
             Goods goods = goodsMapper.selectByMap(map).get(0);
             if (goods.getNum() <= 0) return 0;
-
-
         }
-
 
         Integer ordersId = tools.getId();
         for (GoodsIdList goodsId : orderRequest.getGoodsIdList()
         ) {
-            System.out.println(goodsId);
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("id", goodsId.getGoodsId());
-            Goods goods = goodsMapper.selectByMap(map).get(0);
+            Goods goods = goodsMapper.selectByMap(map).get(0);//查询对应商品信息
             goodsService.setGoodsImgNameList(goods);
             Order order = new Order();
             order.setGoods(goods);
             order.setOrdersId(ordersId);
             order.setAmount(goodsId.getAmount());
+            System.out.println(goodsId.getAmount());
             System.out.println(order);
             goodsService.subNum(goods.getId(),goodsId.getAmount());
             goodsService.checkOnenable(order.getGoodsId());
-            if (orderMapper.add(order) <= 0) return 0;//数据库没有amount 所以查询的时候是0
+            if (orderMapper.add(order) <= 0) return 0;
         }
 
         return 1;

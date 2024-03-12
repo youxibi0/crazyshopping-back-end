@@ -19,7 +19,7 @@ public class OrdersMain {
     private String location;
     private Integer state;
     private String name;
-    private int amount;
+
 
 
 
@@ -31,7 +31,7 @@ public class OrdersMain {
     public OrdersMain() {
     }
 
-    public OrdersMain(Integer id, String username, String phone, String time, String location, Integer state, String name , int amount) {
+    public OrdersMain(Integer id, String username, String phone, String time, String location, Integer state, String name) {
         this.id = id;
         this.username = username;
         this.phone = phone;
@@ -39,7 +39,6 @@ public class OrdersMain {
         this.location = location;
         this.state = state;
         this.name = name;
-        this.amount = amount;
     }
 
     public Integer getId() {
@@ -113,13 +112,6 @@ public class OrdersMain {
         this.name = name;
     }
 
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
 
     @Override
     public String toString() {
@@ -131,7 +123,6 @@ public class OrdersMain {
                 ", location='" + location + '\'' +
                 ", state=" + state +
                 ", name='" + name + '\'' +
-                ", amount=" + amount +
                 ", orderList=" + orderList +
                 '}';
     }

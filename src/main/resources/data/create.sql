@@ -58,7 +58,8 @@ CREATE TABLE "orders"
     "goodsPrice" real    NOT NULL,
     "goodsName"  TEXT    NOT NULL,
     "imgName"    TEXT,
-    "ordersId"   INTEGER NOT NULL
+    "ordersId"   INTEGER NOT NULL,
+    "amount"   integer NOT NULL DEFAULT 1
 );
 
 DROP TABLE IF EXISTS "ordersMain";
@@ -70,8 +71,7 @@ CREATE TABLE "ordersMain"
     "username" TEXT    NOT NULL,
     "name"     TEXT    NOT NULL,
     "phone"    TEXT,
-    "location" TEXT,
-    "amount"   integer NOT NULL DEFAULT 1
+    "location" TEXT
 );
 
 DROP TABLE IF EXISTS "location";

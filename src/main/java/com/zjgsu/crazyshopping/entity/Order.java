@@ -15,8 +15,7 @@ public class Order {
     private String goodsName;
     private String imgName;
     private Integer ordersId;
-    @TableField(exist = false)
-    private int amount;
+    private Integer amount;
 
     public Order() {
     }

@@ -10,8 +10,8 @@ import java.util.List;
 @Mapper
 public interface OrderMapper extends BaseMapper<Order> {
 
-    @Insert("INSERT INTO ORDERS (ordersId,goodsId,  goodsInfo, goodsPrice, goodsName, imgName)\n" +
-            "VALUES(#{ordersId},#{goodsId}, #{goodsInfo}, #{goodsPrice}, #{goodsName},#{imgName});")
+    @Insert("INSERT INTO ORDERS (ordersId,goodsId,  goodsInfo, goodsPrice, goodsName, imgName, amount)\n" +
+            "VALUES(#{ordersId},#{goodsId}, #{goodsInfo}, #{goodsPrice}, #{goodsName},#{imgName},#{amount});")
     int add(Order order);
 
     @Delete("Delete from orders where ordersId = #{id};")
