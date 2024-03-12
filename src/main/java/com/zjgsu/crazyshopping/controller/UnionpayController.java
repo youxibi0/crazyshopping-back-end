@@ -24,14 +24,14 @@ public class UnionpayController {
     private UnionpayService unionpayService;
 
     @PostMapping("/pay")
-    public String pay(Integer ordersId,String time,HttpServletResponse response) throws Exception{
-        String pay = unionpayService.pay(ordersId,time);
+    public String pay(Integer ordersId,String time,String money,HttpServletResponse response) throws Exception{
+        String pay = unionpayService.pay(ordersId,time,money);
         return pay;
     }
 
     @RequestMapping("/test")
     public String paytest(){
-        String pay = unionpayService.pay(11111111,"20240306203000");
+        String pay = unionpayService.pay(11111111,"20240306203000","1000");
         return pay;
     }
 

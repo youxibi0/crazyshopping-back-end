@@ -16,7 +16,7 @@ import java.util.UUID;
 @Service
 public class UnionpayService {
 
-    public String pay(Integer ordersId,String time) {
+    public String pay(Integer ordersId,String time,String money) {
         Map<String, String> requestData = new HashMap<>();
 
         requestData.put("version", DemoBase.version);         //版本号，全渠道默认值
@@ -34,7 +34,7 @@ public class UnionpayService {
         requestData.put("orderId",ordersId.toString());               //商户订单号，8-40位数字字母，不能含“-”或“_”，可以自行定制规则
         requestData.put("txnTime", time);   //订单发送时间，取系统时间，格式为YYYYMMDDhhmmss，必须取当前时间，否则会报txnTime无效
         requestData.put("currencyCode", "156");           //交易币种（境内商户一般是156 人民币）
-        requestData.put("txnAmt", "10000");                //交易金额，单位分，不要带小数点
+        requestData.put("txnAmt", money);                //交易金额，单位分，不要带小数点
         requestData.put("bizScene","100001");
         //requestData.put("accNo","123456789001");
 
