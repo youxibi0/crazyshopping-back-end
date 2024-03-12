@@ -119,12 +119,30 @@ public class GoodsService {
         goodsMapper.update(goods, updateWrapper);
         checkOnenable(id);
     }
+    public void addNum(Integer id , Integer amount) {
+        Goods goods = getGoodsById(id);
+        UpdateWrapper<Goods> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id", id);
+        goods.setNum(goods.getNum() + amount);
+        goodsMapper.update(goods, updateWrapper);
+        checkOnenable(id);
+    }
 
     public void subNum(Integer id) {
         Goods goods = getGoodsById(id);
         UpdateWrapper<Goods> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id", id);
         goods.setNum(goods.getNum() - 1);
+        goodsMapper.update(goods, updateWrapper);
+        checkOnenable(id);
+    }
+
+    public void subNum(Integer id, Integer amount) {
+        Goods goods = getGoodsById(id);
+        UpdateWrapper<Goods> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id", id);
+        //TODO:
+        goods.setNum(goods.getNum() - amount);
         goodsMapper.update(goods, updateWrapper);
         checkOnenable(id);
     }

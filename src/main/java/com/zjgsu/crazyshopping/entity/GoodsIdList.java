@@ -1,14 +1,14 @@
 package com.zjgsu.crazyshopping.entity;
 
 public class GoodsIdList {
-    private int goodsId;
-    private int amount;
+    private Integer goodsId;
+    private Integer amount;
 
     public int getGoodsId() {
         return goodsId;
     }
 
-    public void setGoodsId(int goodsId) {
+    public void setGoodsId(Integer goodsId) {
         this.goodsId = goodsId;
     }
 
@@ -16,11 +16,11 @@ public class GoodsIdList {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(Integer amount) {
         this.amount = amount;
     }
 
-    public GoodsIdList(int goodsId, int amount) {
+    public GoodsIdList(Integer goodsId, Integer amount) {
         this.goodsId = goodsId;
         this.amount = amount;
     }

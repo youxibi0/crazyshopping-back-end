@@ -21,6 +21,8 @@ public class OrdersMain {
     private String name;
 
 
+
+
     @TableField(exist = false)
     private List<Order> orderList;
 
@@ -108,5 +110,20 @@ public class OrdersMain {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+
+    @Override
+    public String toString() {
+        return "OrdersMain{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", phone='" + phone + '\'' +
+                ", time='" + time + '\'' +
+                ", location='" + location + '\'' +
+                ", state=" + state +
+                ", name='" + name + '\'' +
+                ", orderList=" + orderList +
+                '}';
     }
 }
