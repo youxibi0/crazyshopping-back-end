@@ -1,11 +1,21 @@
 package com.zjgsu.crazyshopping.controller;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.unionpay.acp.sdk.AcpService;
+import com.unionpay.acp.sdk.SDKConstants;
 import com.zjgsu.crazyshopping.entity.*;
+import com.zjgsu.crazyshopping.mapper.OrdersMainMapper;
 import com.zjgsu.crazyshopping.service.OrderService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/orders")
@@ -14,6 +24,8 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
+    @Autowired
+    OrdersMainMapper ordersMainMapper;
     @PostMapping(value = "/add")
     public RespBean addOrder(@RequestBody OrderRequest orderRequest){
         System.out.println(orderRequest);
@@ -88,5 +100,55 @@ public class OrderController {
         return  RespBean.error("完成订单失败!");
     }
 
+    @PostMapping("/payUpdate")
+    public void payUpdate(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        //logger.info("BackRcvResponse接收后台通知开始");
+
+        String encoding = req.getParameter(SDKConstants.param_encoding);
+        // 获取银联通知服务器发送的后台通知参数
+        Map<String, String> reqParam = getAllRequestParam(req);
+
+        //logger.info(reqParam);
+        //重要！验证签名前不要修改reqParam中的键值对的内容，否则会验签不过
+        if (!AcpService.validate(reqParam, encoding)) {
+            //logger.info("验证签名结果[失败].");
+            //验签失败，需解决验签问题
+
+        } else {
+            //logger.info("验证签名结果[成功].");
+            //交易成功，更新商户订单状态
+
+            String orderId =reqParam.get("orderId"); //获取后台通知的数据，其他字段也可用类似方式获取
+            String respCode = reqParam.get("respCode");
+            //判断respCode=00、A6后，对涉及资金类的交易，请再发起查询接口查询，确定交易成功后更新数据库。
+
+            OrdersMain ordersMain = ordersMainMapper.selectById(orderId);
+            ordersMain.setState(1);
+            UpdateWrapper<OrdersMain> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("id", orderId);
+            ordersMainMapper.update(ordersMain,updateWrapper);
+        }
+        //logger.info("BackRcvResponse接收后台通知结束");
+        //返回给银联服务器http 200状态码
+        resp.getWriter().print("ok");
+    }
+    public static Map<String, String> getAllRequestParam(
+            final HttpServletRequest request) {
+        Map<String, String> res = new HashMap<String, String>();
+        Enumeration<?> temp = request.getParameterNames();
+        if (null != temp) {
+            while (temp.hasMoreElements()) {
+                String en = (String) temp.nextElement();
+                String value = request.getParameter(en);
+                res.put(en, value);
+                // 在报文上送时，如果字段的值为空，则不上送<下面的处理为在获取所有参数数据时，判断若值为空，则删除这个字段>
+                if (res.get(en) == null || "".equals(res.get(en))) {
+                    // System.out.println("======为空的字段名===="+en);
+                    res.remove(en);
+                }
+            }
+        }
+        return res;
+    }
 
 }

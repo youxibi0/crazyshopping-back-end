@@ -71,7 +71,7 @@ public class OrderService {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String dateString = sdf.format(now);
             ordersMain.setTime(dateString);
-            ordersMain.setState(1);
+            ordersMain.setState(7);
             if (ordersMainMapper.insert(ordersMain) <= 0) return 0;
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("id", goodsId.getGoodsId());
