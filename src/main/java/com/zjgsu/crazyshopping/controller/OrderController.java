@@ -1,11 +1,13 @@
 package com.zjgsu.crazyshopping.controller;
 
+import com.alipay.api.internal.util.AlipaySignature;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.unionpay.acp.sdk.AcpService;
 import com.unionpay.acp.sdk.SDKConstants;
 import com.zjgsu.crazyshopping.entity.*;
 import com.zjgsu.crazyshopping.mapper.OrdersMainMapper;
 import com.zjgsu.crazyshopping.service.OrderService;
+import com.zjgsu.crazyshopping.utils.AppUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -149,6 +151,38 @@ public class OrderController {
             }
         }
         return res;
+    }
+
+    @PostMapping("/alipayUpdate")  // 注意这里必须是POST接口
+    public String payNotify(HttpServletRequest request) throws Exception {
+        if (request.getParameter("trade_status").equals("TRADE_SUCCESS")) {
+            System.out.println("=========支付宝异步回调========");
+            Map<String, String> params = new HashMap<>();
+            Map<String, String[]> requestParams = request.getParameterMap();
+            for (String name : requestParams.keySet()) {
+                params.put(name, request.getParameter(name));
+                // System.out.println(name + " = " + request.getParameter(name));
+            }
+
+            String tradeNo = params.get("out_trade_no");
+            String gmtPayment = params.get("gmt_payment");
+            String alipayTradeNo = params.get("trade_no");
+
+            String sign = params.get("sign");
+            String content = AlipaySignature.getSignCheckContentV1(params);
+            boolean checkSignature = AlipaySignature.rsa256CheckContent(content, sign, AppUtil.alipay_public_key, "UTF-8"); // 验证签名
+            // 支付宝验签
+            if (checkSignature) {
+                String orderId =tradeNo;
+
+                OrdersMain ordersMain = ordersMainMapper.selectById(orderId);
+                ordersMain.setState(1);
+                UpdateWrapper<OrdersMain> updateWrapper = new UpdateWrapper<>();
+                updateWrapper.eq("id", orderId);
+                ordersMainMapper.update(ordersMain,updateWrapper);
+            }
+        }
+        return "success";
     }
 
 }
