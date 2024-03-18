@@ -6,6 +6,7 @@ import com.zjgsu.crazyshopping.service.AfterServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -28,5 +29,16 @@ public class AftersServiceController {
     public List<AfterService> getAllAfterService(){
         return afterServiceService.getAllAfterService();
     }
+    @PutMapping("/afterservice/do")
+    public RespBean doAfterService(Integer id, Integer way){
+        if(afterServiceService.doAfterService(id,way)==1){
+            return RespBean.ok("售后处理成功");
+        }
+        else {
+            return RespBean.error("售后处理失败");
+        }
+
+    }
+
 
 }
