@@ -14,6 +14,7 @@ public class UnionpayService {
 
     public String pay(Integer ordersId,String time,String money) {
         Map<String, String> requestData = new HashMap<>();
+        Properties prop= PropManager.getProp();
 
         requestData.put("version", DemoBase.version);         //版本号，全渠道默认值
         requestData.put("encoding", DemoBase.encoding);       //字符集编码，可以使用UTF-8,GBK两种方式
@@ -25,7 +26,7 @@ public class UnionpayService {
 
 
         /***商户接入参数***/
-        requestData.put("merId", "777290058206701");      //商户号码，请改成自己申请的正式商户号或者open上注册得来的777测试商户号
+        requestData.put("merId", prop.getProperty("union.merId"));      //商户号码，请改成自己申请的正式商户号或者open上注册得来的777测试商户号
         requestData.put("accessType", "0");               //接入类型，0：直连商户
         requestData.put("orderId",ordersId.toString());               //商户订单号，8-40位数字字母，不能含“-”或“_”，可以自行定制规则
         requestData.put("txnTime", time);   //订单发送时间，取系统时间，格式为YYYYMMDDhhmmss，必须取当前时间，否则会报txnTime无效
@@ -37,14 +38,14 @@ public class UnionpayService {
         //前台通知地址 （需设置为外网能访问 http https均可），支付成功后的页面 点击“返回商户”按钮的时候将异步通知报文post到该地址
         //如果想要实现过几秒中自动跳转回商户页面权限，需联系银联业务申请开通自动返回商户权限
         //异步通知参数详见open.unionpay.com帮助中心 下载  产品接口规范  网关支付产品接口规范 消费交易 商户通知
-        requestData.put("frontUrl", DemoBase.frontUrl);
+        requestData.put("frontUrl", prop.getProperty("union.frontUrl"));
 
         //后台通知地址（需设置为【外网】能访问 http https均可），支付成功后银联会自动将异步通知报文post到商户上送的该地址，失败的交易银联不会发送后台通知
         //后台通知参数详见open.unionpay.com帮助中心 下载  产品接口规范  网关支付产品接口规范 消费交易 商户通知
         //注意:1.需设置为外网能访问，否则收不到通知    2.http https均可  3.收单后台通知后需要10秒内返回http200或302状态码
         //    4.如果银联通知服务器发送通知后10秒内未收到返回状态码或者应答码非http200，那么银联会间隔一段时间再次发送。总共发送5次，每次的间隔时间为0,1,2,4分钟。
         //    5.后台通知地址如果上送了带有？的参数，例如：http://abc/web?a=b&c=d 在后台通知处理程序验证签名之前需要编写逻辑将这些字段去掉再验签，否则将会验签失败
-        requestData.put("backUrl", DemoBase.backUrl);
+        requestData.put("backUrl", prop.getProperty("union.backUrl"));
 
 
         //实现网银前置的方法：
@@ -92,7 +93,7 @@ public class UnionpayService {
         data.put("bizType", "000201");                         //业务类型
 
         /***商户接入参数***/
-        data.put("merId", prop.getProperty("merId"));                  			   //商户号码，请改成自己申请的商户号或者open上注册得来的777商户号测试
+        data.put("merId", prop.getProperty("union.merId"));                  			   //商户号码，请改成自己申请的商户号或者open上注册得来的777商户号测试
         data.put("accessType", "0");                           //接入类型，商户接入固定填0，不需修改
 
         /***要调通交易以下字段必须修改***/
