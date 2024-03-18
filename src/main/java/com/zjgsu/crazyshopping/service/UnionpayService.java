@@ -3,15 +3,11 @@ package com.zjgsu.crazyshopping.service;
 import com.unionpay.acp.demo.DemoBase;
 import com.unionpay.acp.sdk.AcpService;
 import com.unionpay.acp.sdk.SDKConfig;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import com.zjgsu.crazyshopping.utils.PropManager;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UnionpayService {
@@ -85,6 +81,7 @@ public class UnionpayService {
     public String unionpayQuery(Integer ordersId,String time){
 
         Map<String, String> data = new HashMap<String, String>();
+        Properties prop= PropManager.getProp();
 
         /***银联全渠道系统，产品参数，除了encoding自行选择外其他不需修改***/
         data.put("version", DemoBase.version);                 //版本号
@@ -95,7 +92,7 @@ public class UnionpayService {
         data.put("bizType", "000201");                         //业务类型
 
         /***商户接入参数***/
-        data.put("merId", "777290058206701");                  			   //商户号码，请改成自己申请的商户号或者open上注册得来的777商户号测试
+        data.put("merId", prop.getProperty("merId"));                  			   //商户号码，请改成自己申请的商户号或者open上注册得来的777商户号测试
         data.put("accessType", "0");                           //接入类型，商户接入固定填0，不需修改
 
         /***要调通交易以下字段必须修改***/
