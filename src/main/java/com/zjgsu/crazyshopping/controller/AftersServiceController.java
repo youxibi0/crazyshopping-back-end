@@ -4,8 +4,11 @@ import com.zjgsu.crazyshopping.entity.AfterService;
 import com.zjgsu.crazyshopping.entity.RespBean;
 import com.zjgsu.crazyshopping.service.AfterServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class AftersServiceController {
@@ -20,6 +23,10 @@ public class AftersServiceController {
         else {
             return RespBean.error("发起售后失败");
         }
+    }
+    @GetMapping("/afterservice/all")
+    public List<AfterService> getAllAfterService(){
+        return afterServiceService.getAllAfterService();
     }
 
 }
