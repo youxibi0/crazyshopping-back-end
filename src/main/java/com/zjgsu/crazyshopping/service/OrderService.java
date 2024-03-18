@@ -58,43 +58,43 @@ public class OrderService {
         }
         return ordersMainList;
     }
+    private OrdersMain createOrdersMain(OrderRequest orderRequest) {
+        OrdersMain ordersMain = new OrdersMain();
+        ordersMain.setName(orderRequest.getName());
+        ordersMain.setLocation(orderRequest.getLocation());
+        ordersMain.setPhone(orderRequest.getPhone());
+        ordersMain.setUsername(orderRequest.getUsername());
+        ordersMain.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+        ordersMain.setState(1);
+        return ordersMain;
+    }
+    private Order createOrder(Integer ordersId, Goods goods, int amount) {
+        Order order = new Order();
+        order.setGoods(goods);
+        order.setOrdersId(ordersId);
+        order.setAmount(amount);
+        return order;
+    }
+    private Goods getGoodsById(Integer goodsId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", goodsId);
+        return goodsMapper.selectByMap(map).get(0);
+    }
 
     public int addOrder(OrderRequest orderRequest) {
 
-        for (GoodsIdList goodsId : orderRequest.getGoodsIdList()
-        ) {
-            OrdersMain ordersMain = new OrdersMain();
-            ordersMain.setName(orderRequest.getName());
-            ordersMain.setLocation(orderRequest.getLocation());
-            ordersMain.setPhone(orderRequest.getPhone());
-            ordersMain.setUsername(orderRequest.getUsername());
-            Date now = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String dateString = sdf.format(now);
-            ordersMain.setTime(dateString);
-            ordersMain.setState(1);
-            if (ordersMainMapper.insert(ordersMain) <= 0) return 0;
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("id", goodsId.getGoodsId());
-            Goods goods = goodsMapper.selectByMap(map).get(0);
-            if (goods.getNum() <= 0) return 0;
-        }
-
         Integer ordersId = tools.getId();
-        for (GoodsIdList goodsId : orderRequest.getGoodsIdList()
-        ) {
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("id", goodsId.getGoodsId());
-            Goods goods = goodsMapper.selectByMap(map).get(0);//查询对应商品信息
+
+        for (GoodsIdList goodsId : orderRequest.getGoodsIdList()) {
+            OrdersMain ordersMain = createOrdersMain(orderRequest);
+            if (ordersMainMapper.insert(ordersMain) <= 0) return 0;
+
+            Goods goods = getGoodsById(goodsId.getGoodsId());
+            if (goods.getNum() <= 0) return 0;
             goodsService.setGoodsImgNameList(goods);
-            Order order = new Order();
-            order.setGoods(goods);
-            order.setOrdersId(ordersId);
-            order.setAmount(goodsId.getAmount());
-            System.out.println(goodsId.getAmount());
-            System.out.println(order);
-            goodsService.subNum(goods.getId(),goodsId.getAmount());
-            goodsService.checkOnenable(order.getGoodsId());
+            Order order = createOrder(ordersId, goods, goodsId.getAmount());
+            goodsService.subNum(goods.getId(), goodsId.getAmount());
+            goodsService.checkOnenable(goods.getId());
             if (orderMapper.add(order) <= 0) return 0;
         }
 
