@@ -102,6 +102,11 @@ public class OrderController {
         return  RespBean.error("完成订单失败!");
     }
 
+    @PostMapping("/getById")
+    public OrdersMain getOrderById(Integer id){
+        return orderService.getOrdersMainById(id);
+    }
+
     @PostMapping("/payUpdate")
     public void payUpdate(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         //logger.info("BackRcvResponse接收后台通知开始");
