@@ -68,7 +68,7 @@ public class OrderService {
             ordersMain.setPhone(orderRequest.getPhone());
             ordersMain.setUsername(orderRequest.getUsername());
             Date now = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
             String dateString = sdf.format(now);
             ordersMain.setTime(dateString);
             ordersMain.setState(7);
@@ -97,7 +97,7 @@ public class OrderService {
             if (orderMapper.add(order) <= 0) return 0;
         }
 
-        return 1;
+        return ordersId;
     }
 
     public int addCart(OrderRequest orderRequest) {

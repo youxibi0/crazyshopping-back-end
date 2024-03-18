@@ -30,9 +30,9 @@ public class OrderController {
     OrdersMainMapper ordersMainMapper;
     @PostMapping(value = "/add")
     public RespBean addOrder(@RequestBody OrderRequest orderRequest){
-        System.out.println(orderRequest);
-        if(orderService.addOrder(orderRequest)==1){
-            return RespBean.ok("添加成功!");
+        int tmp = orderService.addOrder(orderRequest);
+        if(tmp!=0){
+            return RespBean.ok("添加成功!",tmp);
         }
         return RespBean.error("添加失败!");
     }
