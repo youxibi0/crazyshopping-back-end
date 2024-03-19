@@ -118,29 +118,25 @@ public class OrderService {
 
         return 1;
     }
-
-    public int acceptOrder(Integer id) {
+    public int updateOrderState(Integer id, int state) {
         OrdersMain ordersMain = ordersMainMapper.selectById(id);
-        ordersMain.setState(3);
+        ordersMain.setState(state);
         UpdateWrapper<OrdersMain> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id", id);
         return ordersMainMapper.update(ordersMain, updateWrapper);
+    }
+
+
+    public int acceptOrder(Integer id) {
+        return updateOrderState(id,3);
     }
 
     public int stockup(Integer id) {
-        OrdersMain ordersMain = ordersMainMapper.selectById(id);
-        ordersMain.setState(4);
-        UpdateWrapper<OrdersMain> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("id", id);
-        return ordersMainMapper.update(ordersMain, updateWrapper);
+        return updateOrderState(id,4);
     }
 
     public int sendGoods(Integer id) {
-        OrdersMain ordersMain = ordersMainMapper.selectById(id);
-        ordersMain.setState(5);
-        UpdateWrapper<OrdersMain> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("id", id);
-        return ordersMainMapper.update(ordersMain, updateWrapper);
+        return updateOrderState(id,5);
     }
 
     public int refuseOrder(Integer id) {
