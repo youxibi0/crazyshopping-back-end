@@ -97,7 +97,7 @@ public class UnionpayService {
         data.put("accessType", "0");                           //接入类型，商户接入固定填0，不需修改
 
         /***要调通交易以下字段必须修改***/
-        data.put("orderId", ordersId.toString());                 //****商户订单号，每次发交易测试需修改为被查询的交易的订单号
+        data.put("orderId", String.format("%08d",ordersId));                 //****商户订单号，每次发交易测试需修改为被查询的交易的订单号
         data.put("txnTime", time);                 //****订单发送时间，每次发交易测试需修改为被查询的交易的订单发送时间
 
         /**请求参数设置完毕，以下对请求参数进行签名并发送http post请求，接收同步应答报文------------->**/

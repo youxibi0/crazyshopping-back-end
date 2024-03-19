@@ -51,7 +51,9 @@ public class UnionpayController {
     }
 
     @PostMapping("/unionQuery")
-    public RespBean unionQuery(Integer ordersId, String time) {
+    public RespBean unionQuery(Integer ordersId) {
+        OrdersMain ordersMain=orderService.getOrdersMainById(ordersId);
+        String time = ordersMain.getTime();
         String resp = unionpayService.unionpayQuery(ordersId, time);
         if (resp.equals("success")) return RespBean.ok("交易成功");
         return RespBean.error(resp);
