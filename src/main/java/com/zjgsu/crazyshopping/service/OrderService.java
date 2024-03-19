@@ -184,7 +184,7 @@ public class OrderService {
         if (!ordersMainList.isEmpty()) {
             ordersMain = ordersMainList.get(0);
             Map<String, Object> map2 = new HashMap<String, Object>();
-            map.put("ordersId", ordersMain.getId());
+            map2.put("ordersId", ordersMain.getId());
             List<Order> orderList = orderMapper.selectByMap(map2);
             ordersMain.setOrderList(orderList);
         }

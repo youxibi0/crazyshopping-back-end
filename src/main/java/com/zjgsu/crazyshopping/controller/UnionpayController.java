@@ -4,7 +4,10 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
+import com.zjgsu.crazyshopping.entity.Order;
+import com.zjgsu.crazyshopping.entity.OrdersMain;
 import com.zjgsu.crazyshopping.entity.RespBean;
+import com.zjgsu.crazyshopping.service.OrderService;
 import com.zjgsu.crazyshopping.service.UnionpayService;
 import com.zjgsu.crazyshopping.utils.AppUtil;
 import com.zjgsu.crazyshopping.utils.PropManager;
@@ -23,10 +26,20 @@ public class UnionpayController {
 
     @Autowired
     private UnionpayService unionpayService;
+    @Autowired
+    OrderService orderService;
 
 
     @PostMapping("/pay")
-    public String pay(Integer ordersId, String time, String money, HttpServletResponse response) throws Exception {
+    public String pay(Integer ordersId) throws Exception {
+        OrdersMain ordersMain = orderService.getOrdersMainById(ordersId);
+        String time = ordersMain.getTime();
+        Double price=0.0;
+        for (Order order : ordersMain.getOrderList()
+        ) {
+            price+=order.getAmount()*order.getGoodsPrice();
+        }
+        String money =String.valueOf((int)Math.floor(price*100));
         String pay = unionpayService.pay(ordersId, time, money);
         return pay;
     }

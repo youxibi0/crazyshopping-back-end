@@ -125,10 +125,10 @@ public class OrderController {
             //logger.info("验证签名结果[成功].");
             //交易成功，更新商户订单状态
 
-            String orderId =reqParam.get("orderId"); //获取后台通知的数据，其他字段也可用类似方式获取
+            String orderId_string =reqParam.get("orderId"); //获取后台通知的数据，其他字段也可用类似方式获取
             String respCode = reqParam.get("respCode");
             //判断respCode=00、A6后，对涉及资金类的交易，请再发起查询接口查询，确定交易成功后更新数据库。
-
+            Integer orderId = Integer.parseInt(orderId_string);
             OrdersMain ordersMain = ordersMainMapper.selectById(orderId);
             ordersMain.setState(1);
             UpdateWrapper<OrdersMain> updateWrapper = new UpdateWrapper<>();
