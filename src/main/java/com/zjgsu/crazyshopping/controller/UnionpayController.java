@@ -14,6 +14,7 @@ import com.zjgsu.crazyshopping.utils.PropManager;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,26 +60,32 @@ public class UnionpayController {
         return RespBean.error(resp);
     }
 
-    @RequestMapping("/alipay")
-    public void pay(HttpServletRequest request, HttpServletResponse response)
+    @PostMapping("/alipay")
+    public void pay(Integer ordersId, HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         Properties prop = PropManager.getProp();
         //获得初始化的AlipayClient
 
         AlipayClient alipayClient = new DefaultAlipayClient(prop.getProperty("ali.gatewayUrl"), prop.getProperty("ali.app_id"),
-                prop.getProperty("ali.merchant_private_key"), "json", prop.getProperty("charset"), prop.getProperty("alipay_public_key"), prop.getProperty("sign_type"));
+                prop.getProperty("ali.merchant_private_key"), "json", prop.getProperty("ali.charset"), prop.getProperty("ali.alipay_public_key"), prop.getProperty("ali.sign_type"));
         //设置请求参数
-
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();
         alipayRequest.setReturnUrl(prop.getProperty("ali.return_url"));
         alipayRequest.setNotifyUrl(prop.getProperty("ali.notify_url"));
 
+        OrdersMain ordersMain = orderService.getOrdersMainById(ordersId);
+        Double price=0.0;
+        for (Order order : ordersMain.getOrderList()
+        ) {
+            price+=order.getAmount()*order.getGoodsPrice();
+        }
+
         //商户订单号，商户网站订单系统中唯一订单号，必填
-        String out_trade_no = "123456";
+        String out_trade_no = ordersId.toString();
         //付款金额，必填
-        String total_amount = "1000";
+        String total_amount = price.toString();
         //订单名称，必填
-        String subject = "购买";
+        String subject = "crazyshopping的消费";
         //商品描述，可空
         String body = "";
 

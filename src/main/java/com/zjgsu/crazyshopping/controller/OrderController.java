@@ -178,8 +178,7 @@ public class OrderController {
             boolean checkSignature = AlipaySignature.rsa256CheckContent(content, sign, AppUtil.alipay_public_key, "UTF-8"); // 验证签名
             // 支付宝验签
             if (checkSignature) {
-                String orderId =tradeNo;
-
+                Integer orderId =Integer.parseInt(tradeNo);
                 OrdersMain ordersMain = ordersMainMapper.selectById(orderId);
                 ordersMain.setState(1);
                 UpdateWrapper<OrdersMain> updateWrapper = new UpdateWrapper<>();
