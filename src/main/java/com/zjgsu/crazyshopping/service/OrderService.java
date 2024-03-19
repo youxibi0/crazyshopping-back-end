@@ -5,6 +5,7 @@ import com.zjgsu.crazyshopping.entity.*;
 import com.zjgsu.crazyshopping.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -81,14 +82,12 @@ public class OrderService {
         return goodsMapper.selectByMap(map).get(0);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public int addOrder(OrderRequest orderRequest) {
 
         Integer ordersId = tools.getId();
 
         for (GoodsIdList goodsId : orderRequest.getGoodsIdList()) {
-            OrdersMain ordersMain = createOrdersMain(orderRequest);
-            if (ordersMainMapper.insert(ordersMain) <= 0) return 0;
-
             Goods goods = getGoodsById(goodsId.getGoodsId());
             if (goods.getNum() <= 0) return 0;
             goodsService.setGoodsImgNameList(goods);
@@ -97,7 +96,8 @@ public class OrderService {
             goodsService.checkOnenable(goods.getId());
             if (orderMapper.add(order) <= 0) return 0;
         }
-
+        OrdersMain ordersMain = createOrdersMain(orderRequest);
+        if (ordersMainMapper.insert(ordersMain) <= 0) return 0;
         return ordersId;
     }
 
