@@ -35,30 +35,27 @@ public class OrderService {
 
     public List<OrdersMain> getAllOrder() {
         List<OrdersMain> ordersMainList = ordersMainMapper.selectList(null);
-        for (OrdersMain temp : ordersMainList
-        ) {
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("ordersId", temp.getId());
-            List<Order> orderList = orderMapper.selectByMap(map);
-
-            temp.setOrderList(orderList);
-        }
+        fetchOrderListForOrdersMain(ordersMainList);
         return ordersMainList;
     }
 
     public List<OrdersMain> getOrderByName(String username) {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put("username", username);
         List<OrdersMain> ordersMainList = ordersMainMapper.selectByMap(map);
-        for (OrdersMain temp : ordersMainList
-        ) {
-            Map<String, Object> map2 = new HashMap<String, Object>();
-            map2.put("ordersId", temp.getId());
-            List<Order> orderList = orderMapper.selectByMap(map2);
-            temp.setOrderList(orderList);
-        }
+        fetchOrderListForOrdersMain(ordersMainList);
         return ordersMainList;
     }
+
+    private void fetchOrderListForOrdersMain(List<OrdersMain> ordersMainList) {
+        for (OrdersMain temp : ordersMainList) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("ordersId", temp.getId());
+            List<Order> orderList = orderMapper.selectByMap(map);
+            temp.setOrderList(orderList);
+        }
+    }
+
     private OrdersMain createOrdersMain(OrderRequest orderRequest) {
         OrdersMain ordersMain = new OrdersMain();
         ordersMain.setName(orderRequest.getName());
