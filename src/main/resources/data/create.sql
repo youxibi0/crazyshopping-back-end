@@ -138,7 +138,7 @@ CREATE TABLE "afterservice"
 DROP TABLE IF EXISTS "logistics";
 CREATE TABLE "logistics"
 (
-    "id"       INTEGER NOT NULL,
+    "id"       TEXT NOT NULL,
     "ordersId" INTEGER NOT NULL,
     PRIMARY KEY ("id", "ordersId")
 );
