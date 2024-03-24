@@ -32,6 +32,8 @@ public class OrderService {
     Tools tools;
     @Autowired
     CartMapper cartMapper;
+    @Autowired
+    LogisticsMapper logisticsMapper;
 
     public List<OrdersMain> getAllOrder() {
         List<OrdersMain> ordersMainList = ordersMainMapper.selectList(null);
@@ -138,7 +140,12 @@ public class OrderService {
         return ordersMainMapper.update(ordersMain, updateWrapper);
     }
 
-    public int sendGoods(Integer id) {
+    @Transactional(rollbackFor = Exception.class)
+    public int sendGoods(Integer id,String logisticsId) {
+        Logistics logistics = new Logistics();
+        logistics.setId(logisticsId);
+        logistics.setOrdersId(id);
+        logisticsMapper.insert(logistics);
         OrdersMain ordersMain = ordersMainMapper.selectById(id);
         ordersMain.setState(5);
         UpdateWrapper<OrdersMain> updateWrapper = new UpdateWrapper<>();

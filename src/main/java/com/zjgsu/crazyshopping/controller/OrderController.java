@@ -67,8 +67,8 @@ public class OrderController {
         return RespBean.error("失败!");
     }
     @PutMapping(value = "/sendGoods")
-    public  RespBean sendGoods(Integer id){
-        if(orderService.sendGoods(id)==1){
+    public  RespBean sendGoods(Integer id,String logisticsId){
+        if(orderService.sendGoods(id,logisticsId)==1){
             return RespBean.ok("开始发货!");
         }
         return RespBean.error("失败!");
