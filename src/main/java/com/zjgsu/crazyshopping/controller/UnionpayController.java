@@ -61,7 +61,7 @@ public class UnionpayController {
     }
 
     @PostMapping("/alipay")
-    public void pay(Integer ordersId, HttpServletRequest request, HttpServletResponse response)
+    public String pay(Integer ordersId, HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         Properties prop = PropManager.getProp();
         //获得初始化的AlipayClient
@@ -111,12 +111,12 @@ public class UnionpayController {
         } catch (AlipayApiException e) {
             e.printStackTrace();
         }
-
-        response.setContentType("text/html;charset=" + AppUtil.charset);
-
-        response.getWriter().write(form);//直接将完整的表单html输出到页面
-        response.getWriter().flush();
-        response.getWriter().close();
+        return form;
+//        response.setContentType("text/html;charset=" + AppUtil.charset);
+//
+//        response.getWriter().write(form);//直接将完整的表单html输出到页面
+//        response.getWriter().flush();
+//        response.getWriter().close();
     }
 
 }
