@@ -2,7 +2,10 @@ package com.zjgsu.crazyshopping.service;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.zjgsu.crazyshopping.entity.AfterService;
+import com.zjgsu.crazyshopping.entity.OrdersMain;
 import com.zjgsu.crazyshopping.mapper.AfterServiceMapper;
+import com.zjgsu.crazyshopping.mapper.OrderMapper;
+import com.zjgsu.crazyshopping.mapper.OrdersMainMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +15,10 @@ import java.util.List;
 public class AfterServiceService {
     @Autowired
     private AfterServiceMapper afterServiceMapper;
+    @Autowired
+    private OrdersMainMapper ordersMainMapper;
     public int addAfterService(AfterService afterService){
+        afterService.setState("售后中");
         return afterServiceMapper.insert(afterService);
     }
     public List<AfterService> getAllAfterService(){
@@ -20,17 +26,25 @@ public class AfterServiceService {
     }
     public int doAfterService(Integer id, Integer way){
         AfterService afterService = afterServiceMapper.selectById(id);
+        OrdersMain ordersMain = ordersMainMapper.selectById(afterService.getOrdersId());
         if(way==1){
-            afterService.setState("退货");
+            afterService.setState("退货退款");
+            ordersMain.setState(8);//8代表状态为售后完成
+
         }
         else if(way==2){
-            afterService.setState("退款");
+            afterService.setState("仅退款");
+            ordersMain.setState(8);
         }
         else if(way==3){
-            afterService.setState("不予处理");
+            afterService.setState("拒绝售后");
+            ordersMain.setState(9);//9为拒绝售后
         }
         UpdateWrapper<AfterService> updateWrapper = new UpdateWrapper<>();
+        UpdateWrapper<OrdersMain> updateWrapper1 = new UpdateWrapper<>();
         updateWrapper.eq("id",id);
+        updateWrapper1.eq("id",afterService.getOrdersId());
+        ordersMainMapper.update(ordersMain,updateWrapper1);
         return afterServiceMapper.update(afterService,updateWrapper);
     }
 }
