@@ -1,11 +1,8 @@
 package com.zjgsu.crazyshopping.service;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.zjgsu.crazyshopping.entity.AfterService;
-import com.zjgsu.crazyshopping.entity.OrdersMain;
-import com.zjgsu.crazyshopping.mapper.AfterServiceMapper;
-import com.zjgsu.crazyshopping.mapper.OrderMapper;
-import com.zjgsu.crazyshopping.mapper.OrdersMainMapper;
+import com.zjgsu.crazyshopping.entity.*;
+import com.zjgsu.crazyshopping.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +14,12 @@ public class AfterServiceService {
     private AfterServiceMapper afterServiceMapper;
     @Autowired
     private OrdersMainMapper ordersMainMapper;
+    @Autowired
+    private Tools tools;
+    @Autowired
+    ImageService imageService;
+    @Autowired
+    AfterServiceImagesMapper afterServiceImagesMapper;
     public int addAfterService(AfterService afterService){
         OrdersMain ordersMain = ordersMainMapper.selectById(afterService.getOrdersId());
         afterService.setState("售后中");
@@ -24,7 +27,11 @@ public class AfterServiceService {
         UpdateWrapper<OrdersMain> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id",afterService.getOrdersId());
         ordersMainMapper.update(ordersMain,updateWrapper);
-        return afterServiceMapper.insert(afterService);
+        int temp = afterServiceMapper.insert(afterService);
+        afterService.setId(tools.getId());
+        imageService.saveImg(afterService);
+        saveImgName(afterService);
+        return temp;
     }
     public List<AfterService> getAllAfterService(){
         return afterServiceMapper.selectList(null);
@@ -51,5 +58,13 @@ public class AfterServiceService {
         updateWrapper1.eq("id",afterService.getOrdersId());
         ordersMainMapper.update(ordersMain,updateWrapper1);
         return afterServiceMapper.update(afterService,updateWrapper);
+    }
+    public void saveImgName(AfterService afterService) {
+        if(afterService.getImgNameList()==null)return;
+        for (String imgName : afterService.getImgNameList()
+        ) {
+            AfterServiceImages afterServiceImages =new AfterServiceImages(afterService.getId(),imgName);
+            afterServiceImagesMapper.insert(afterServiceImages);
+        }
     }
 }
