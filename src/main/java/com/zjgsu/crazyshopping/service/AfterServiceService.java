@@ -18,7 +18,12 @@ public class AfterServiceService {
     @Autowired
     private OrdersMainMapper ordersMainMapper;
     public int addAfterService(AfterService afterService){
+        OrdersMain ordersMain = ordersMainMapper.selectById(afterService.getOrdersId());
         afterService.setState("售后中");
+        ordersMain.setState(10);//10 代表售后中
+        UpdateWrapper<OrdersMain> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id",afterService.getOrdersId());
+        ordersMainMapper.update(ordersMain,updateWrapper);
         return afterServiceMapper.insert(afterService);
     }
     public List<AfterService> getAllAfterService(){
