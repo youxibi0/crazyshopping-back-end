@@ -6,7 +6,10 @@ import com.zjgsu.crazyshopping.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AfterServiceService {
@@ -34,7 +37,21 @@ public class AfterServiceService {
         return temp;
     }
     public List<AfterService> getAllAfterService(){
-        return afterServiceMapper.selectList(null);
+        List<AfterService> afterServiceList = afterServiceMapper.selectList(null);
+        for(AfterService afterService : afterServiceList){
+            this.setAfterServiceImgNameList(afterService);
+        }
+        return afterServiceList;
+    }
+    public void setAfterServiceImgNameList(AfterService afterService) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("asId", afterService.getId());
+        List<AfterServiceImages> afterServiceImages = afterServiceImagesMapper.selectByMap(map);
+        List<String> imgList = new ArrayList<>();
+        for (AfterServiceImages image : afterServiceImages) {
+            imgList.add(image.getImgName());
+        }
+        afterService.setImgNameList(imgList);
     }
     public int doAfterService(Integer id, Integer way){
         AfterService afterService = afterServiceMapper.selectById(id);
