@@ -1,5 +1,6 @@
 package com.zjgsu.crazyshopping.service;
 
+import com.zjgsu.crazyshopping.entity.AfterService;
 import com.zjgsu.crazyshopping.entity.Goods;
 import com.zjgsu.crazyshopping.entity.GoodsImages;
 import com.zjgsu.crazyshopping.entity.RespBean;
@@ -108,6 +109,33 @@ public class ImageService {
                 return false;
             }
             goods.addImgName(filename);
+        }
+        return true;
+    }
+    public Boolean saveImg(AfterService afterService) {
+        if(null == afterService.getImgFiles() || afterService.getImgFiles().isEmpty()) return true;
+        for (MultipartFile file : afterService.getImgFiles()
+        ) {
+            String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1, file.getOriginalFilename().length());
+            String savePath = UPLOAD_FOLDER;
+            String filename = null;
+            String absolutePath = null;
+            try {
+                File savePathFile = new File(savePath);
+                absolutePath = savePathFile.getCanonicalPath();
+                File absolutePathFile = new File(absolutePath);
+                if (!absolutePathFile.exists()) {
+                    absolutePathFile.mkdir();
+                }
+                //通过UUID生成唯一文件名
+                filename = UUID.randomUUID().toString().replaceAll("-", "") + "." + suffix;
+                //将文件保存指定目录
+                file.transferTo(new File(absolutePath + "/" + filename));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+            afterService.addImgName(filename);
         }
         return true;
     }

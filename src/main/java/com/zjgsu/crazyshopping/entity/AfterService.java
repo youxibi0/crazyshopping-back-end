@@ -1,8 +1,13 @@
 package com.zjgsu.crazyshopping.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @TableName("afterservice")
 public class AfterService {
@@ -12,6 +17,12 @@ public class AfterService {
     private String context;
     private Integer ordersId;
     private String state;
+
+    @TableField(exist = false)
+    private List<MultipartFile> imgFiles;
+
+    @TableField(exist = false)
+    private List<String> imgNameList;
 
     public AfterService(Integer id, String title, String context, Integer ordersId, String state) {
         this.id = id;
@@ -59,6 +70,26 @@ public class AfterService {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public List<MultipartFile> getImgFiles() {
+        return imgFiles;
+    }
+
+    public void setImgFiles(List<MultipartFile> imgFiles) {
+        this.imgFiles = imgFiles;
+    }
+
+    public List<String> getImgNameList() {
+        return imgNameList;
+    }
+
+    public void setImgNameList(List<String> imgNameList) {
+        this.imgNameList = imgNameList;
+    }
+    public void addImgName(String name){
+        if(this.imgNameList==null)this.imgNameList = new ArrayList<String>();
+        this.imgNameList.add(name);
     }
 
     @Override

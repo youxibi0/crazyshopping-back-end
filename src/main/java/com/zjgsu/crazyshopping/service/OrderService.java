@@ -37,30 +37,27 @@ public class OrderService {
 
     public List<OrdersMain> getAllOrder() {
         List<OrdersMain> ordersMainList = ordersMainMapper.selectList(null);
-        for (OrdersMain temp : ordersMainList
-        ) {
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("ordersId", temp.getId());
-            List<Order> orderList = orderMapper.selectByMap(map);
-
-            temp.setOrderList(orderList);
-        }
+        fetchOrderListForOrdersMain(ordersMainList);
         return ordersMainList;
     }
 
     public List<OrdersMain> getOrderByName(String username) {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put("username", username);
         List<OrdersMain> ordersMainList = ordersMainMapper.selectByMap(map);
-        for (OrdersMain temp : ordersMainList
-        ) {
-            Map<String, Object> map2 = new HashMap<String, Object>();
-            map2.put("ordersId", temp.getId());
-            List<Order> orderList = orderMapper.selectByMap(map2);
-            temp.setOrderList(orderList);
-        }
+        fetchOrderListForOrdersMain(ordersMainList);
         return ordersMainList;
     }
+
+    private void fetchOrderListForOrdersMain(List<OrdersMain> ordersMainList) {
+        for (OrdersMain temp : ordersMainList) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("ordersId", temp.getId());
+            List<Order> orderList = orderMapper.selectByMap(map);
+            temp.setOrderList(orderList);
+        }
+    }
+
     private OrdersMain createOrdersMain(OrderRequest orderRequest) {
         OrdersMain ordersMain = new OrdersMain();
         ordersMain.setName(orderRequest.getName());
@@ -123,21 +120,21 @@ public class OrderService {
 
         return 1;
     }
-
-    public int acceptOrder(Integer id) {
+    public int updateOrderState(Integer id, int state) {
         OrdersMain ordersMain = ordersMainMapper.selectById(id);
-        ordersMain.setState(3);
+        ordersMain.setState(state);
         UpdateWrapper<OrdersMain> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id", id);
         return ordersMainMapper.update(ordersMain, updateWrapper);
     }
 
+
+    public int acceptOrder(Integer id) {
+        return updateOrderState(id,3);
+    }
+
     public int stockup(Integer id) {
-        OrdersMain ordersMain = ordersMainMapper.selectById(id);
-        ordersMain.setState(4);
-        UpdateWrapper<OrdersMain> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("id", id);
-        return ordersMainMapper.update(ordersMain, updateWrapper);
+        return updateOrderState(id,4);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -146,11 +143,7 @@ public class OrderService {
         logistics.setId(logisticsId);
         logistics.setOrdersId(id);
         logisticsMapper.insert(logistics);
-        OrdersMain ordersMain = ordersMainMapper.selectById(id);
-        ordersMain.setState(5);
-        UpdateWrapper<OrdersMain> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("id", id);
-        return ordersMainMapper.update(ordersMain, updateWrapper);
+        return updateOrderState(id,5);
     }
 
     public int refuseOrder(Integer id) {
